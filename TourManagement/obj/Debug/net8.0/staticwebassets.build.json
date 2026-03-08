@@ -1,0 +1,125 @@
+{
+  "Version": 1,
+  "Hash": "eZJtie7avSDwKaTFyFitLzkOLRG/ymdcoms90LydARo=",
+  "Source": "TourManagement",
+  "BasePath": "_content/TourManagement",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "TourManagement\\wwwroot",
+      "Source": "TourManagement",
+      "ContentRoot": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\",
+      "BasePath": "_content/TourManagement",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\css\\login.css",
+      "SourceId": "TourManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\",
+      "BasePath": "_content/TourManagement",
+      "RelativePath": "css/login#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "243voscg9g",
+      "Integrity": "gukoPFlZ1nJQipl36IsnLXKr9umDyIXD+mv9ZuOLfZ4=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\login.css"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "css/login.243voscg9g.css",
+      "AssetFile": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\css\\login.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2045"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"gukoPFlZ1nJQipl36IsnLXKr9umDyIXD+mv9ZuOLfZ4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 02 Mar 2026 08:12:57 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "243voscg9g"
+        },
+        {
+          "Name": "label",
+          "Value": "css/login.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-gukoPFlZ1nJQipl36IsnLXKr9umDyIXD+mv9ZuOLfZ4="
+        }
+      ]
+    },
+    {
+      "Route": "css/login.css",
+      "AssetFile": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\css\\login.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2045"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"gukoPFlZ1nJQipl36IsnLXKr9umDyIXD+mv9ZuOLfZ4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 02 Mar 2026 08:12:57 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-gukoPFlZ1nJQipl36IsnLXKr9umDyIXD+mv9ZuOLfZ4="
+        }
+      ]
+    }
+  ]
+}

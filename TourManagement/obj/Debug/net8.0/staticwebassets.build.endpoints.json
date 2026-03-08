@@ -1,0 +1,88 @@
+{
+  "Version": 1,
+  "ManifestType": "Build",
+  "Endpoints": [
+    {
+      "Route": "css/login.243voscg9g.css",
+      "AssetFile": "css/login.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2045"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"gukoPFlZ1nJQipl36IsnLXKr9umDyIXD+mv9ZuOLfZ4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 02 Mar 2026 08:12:57 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "243voscg9g"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-gukoPFlZ1nJQipl36IsnLXKr9umDyIXD+mv9ZuOLfZ4="
+        },
+        {
+          "Name": "label",
+          "Value": "css/login.css"
+        }
+      ]
+    },
+    {
+      "Route": "css/login.css",
+      "AssetFile": "css/login.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2045"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"gukoPFlZ1nJQipl36IsnLXKr9umDyIXD+mv9ZuOLfZ4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 02 Mar 2026 08:12:57 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-gukoPFlZ1nJQipl36IsnLXKr9umDyIXD+mv9ZuOLfZ4="
+        }
+      ]
+    }
+  ]
+}

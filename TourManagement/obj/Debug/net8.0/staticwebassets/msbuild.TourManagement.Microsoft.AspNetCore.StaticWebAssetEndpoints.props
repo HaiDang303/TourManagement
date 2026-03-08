@@ -1,0 +1,16 @@
+﻿<Project>
+  <ItemGroup>
+    <StaticWebAssetEndpoint Include="_content/TourManagement/css/login.243voscg9g.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\login.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"243voscg9g"},{"Name":"integrity","Value":"sha256-gukoPFlZ1nJQipl36IsnLXKr9umDyIXD\u002Bmv9ZuOLfZ4="},{"Name":"label","Value":"_content/TourManagement/css/login.css"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"2045"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022gukoPFlZ1nJQipl36IsnLXKr9umDyIXD\u002Bmv9ZuOLfZ4=\u0022"},{"Name":"Last-Modified","Value":"Mon, 02 Mar 2026 08:12:57 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/TourManagement/css/login.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\login.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-gukoPFlZ1nJQipl36IsnLXKr9umDyIXD\u002Bmv9ZuOLfZ4="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"2045"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022gukoPFlZ1nJQipl36IsnLXKr9umDyIXD\u002Bmv9ZuOLfZ4=\u0022"},{"Name":"Last-Modified","Value":"Mon, 02 Mar 2026 08:12:57 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+  </ItemGroup>
+</Project>
