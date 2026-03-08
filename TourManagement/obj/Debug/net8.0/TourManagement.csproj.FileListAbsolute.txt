@@ -143,3 +143,4 @@ D:\CODE PRN222\TourManagement\TourManagement\obj\Debug\net8.0\TourManagement.Raz
 D:\CODE PRN222\TourManagement\TourManagement\obj\Debug\net8.0\TourManagement.RazorAssemblyInfo.cs
 D:\CODE PRN222\TourManagement\TourManagement\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\CODE PRN222\TourManagement\TourManagement\bin\Debug\net8.0\TourManagement.staticwebassets.runtime.json
+D:\CODE PRN222\TourManagement\TourManagement\obj\Debug\net8.0\TourManagement.sourcelink.json
