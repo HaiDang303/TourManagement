@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using TourManagement.Models;    
+using TourManagement.Models;
 
 namespace TourManagement
 {
@@ -13,19 +13,23 @@ namespace TourManagement
             // Add services...
             builder.Services.AddRazorPages();
 
-            // ĐĂNG KÝ DbContext - Đây là phần thiếu!
+            // DbContext cho dữ liệu domain (Users, Roles tự thiết kế)
             builder.Services.AddDbContext<TourManagement.Models.TourManagementContext>(options =>
                 options.UseSqlServer(
-                    builder.Configuration.GetConnectionString("DefaultConnection")  // tên connection string trong appsettings.json
+                    builder.Configuration.GetConnectionString("MyCnn")
                 ));
 
-            // Nếu bạn dùng authentication cookie (như code login trước đó)
+
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.LoginPath = "/Account/Login";
-                    // ... các config khác
-                });
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Accounts/Login";          // Phải match trang login của bạn
+        options.AccessDeniedPath = "/Accounts/AccessDenied"; // Optional
+        options.ExpireTimeSpan = TimeSpan.FromHours(12);
+        options.SlidingExpiration = true;              // Tự renew khi còn 50% thời gian
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Nếu dùng HTTPS
+    });
 
 
 
@@ -38,12 +42,12 @@ namespace TourManagement
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();       // ← Nên có
-            app.UseStaticFiles();            // ← BẮT BUỘC phải có dòng này để load wwwroot
+            app.UseHttpsRedirection(); 
+            app.UseStaticFiles();           
 
             app.UseRouting();
 
-            app.UseAuthentication();         // Nếu bạn có login
+            app.UseAuthentication();         
             app.UseAuthorization();
 
             app.MapRazorPages();

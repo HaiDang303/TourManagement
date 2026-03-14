@@ -141,6 +141,14 @@ D:\CODE PRN222\TourManagement\TourManagement\obj\Debug\net8.0\TourManagement.gen
 D:\CODE PRN222\TourManagement\TourManagement\obj\Debug\net8.0\ref\TourManagement.dll
 D:\CODE PRN222\TourManagement\TourManagement\obj\Debug\net8.0\TourManagement.RazorAssemblyInfo.cache
 D:\CODE PRN222\TourManagement\TourManagement\obj\Debug\net8.0\TourManagement.RazorAssemblyInfo.cs
-D:\CODE PRN222\TourManagement\TourManagement\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\CODE PRN222\TourManagement\TourManagement\bin\Debug\net8.0\TourManagement.staticwebassets.runtime.json
 D:\CODE PRN222\TourManagement\TourManagement\obj\Debug\net8.0\TourManagement.sourcelink.json
+D:\CODE PRN222\TourManagement\TourManagement\obj\Debug\net8.0\TourManagement.MvcApplicationPartsAssemblyInfo.cs
+D:\CODE PRN222\TourManagement\TourManagement\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+D:\CODE PRN222\TourManagement\TourManagement\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+D:\CODE PRN222\TourManagement\TourManagement\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+D:\CODE PRN222\TourManagement\TourManagement\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.UI.dll
+D:\CODE PRN222\TourManagement\TourManagement\bin\Debug\net8.0\Microsoft.Extensions.FileProviders.Embedded.dll
+D:\CODE PRN222\TourManagement\TourManagement\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
+D:\CODE PRN222\TourManagement\TourManagement\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
+D:\CODE PRN222\TourManagement\TourManagement\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

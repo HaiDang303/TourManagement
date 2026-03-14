@@ -1,14 +1,15 @@
-﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
-//using TourManagement.Data;
+using System.Threading.Tasks;
 using TourManagement.Models;
 
-namespace TourManagement.Pages.Account
+namespace TourManagement.Pages.Accounts
 {
     public class LoginModel : PageModel
     {
@@ -20,9 +21,12 @@ namespace TourManagement.Pages.Account
         }
 
         [BindProperty]
-        public InputModel Input { get; set; } = new();
+        public InputModel Input { get; set; } = new InputModel();
 
         public string? ReturnUrl { get; set; }
+
+        [TempData]
+        public string? ErrorMessage { get; set; }
 
         public class InputModel
         {
@@ -35,48 +39,62 @@ namespace TourManagement.Pages.Account
             [DataType(DataType.Password)]
             [Display(Name = "Mật khẩu")]
             public string Password { get; set; } = string.Empty;
+
+            [Display(Name = "Ghi nhớ đăng nhập?")]
+            public bool RememberMe { get; set; }
         }
 
-        public void OnGet(string? returnUrl = null)
+        public async Task OnGetAsync(string? returnUrl = null)
         {
+            if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                ModelState.AddModelError(string.Empty, ErrorMessage);
+            }
+
+            // Đảm bảo xóa mọi cookie đăng nhập cũ (nếu có)
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
             ReturnUrl = returnUrl;
         }
 
         public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
         {
-            ReturnUrl = returnUrl ?? Url.Content("~/");
+            ReturnUrl = returnUrl;
 
             if (!ModelState.IsValid)
             {
+                // Nếu validation thất bại → quay lại trang với lỗi (client-side + server-side)
                 return Page();
             }
 
+            // Tìm user theo email trong bảng Users của bạn
             var user = await _context.Users
-                .Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.Email == Input.Email && u.IsActive);
 
-            if (user == null || !VerifyPassword(Input.Password, user.Password))
+            if (user == null || user.Password != Input.Password)
             {
                 ModelState.AddModelError(string.Empty, "Email hoặc mật khẩu không đúng.");
                 return Page();
             }
 
+            // Tạo danh sách claim đơn giản
             var claims = new List<Claim>
             {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Name ?? user.Email),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim("Id", user.Id.ToString()),
-                new Claim(ClaimTypes.Role, user.Role?.RoleName ?? "User")
+                new Claim(ClaimTypes.Email, user.Email)
             };
+
+            if (user.Role != null)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, user.Role.RoleName));
+            }
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
             var authProperties = new AuthenticationProperties
             {
-                // Không còn RememberMe → cookie mặc định hết hạn khi đóng trình duyệt
-                // Nếu muốn cookie sống lâu hơn, có thể set ExpiresUtc cố định ở đây
-                ExpiresUtc = DateTimeOffset.UtcNow.AddHours(12), // ví dụ 12 tiếng
-                IsPersistent = false
+                IsPersistent = Input.RememberMe
             };
 
             await HttpContext.SignInAsync(
@@ -84,13 +102,19 @@ namespace TourManagement.Pages.Account
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
 
-            return LocalRedirect(ReturnUrl);
+            // Đăng nhập thành công → redirect
+            return LocalRedirect(GetRedirectUrl(returnUrl));
         }
 
-        private bool VerifyPassword(string enteredPassword, string storedPassword)
+        private string GetRedirectUrl(string? returnUrl)
         {
-            // Nên thay bằng BCrypt hoặc tương tự khi deploy thật
-            return enteredPassword == storedPassword; // test tạm
+            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+            {
+                return returnUrl;
+            }
+
+            // Mặc định redirect tạm thời về trang Home (trang Index)
+            return Url.Content("~/") ?? "/";
         }
     }
 }
