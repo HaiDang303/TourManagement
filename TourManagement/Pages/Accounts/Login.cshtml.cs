@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
@@ -67,8 +68,9 @@ namespace TourManagement.Pages.Accounts
                 return Page();
             }
 
-            // Tìm user theo email trong bảng Users của bạn
+            // Tìm user theo email trong bảng Users (kèm role)
             var user = await _context.Users
+                .Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.Email == Input.Email && u.IsActive);
 
             if (user == null || user.Password != Input.Password)
@@ -87,7 +89,9 @@ namespace TourManagement.Pages.Accounts
 
             if (user.Role != null)
             {
-                claims.Add(new Claim(ClaimTypes.Role, user.Role.RoleName));
+                // Chuẩn hóa role về chữ thường để dùng với [Authorize(Roles = "admin")]
+                var normalizedRole = (user.Role.RoleName ?? string.Empty).ToLowerInvariant();
+                claims.Add(new Claim(ClaimTypes.Role, normalizedRole));
             }
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -102,7 +106,15 @@ namespace TourManagement.Pages.Accounts
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
 
-            // Đăng nhập thành công → redirect
+            // Đăng nhập thành công → nếu là admin thì vào trang Dashboard
+            var roleName = user.Role?.RoleName;
+            if (!string.IsNullOrEmpty(roleName) &&
+                roleName.Equals("admin", StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToPage("/Admin/Dashboard");
+            }
+
+            // Các role khác → dùng redirect mặc định (Home hoặc returnUrl)
             return LocalRedirect(GetRedirectUrl(returnUrl));
         }
 
