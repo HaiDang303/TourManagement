@@ -1,5 +1,5 @@
-﻿@page
-@model TourManagement.Pages.Account.LoginModel
+@page
+@model TourManagement.Pages.Accounts.LoginModel
 @{
     ViewData["Title"] = "Đăng nhập - Quản lý Tour";
     Layout = null;  
@@ -24,7 +24,9 @@
             </div>
 
             <div class="card-body p-4 p-md-5">
-                <form method="post">
+                <form method="post" asp-page-handler="Async">
+                    
+
                     <div asp-validation-summary="ModelOnly" class="text-danger text-center mb-4 fw-bold"></div>
 
                     <div class="mb-4">
@@ -48,16 +50,26 @@
                     </button>
                 </form>
 
-                <div class="text-center mt-4">
-                    <a href="#" class="link">Quên mật khẩu?</a>
-                    <span class="mx-2 text-muted">•</span>
-                    <a href="/Account/Register" class="link">Tạo tài khoản mới</a>
-                </div>
+                    <div class="text-center mt-4">
+                        <a href="#" class="link">Quên mật khẩu?</a>
+                        <span class="mx-2 text-muted">•</span>
+                        <a href="/Accounts/Register" class="link">Tạo tài khoản mới</a>
+                    </div>
             </div>
         </div>
     </div>
 
+
+    <!-- jQuery trước -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <!-- jquery.validate sau jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js"></script>
+
+    <!-- jquery.validate.unobtrusive cuối cùng -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+
+    <!-- Bootstrap JS có thể để trước hoặc sau cũng được, nhưng thường để cuối -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <partial name="_ValidationScriptsPartial" />
 </body>
 </html>

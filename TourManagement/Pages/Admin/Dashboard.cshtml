@@ -1,0 +1,112 @@
+@page
+@model TourManagement.Pages.Admin.DashboardModel
+@{
+    ViewData["Title"] = "Bảng điều khiển Admin";
+}
+
+<div class="admin-header">
+    <div class="admin-header-left">
+        <span class="admin-logo">TourManagement Admin</span>
+    </div>
+    <div class="admin-header-right">
+        <span class="admin-user">Xin chào, @User.Identity?.Name</span>
+        <a href="/Accounts/Logout" class="btn btn-sm btn-outline-light ms-3">Đăng xuất</a>
+    </div>
+</div>
+
+<div class="dashboard">
+
+    <a href="/Admin/Users" class="box">
+        <div class="icon">👤</div>
+        <div class="title">Quản lý người dùng</div>
+    </a>
+
+    <a href="/Admin/Tours/Create" class="box">
+        <div class="icon">✈️</div>
+        <div class="title">Tạo tour</div>
+    </a>
+
+    <a href="/Admin/Groups" class="box">
+        <div class="icon">👥</div>
+        <div class="title">Quản lý đoàn</div>
+    </a>
+
+    <a href="/Admin/Bookings/Approve" class="box">
+        <div class="icon">✅</div>
+        <div class="title">Duyệt booking</div>
+    </a>
+
+    <a href="/Admin/Reports" class="box">
+        <div class="icon">📊</div>
+        <div class="title">Báo cáo</div>
+    </a>
+
+</div>
+
+<style>
+    .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 24px;
+        background: #0d6efd;
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .admin-logo {
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .admin-header-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .admin-user {
+        font-weight: 500;
+    }
+
+    .dashboard {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 40px;
+        padding: 40px 60px;
+    }
+
+    .box {
+        width: 220px;
+        height: 130px;
+        border-radius: 25px;
+        border: 3px solid #333;
+        text-decoration: none;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #f9f9f9;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transition: 0.25s;
+    }
+
+        .box:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            background: #ffffff;
+        }
+
+    .icon {
+        font-size: 30px;
+        margin-bottom: 8px;
+    }
+
+    .title {
+        font-weight: 600;
+        text-align: center;
+    }
+
+</style>

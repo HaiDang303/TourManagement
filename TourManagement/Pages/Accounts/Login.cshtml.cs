@@ -1,9 +1,13 @@
+<<<<<<< HEAD
 ﻿using BCrypt.Net;  // ← thêm dòng này sau khi install package
+=======
+>>>>>>> b001e8fd745f45e1cf0ea34fa229315904f90c76
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+<<<<<<< HEAD
 using Org.BouncyCastle.Crypto.Generators;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
@@ -12,6 +16,16 @@ using TourManagement.Models;
 
 namespace TourManagement.Pages.Account   // ← nếu dùng folder Account
 // namespace TourManagement.Pages        // ← nếu không dùng folder Account
+=======
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using TourManagement.Models;
+
+namespace TourManagement.Pages.Accounts
+>>>>>>> b001e8fd745f45e1cf0ea34fa229315904f90c76
 {
     public class LoginModel : PageModel
     {
@@ -23,9 +37,12 @@ namespace TourManagement.Pages.Account   // ← nếu dùng folder Account
         }
 
         [BindProperty]
-        public InputModel Input { get; set; } = new();
+        public InputModel Input { get; set; } = new InputModel();
 
         public string? ReturnUrl { get; set; }
+
+        [TempData]
+        public string? ErrorMessage { get; set; }
 
         public class InputModel
         {
@@ -38,49 +55,80 @@ namespace TourManagement.Pages.Account   // ← nếu dùng folder Account
             [DataType(DataType.Password)]
             [Display(Name = "Mật khẩu")]
             public string Password { get; set; } = string.Empty;
+
+            [Display(Name = "Ghi nhớ đăng nhập?")]
+            public bool RememberMe { get; set; }
         }
 
-        public void OnGet(string? returnUrl = null)
+        public async Task OnGetAsync(string? returnUrl = null)
         {
+            if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                ModelState.AddModelError(string.Empty, ErrorMessage);
+            }
+
+            // Đảm bảo xóa mọi cookie đăng nhập cũ (nếu có)
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
             ReturnUrl = returnUrl;
         }
 
         public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
         {
-            ReturnUrl = returnUrl ?? Url.Content("~/");
+            ReturnUrl = returnUrl;
 
             if (!ModelState.IsValid)
             {
+                // Nếu validation thất bại → quay lại trang với lỗi (client-side + server-side)
                 return Page();
             }
 
+            // Tìm user theo email trong bảng Users (kèm role)
             var user = await _context.Users
                 .Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.Email == Input.Email && u.IsActive);
 
+<<<<<<< HEAD
             if (user == null || !BCrypt.Net.BCrypt.Verify(Input.Password, user.Password))
+=======
+            if (user == null || user.Password != Input.Password)
+>>>>>>> b001e8fd745f45e1cf0ea34fa229315904f90c76
             {
                 ModelState.AddModelError(string.Empty, "Email hoặc mật khẩu không đúng.");
                 return Page();
             }
 
+<<<<<<< HEAD
             user.LastLogin = DateTime.UtcNow;
             await _context.SaveChangesAsync();
 
+=======
+            // Tạo danh sách claim đơn giản
+>>>>>>> b001e8fd745f45e1cf0ea34fa229315904f90c76
             var claims = new List<Claim>
             {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Name ?? user.Email),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim("Id", user.Id.ToString()),
-                new Claim(ClaimTypes.Role, user.Role?.RoleName ?? "User")
+                new Claim(ClaimTypes.Email, user.Email)
             };
+
+            if (user.Role != null)
+            {
+                // Chuẩn hóa role về chữ thường để dùng với [Authorize(Roles = "admin")]
+                var normalizedRole = (user.Role.RoleName ?? string.Empty).ToLowerInvariant();
+                claims.Add(new Claim(ClaimTypes.Role, normalizedRole));
+            }
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
             var authProperties = new AuthenticationProperties
             {
+<<<<<<< HEAD
                 ExpiresUtc = DateTimeOffset.UtcNow.AddHours(12),
                 IsPersistent = false
+=======
+                IsPersistent = Input.RememberMe
+>>>>>>> b001e8fd745f45e1cf0ea34fa229315904f90c76
             };
 
             await HttpContext.SignInAsync(
@@ -88,7 +136,30 @@ namespace TourManagement.Pages.Account   // ← nếu dùng folder Account
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
 
-            return LocalRedirect(ReturnUrl);
+            // Đăng nhập thành công → nếu là admin thì vào trang Dashboard
+            var roleName = user.Role?.RoleName;
+            if (!string.IsNullOrEmpty(roleName) &&
+                roleName.Equals("admin", StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToPage("/Admin/Dashboard");
+            }
+
+            // Các role khác → dùng redirect mặc định (Home hoặc returnUrl)
+            return LocalRedirect(GetRedirectUrl(returnUrl));
         }
+<<<<<<< HEAD
+=======
+
+        private string GetRedirectUrl(string? returnUrl)
+        {
+            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+            {
+                return returnUrl;
+            }
+
+            // Mặc định redirect tạm thời về trang Home (trang Index)
+            return Url.Content("~/") ?? "/";
+        }
+>>>>>>> b001e8fd745f45e1cf0ea34fa229315904f90c76
     }
 }
