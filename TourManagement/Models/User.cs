@@ -31,5 +31,11 @@ public partial class User
 
     public DateTime? LastLogin { get; set; }
 
+    public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+
     public virtual Role Role { get; set; } = null!;
+
+    public virtual ICollection<TourGroup> TourGroups { get; set; } = new List<TourGroup>();
+
+    public virtual ICollection<Tour> Tours { get; set; } = new List<Tour>();
 }

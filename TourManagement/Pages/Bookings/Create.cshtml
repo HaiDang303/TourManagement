@@ -1,0 +1,72 @@
+﻿@page "{groupId}"
+@model TourManagement.Pages.Bookings.CreateModel
+
+@{
+    ViewData["Title"] = "Đặt tour - " + Model.TourGroup?.Tour?.Name;
+    Layout = null;  // giữ giao diện công khai, không dùng admin layout
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h3 class="mb-1">Đặt Tour: @Model.TourGroup?.Tour?.Name</h3>
+                    <p class="mb-0">
+                        Khởi hành: <strong>@Model.TourGroup?.DepartDate.ToString("dd/MM/yyyy")</strong>
+                        → Về: <strong>@Model.TourGroup?.ReturnDate.ToString("dd/MM/yyyy")</strong>
+                    </p>
+                    <small>Sức chứa còn lại: @Model.RemainingCapacity người</small>
+                </div>
+
+                <div class="card-body p-5">
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+
+                        <div class="row g-4">
+                            <div class="col-md-4">
+                                <label asp-for="Adults" class="form-label fw-bold">Người lớn</label>
+                                <input asp-for="Adults" class="form-control form-control-lg" min="1" required />
+                                <span asp-validation-for="Adults" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label asp-for="Children" class="form-label fw-bold">Trẻ em</label>
+                                <input asp-for="Children" class="form-control form-control-lg" min="0" />
+                                <span asp-validation-for="Children" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label asp-for="Infants" class="form-label fw-bold">Em bé</label>
+                                <input asp-for="Infants" class="form-control form-control-lg" min="0" />
+                                <span asp-validation-for="Infants" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mt-5 text-center">
+                            <button type="submit" class="btn btn-primary btn-lg px-5 py-3">
+                                Tiếp tục → Thêm thông tin hành khách
+                            </button>
+                        </div>
+
+                        <div class="mt-4 text-center text-muted">
+                            <small>Lưu ý: Bạn cần đăng nhập để hoàn tất đặt chỗ</small>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="mt-4 text-center">
+                <a asp-page="/Tours/Details" asp-route-id="@Model.TourGroup?.TourId" class="btn btn-outline-secondary">
+                    ← Quay lại chi tiết tour
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

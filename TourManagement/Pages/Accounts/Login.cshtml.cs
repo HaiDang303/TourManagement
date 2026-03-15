@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using BCrypt.Net;  // ← thêm dòng này sau khi install package
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Crypto.Generators;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
-//using TourManagement.Data;
+using TourManagement.Data;      // sửa nếu DbContext tên khác
 using TourManagement.Models;
 
-namespace TourManagement.Pages.Account
+namespace TourManagement.Pages.Account   // ← nếu dùng folder Account
+// namespace TourManagement.Pages        // ← nếu không dùng folder Account
 {
     public class LoginModel : PageModel
     {
@@ -55,11 +58,14 @@ namespace TourManagement.Pages.Account
                 .Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.Email == Input.Email && u.IsActive);
 
-            if (user == null || !VerifyPassword(Input.Password, user.Password))
+            if (user == null || !BCrypt.Net.BCrypt.Verify(Input.Password, user.Password))
             {
                 ModelState.AddModelError(string.Empty, "Email hoặc mật khẩu không đúng.");
                 return Page();
             }
+
+            user.LastLogin = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
 
             var claims = new List<Claim>
             {
@@ -73,9 +79,7 @@ namespace TourManagement.Pages.Account
 
             var authProperties = new AuthenticationProperties
             {
-                // Không còn RememberMe → cookie mặc định hết hạn khi đóng trình duyệt
-                // Nếu muốn cookie sống lâu hơn, có thể set ExpiresUtc cố định ở đây
-                ExpiresUtc = DateTimeOffset.UtcNow.AddHours(12), // ví dụ 12 tiếng
+                ExpiresUtc = DateTimeOffset.UtcNow.AddHours(12),
                 IsPersistent = false
             };
 
@@ -85,12 +89,6 @@ namespace TourManagement.Pages.Account
                 authProperties);
 
             return LocalRedirect(ReturnUrl);
-        }
-
-        private bool VerifyPassword(string enteredPassword, string storedPassword)
-        {
-            // Nên thay bằng BCrypt hoặc tương tự khi deploy thật
-            return enteredPassword == storedPassword; // test tạm
         }
     }
 }

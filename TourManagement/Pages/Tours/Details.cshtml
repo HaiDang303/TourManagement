@@ -1,0 +1,85 @@
+﻿@page "{id}"
+@model TourManagement.Pages.Tours.DetailsModel
+
+@{
+    ViewData["Title"] = "Chi tiết Tour - " + Model.Tour?.Name;
+    Layout = "~/Pages/Shared/_AdminLayout.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>@Model.Tour?.Name</h2>
+    <div>
+        <a asp-page="./Edit" asp-route-id="@Model.Tour?.TourId" class="btn btn-warning me-2">Sửa</a>
+        <a asp-page="./Index" class="btn btn-secondary">Quay lại danh sách</a>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Mã tour</dt>
+            <dd class="col-sm-9"><code>@Model.Tour?.TourId</code></dd>
+
+            <dt class="col-sm-3">Điểm đến</dt>
+            <dd class="col-sm-9">@Model.Tour?.Destination?.Name (@Model.Tour?.Destination?.City, @Model.Tour?.Destination?.Country)</dd>
+
+            <dt class="col-sm-3">Thời gian</dt>
+            <dd class="col-sm-9">@Model.Tour?.DurationDays ngày</dd>
+
+            <dt class="col-sm-3">Giá cơ bản</dt>
+            <dd class="col-sm-9">@Model.Tour?.BasePrice.ToString("N0") ₫ / người</dd>
+
+            <dt class="col-sm-3">Mô tả</dt>
+            <dd class="col-sm-9">@Model.Tour?.Description</dd>
+
+            <dt class="col-sm-3">Danh mục</dt>
+            <dd class="col-sm-9">@Model.Tour?.Category</dd>
+
+            <dt class="col-sm-3">Số người tối đa</dt>
+            <dd class="col-sm-9">
+                @(Model.Tour?.MaxParticipants?.ToString() ?? "Không giới hạn")
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<h3 class="mt-5 mb-3">Các nhóm khởi hành</h3>
+
+@if (!Model.Tour?.TourGroups.Any() ?? true)
+{
+    <div class="alert alert-info">Chưa có nhóm khởi hành nào cho tour này.</div>
+}
+else
+{
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Mã nhóm</th>
+                <th>Khởi hành</th>
+                <th>Về</th>
+                <th>Sức chứa</th>
+                <th>Đã đặt</th>
+                <th>Trạng thái</th>
+                <th class="text-end">Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var group in Model.Tour.TourGroups)
+            {
+                <tr>
+                    <td><code>@group.GroupId</code></td>
+                    <td>@group.DepartDate.ToString("dd/MM/yyyy")</td>
+                    <td>@group.ReturnDate.ToString("dd/MM/yyyy")</td>
+                    <td>@group.MaxCapacity</td>
+                    <td>@group.CurrentBookings</td>
+                    <td>
+                        <span class="badge bg-@(group.StatusId == "OPEN" ? "success" : "danger")">@group.StatusId</span>
+                    </td>
+                    <td class="text-end">
+                        <a asp-page="/Bookings/Create" asp-route-groupId="@group.GroupId" class="btn btn-sm btn-primary">Đặt chỗ</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

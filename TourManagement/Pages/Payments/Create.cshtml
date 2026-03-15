@@ -1,0 +1,75 @@
+﻿@page "{bookingId}"
+@model TourManagement.Pages.Payments.CreateModel
+
+@{
+    ViewData["Title"] = "Thanh toán đặt chỗ " + Model.Booking?.BookingId;
+    Layout = null;  // giao diện công khai
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-6">
+
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h3 class="mb-1">Thanh toán đặt chỗ</h3>
+                    <p class="mb-2">Mã đặt chỗ: <strong>@Model.Booking?.BookingId</strong></p>
+                    <p class="mb-0">Tour: <strong>@Model.Booking?.Group?.Tour?.Name</strong></p>
+                </div>
+
+                <div class="card-body p-5">
+                    <div class="text-center mb-5">
+                        <h4 class="fw-bold">Tổng số tiền cần thanh toán</h4>
+                        <h2 class="text-primary">@Model.Booking?.TotalPrice.ToString("N0") ₫</h2>
+                        <small class="text-muted">
+                            (@Model.Booking?.Adults người lớn + @Model.Booking?.Children trẻ em + @Model.Booking?.Infants em bé)
+                        </small>
+                    </div>
+
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-4 text-center fw-bold"></div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Phương thức thanh toán</label>
+                            <select asp-for="Payment.Method" class="form-select form-select-lg" required>
+                                <option value="">Chọn phương thức</option>
+                                <option value="Bank Transfer">Chuyển khoản ngân hàng</option>
+                                <option value="Credit Card">Thẻ tín dụng / Ghi nợ</option>
+                                <option value="Momo">Ví MoMo</option>
+                                <option value="VNPay">VNPay</option>
+                                <option value="Cash">Thanh toán tại văn phòng</option>
+                            </select>
+                            <span asp-validation-for="Payment.Method" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Ghi chú thanh toán (nếu có)</label>
+                            <textarea asp-for="Payment.Notes" class="form-control" rows="3" placeholder="Ví dụ: Chuyển khoản từ tài khoản ABC..."></textarea>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg py-3">
+                                <i class="fas fa-credit-card me-2"></i> Xác nhận thanh toán
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="mt-4 text-center text-muted small">
+                        <p>Thanh toán an toàn. Chúng tôi sẽ gửi xác nhận qua email sau khi nhận được thanh toán.</p>
+                        <p><strong>Lưu ý:</strong> Đặt chỗ sẽ được giữ trong 30 phút.</p>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-light text-center py-3">
+                    <a asp-page="/Bookings/Details" asp-route-id="@Model.Booking?.BookingId" class="btn btn-outline-secondary">
+                        ← Quay lại xem chi tiết đặt chỗ
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

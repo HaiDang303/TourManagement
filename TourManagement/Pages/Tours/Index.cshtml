@@ -1,0 +1,92 @@
+﻿@page
+@model TourManagement.Pages.Tours.IndexModel
+
+@{
+    ViewData["Title"] = "Danh sách Tour";
+    Layout = "~/Pages/Shared/_AdminLayout.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-route me-2 text-primary"></i> Danh sách Tour</h2>
+    <a asp-page="Create" class="btn btn-success">
+        <i class="fas fa-plus me-1"></i> Thêm tour mới
+    </a>
+</div>
+
+<!-- Search & Filter -->
+<div class="card mb-4 shadow-sm">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <input type="text" name="search" class="form-control" placeholder="Tìm theo tên tour..." value="@Model.SearchString" />
+            </div>
+            <div class="col-md-4">
+                <select name="destinationId" class="form-select">
+                    <option value="">Tất cả điểm đến</option>
+                    @foreach (var dest in Model.Destinations)
+                    {
+                        <option value="@dest.DestinationId" selected="@(Model.DestinationId == dest.DestinationId)">@dest.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary flex-grow-1"><i class="fas fa-search"></i> Tìm</button>
+                <a asp-page="./Index" class="btn btn-outline-secondary">Xóa lọc</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (!Model.Tours.Any())
+{
+    <div class="alert alert-info text-center py-5">
+        <i class="fas fa-info-circle fa-3x mb-3 text-muted"></i>
+        <h5>Chưa có tour nào</h5>
+        <p>Nhấn "Thêm tour mới" để bắt đầu.</p>
+    </div>
+}
+else
+{
+    <div class="card shadow">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">Tổng cộng: @Model.Tours.Count tour</h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover table-striped align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Mã Tour</th>
+                        <th>Tên Tour</th>
+                        <th>Điểm đến</th>
+                        <th>Thời gian</th>
+                        <th>Giá cơ bản</th>
+                        <th class="text-end">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var tour in Model.Tours)
+                    {
+                        <tr>
+                            <td><code>@tour.TourId</code></td>
+                            <td>@tour.Name</td>
+                            <td>@(tour.Destination?.Name ?? "—")</td>
+                            <td>@tour.DurationDays ngày</td>
+                            <td>@tour.BasePrice.ToString("N0") ₫</td>
+                            <td class="text-end">
+                                <a asp-page="./Details" asp-route-id="@tour.TourId" class="btn btn-sm btn-outline-primary me-1" title="Chi tiết">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a asp-page="./Edit" asp-route-id="@tour.TourId" class="btn btn-sm btn-outline-warning me-1" title="Sửa">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a asp-page="./Delete" asp-route-id="@tour.TourId" class="btn btn-sm btn-outline-danger" title="Xóa">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
