@@ -1,9 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-<<<<<<< HEAD
-using TourManagement.Data;           // thay bằng namespace thực tế của DbContext nếu khác
-=======
->>>>>>> b001e8fd745f45e1cf0ea34fa229315904f90c76
+
 using TourManagement.Models;
 
 namespace TourManagement
@@ -21,32 +18,7 @@ namespace TourManagement
             // Razor Pages - bắt buộc cho dự án Razor Pages
             builder.Services.AddRazorPages();
 
-<<<<<<< HEAD
-            // DbContext với SQL Server + retry logic khi kết nối lỗi tạm thời
-            builder.Services.AddDbContext<TourManagementContext>(options =>
-                options.UseSqlServer(
-                    builder.Configuration.GetConnectionString("DefaultConnection"),
-                    sqlOptions => sqlOptions.EnableRetryOnFailure(
-                        maxRetryCount: 5,
-                        maxRetryDelay: TimeSpan.FromSeconds(10),
-                        errorNumbersToAdd: null
-                    )
-                ));
 
-            // Authentication với Cookie
-            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.LoginPath = "/Account/Login";
-                    options.AccessDeniedPath = "/Account/AccessDenied";
-                    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-                    options.SlidingExpiration = true;               // gia hạn tự động nếu còn hoạt động
-                    options.Cookie.HttpOnly = true;                 // chống XSS
-                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // chỉ gửi qua HTTPS
-                    options.Cookie.SameSite = SameSiteMode.Lax;     // chống CSRF
-                    options.Cookie.Name = "TourManagementAuth";     // tên cookie rõ ràng (tùy chọn)
-                });
-=======
             // DbContext cho dữ liệu domain (Users, Roles tự thiết kế)
             builder.Services.AddDbContext<TourManagement.Models.TourManagementContext>(options =>
                 options.UseSqlServer(
@@ -64,7 +36,7 @@ namespace TourManagement
         options.Cookie.HttpOnly = true;
         options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Nếu dùng HTTPS
     });
->>>>>>> b001e8fd745f45e1cf0ea34fa229315904f90c76
+
 
             // Session (nếu bạn dùng Session trong ứng dụng)
             builder.Services.AddSession(options =>
@@ -95,13 +67,10 @@ namespace TourManagement
                 app.UseHsts();
             }
 
-<<<<<<< HEAD
-            // Chuyển hướng HTTP → HTTPS
-            app.UseHttpsRedirection();
-=======
+
             app.UseHttpsRedirection(); 
             app.UseStaticFiles();           
->>>>>>> b001e8fd745f45e1cf0ea34fa229315904f90c76
+
 
             // Phục vụ file tĩnh (css, js, images, favicon...)
             app.UseStaticFiles();
@@ -109,15 +78,9 @@ namespace TourManagement
             // Routing
             app.UseRouting();
 
-<<<<<<< HEAD
-            // Session phải nằm trước Authentication
-            app.UseSession();
 
-            // Authentication → Authorization
-            app.UseAuthentication();
-=======
             app.UseAuthentication();         
->>>>>>> b001e8fd745f45e1cf0ea34fa229315904f90c76
+
             app.UseAuthorization();
 
             // Map tất cả Razor Pages

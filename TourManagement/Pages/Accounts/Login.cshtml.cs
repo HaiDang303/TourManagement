@@ -1,22 +1,10 @@
-<<<<<<< HEAD
-﻿using BCrypt.Net;  // ← thêm dòng này sau khi install package
-=======
->>>>>>> b001e8fd745f45e1cf0ea34fa229315904f90c76
+
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-<<<<<<< HEAD
-using Org.BouncyCastle.Crypto.Generators;
-using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
-using TourManagement.Data;      // sửa nếu DbContext tên khác
-using TourManagement.Models;
 
-namespace TourManagement.Pages.Account   // ← nếu dùng folder Account
-// namespace TourManagement.Pages        // ← nếu không dùng folder Account
-=======
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -25,7 +13,7 @@ using System.Threading.Tasks;
 using TourManagement.Models;
 
 namespace TourManagement.Pages.Accounts
->>>>>>> b001e8fd745f45e1cf0ea34fa229315904f90c76
+
 {
     public class LoginModel : PageModel
     {
@@ -88,23 +76,16 @@ namespace TourManagement.Pages.Accounts
                 .Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.Email == Input.Email && u.IsActive);
 
-<<<<<<< HEAD
-            if (user == null || !BCrypt.Net.BCrypt.Verify(Input.Password, user.Password))
-=======
+
             if (user == null || user.Password != Input.Password)
->>>>>>> b001e8fd745f45e1cf0ea34fa229315904f90c76
+
             {
                 ModelState.AddModelError(string.Empty, "Email hoặc mật khẩu không đúng.");
                 return Page();
             }
 
-<<<<<<< HEAD
-            user.LastLogin = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
-
-=======
             // Tạo danh sách claim đơn giản
->>>>>>> b001e8fd745f45e1cf0ea34fa229315904f90c76
+
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -123,12 +104,9 @@ namespace TourManagement.Pages.Accounts
 
             var authProperties = new AuthenticationProperties
             {
-<<<<<<< HEAD
-                ExpiresUtc = DateTimeOffset.UtcNow.AddHours(12),
-                IsPersistent = false
-=======
+
                 IsPersistent = Input.RememberMe
->>>>>>> b001e8fd745f45e1cf0ea34fa229315904f90c76
+
             };
 
             await HttpContext.SignInAsync(
@@ -147,8 +125,7 @@ namespace TourManagement.Pages.Accounts
             // Các role khác → dùng redirect mặc định (Home hoặc returnUrl)
             return LocalRedirect(GetRedirectUrl(returnUrl));
         }
-<<<<<<< HEAD
-=======
+
 
         private string GetRedirectUrl(string? returnUrl)
         {
@@ -160,6 +137,6 @@ namespace TourManagement.Pages.Accounts
             // Mặc định redirect tạm thời về trang Home (trang Index)
             return Url.Content("~/") ?? "/";
         }
->>>>>>> b001e8fd745f45e1cf0ea34fa229315904f90c76
+
     }
 }

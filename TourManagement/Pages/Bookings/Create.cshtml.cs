@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -64,7 +64,7 @@ namespace TourManagement.Pages.Bookings
         {
             if (!User.Identity?.IsAuthenticated ?? true)
             {
-                return RedirectToPage("/Account/Login", new { returnUrl = $"/Bookings/Create?groupId={GroupId}" });
+                return RedirectToPage("/Accounts/Login", new { returnUrl = $"/Bookings/Create?groupId={GroupId}" });
             }
 
             if (!ModelState.IsValid)

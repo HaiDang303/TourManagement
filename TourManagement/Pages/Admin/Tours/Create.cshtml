@@ -1,0 +1,35 @@
+@page
+@model TourManagement.Pages.Admin.Tours.CreateModel
+@{
+    ViewData["Title"] = "Tạo tour mới";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">Tạo tour mới</h2>
+
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="Input.Name" class="form-label"></label>
+            <input asp-for="Input.Name" class="form-control" />
+            <span asp-validation-for="Input.Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Input.Description" class="form-label"></label>
+            <textarea asp-for="Input.Description" class="form-control"></textarea>
+            <span asp-validation-for="Input.Description" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Input.Price" class="form-label"></label>
+            <input asp-for="Input.Price" class="form-control" />
+            <span asp-validation-for="Input.Price" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Lưu tour</button>
+        <a href="/Admin/Dashboard" class="btn btn-secondary ms-2">Quay lại Dashboard</a>
+    </form>
+</div>
+

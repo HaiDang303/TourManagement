@@ -58,25 +58,19 @@
                     <!-- Phần đăng nhập / đăng xuất - bỏ class Bootstrap để khớp style gốc -->
                     @if (User.Identity?.IsAuthenticated == true)
                     {
-<<<<<<< HEAD
-                        <div class="user-info" style="margin-left: 1rem; display: flex; align-items: center; color: white;">
-                            <span style="margin-right: 0.75rem;">Xin chào, @User.Identity.Name</span>
-                            <a href="/Account/Logout" style="color: white; text-decoration: none; border: 1px solid white; padding: 0.4rem 0.8rem; border-radius: 4px; font-size: 0.9rem;">
-                                Đăng xuất
-                            </a>
-=======
+
                         <div class="user-info ms-3 d-flex align-items-center">
                             <span class="text-white me-2">Xin chào, @User.Identity.Name</span>
                             <a href="/Accounts/Logout" class="btn btn-outline-light btn-sm">Đăng xuất</a>
->>>>>>> b001e8fd745f45e1cf0ea34fa229315904f90c76
+
                         </div>
                     }
                     else
                     {
-                        <a href="/Account/Login" style="color: white; background: #007bff; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; margin-right: 0.5rem; font-size: 0.9rem;">
+                        <a href="/Accounts/Login" style="color: white; background: #007bff; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; margin-right: 0.5rem; font-size: 0.9rem;">
                             Đăng nhập
                         </a>
-                        <a href="/Account/Register" style="color: white; border: 1px solid white; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-size: 0.9rem;">
+                        <a href="/Accounts/Register" style="color: white; border: 1px solid white; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none; font-size: 0.9rem;">
                             Đăng ký
                         </a>
                     }
