@@ -19,13 +19,9 @@ public partial class TourGroup
 
     public string StatusId { get; set; } = null!;
 
-    public int? GuideId { get; set; }
-
     public DateTime CreatedAt { get; set; }
 
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
-
-    public virtual User? Guide { get; set; }
 
     public virtual Status Status { get; set; } = null!;
 

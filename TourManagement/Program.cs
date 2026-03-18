@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-
+using TourManagement.Data;
 using TourManagement.Models;
 
 namespace TourManagement
@@ -18,7 +18,8 @@ namespace TourManagement
             // Razor Pages - bắt buộc cho dự án Razor Pages
             builder.Services.AddRazorPages();
 
-
+            builder.Services.AddDbContext<TourDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));  
             // DbContext cho dữ liệu domain (Users, Roles tự thiết kế)
             builder.Services.AddDbContext<TourManagement.Models.TourManagementContext>(options =>
                 options.UseSqlServer(

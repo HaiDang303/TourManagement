@@ -2,50 +2,681 @@
 @model TourManagement.Pages.Admin.Users.IndexModel
 @{
     ViewData["Title"] = "Quản lý người dùng";
+    int currentPage = Model.CurrentPage;
+    int pageSize = Model.PageSize;
+    int totalPages = Model.TotalPages;
 }
 
-<h2 class="mb-4">Quản lý người dùng</h2>
+<div class="page-wrapper">
 
-<table class="table table-striped table-bordered align-middle">
-    <thead class="table-dark">
-        <tr>
-            <th>Id</th>
-            <th>Họ tên</th>
-            <th>Email</th>
-            <th>Số điện thoại</th>
-            <th>Vai trò</th>
-            <th>Trạng thái</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var user in Model.Users)
-    {
-        <tr>
-            <td>@user.Id</td>
-            <td>@user.Name</td>
-            <td>@user.Email</td>
-            <td>@user.Phone</td>
-            <td>@user.Role?.RoleName</td>
-            <td>
-                @if (user.IsActive)
+    <div class="page-header">
+        <div>
+            <div class="page-breadcrumb">Quản trị hệ thống</div>
+            <h2 class="page-title">Quản lý người dùng</h2>
+        </div>
+        <div class="header-actions">
+            <form method="get" class="search-container">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input type="text" name="searchKey" id="searchInput" class="search-input" placeholder="Tìm kiếm theo tên, email, SDT..." value="@Model.SearchKey" />
+            </form>
+            <button id="btnOpenModal" type="button" class="btn-add">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Thêm người dùng
+            </button>
+        </div>
+    </div>
+
+    <div class="table-card">
+        @if (TempData["Success"] != null)
+        {
+            <div class="toast toast-success" data-autohide="true">@TempData["Success"]</div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="toast toast-error" data-autohide="true">@TempData["Error"]</div>
+        }
+
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Họ tên</th>
+                    <th>Email</th>
+                    <th>Điện thoại</th>
+                    <th>Vai trò</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Users)
                 {
-                    <span class="badge bg-success">Hoạt động</span>
+                    <tr class="@(user.IsActive ? "" : "row-inactive")">
+                        <td class="col-id">#@user.Id.ToString("D3")</td>
+                        <td>
+                            <div class="user-cell">
+                                <div class="user-avatar">@(user.Name.Trim().Split(' ').Length >= 2 ? $"{user.Name.Trim().Split(' ')[0][0]}{user.Name.Trim().Split(' ')[^1][0]}" : user.Name.Substring(0, Math.Min(2, user.Name.Length)).ToUpper())</div>
+                                <span class="user-name">@user.Name</span>
+                            </div>
+                        </td>
+                        <td class="col-muted">@user.Email</td>
+                        <td class="col-muted">@user.Phone</td>
+                        <td class="text-nowrap">
+                            <form method="post" asp-page="./Index" asp-page-handler="ChangeRole" class="role-form">
+                                <input type="hidden" name="id" value="@user.Id" />
+                                <input type="hidden" name="searchKey" value="@Model.SearchKey" />
+                                <input type="hidden" name="currentPage" value="@Model.CurrentPage" />
+                                <select name="roleId" class="role-select">
+                                    @foreach (var role in Model.Roles)
+                                    {
+                                        if (role.RoleId == user.RoleId)
+                                        {
+                                            <option value="@role.RoleId" selected="selected">@role.RoleName</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@role.RoleId">@role.RoleName</option>
+                                        }
+                                    }
+                                </select>
+                                <button type="submit" class="btn-save">Lưu</button>
+                            </form>
+                        </td>
+                        <td>
+                            @if (user.IsActive)
+                            {
+                                <span class="badge badge-active">Hoạt động</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-locked">Đã khóa</span>
+                            }
+                        </td>
+                        <td>
+                            <form method="post" asp-page="./Index" asp-page-handler="ToggleActive" asp-route-id="@user.Id" class="d-inline">
+                                <input type="hidden" name="searchKey" value="@Model.SearchKey" />
+                                <input type="hidden" name="currentPage" value="@Model.CurrentPage" />
+                                <button type="submit" class="btn-action @(user.IsActive ? "btn-lock" : "btn-unlock")">
+                                    @(user.IsActive ? "Khóa" : "Mở khóa")
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
                 }
-                else
+            </tbody>
+        </table>
+
+        <!-- Phân trang -->
+        <div class="pagination-bar">
+            <span class="page-info">
+                Hiển thị @(Model.TotalUsers == 0 ? 0 : ((currentPage - 1) * pageSize + 1))–@(Math.Min(currentPage * pageSize, Model.TotalUsers)) / @Model.TotalUsers người dùng
+            </span>
+            <div class="pagination-btns">
+                @if (currentPage > 1)
                 {
-                    <span class="badge bg-secondary">Khóa</span>
+                    <a href="?searchKey=@Model.SearchKey&page=@(currentPage - 1)" class="page-btn">←</a>
                 }
-            </td>
-            <td class="text-nowrap">
-                <form method="post" asp-page-handler="ToggleActive" asp-route-id="@user.Id" class="d-inline">
-                    <button type="submit" class="btn btn-sm @(user.IsActive ? "btn-warning" : "btn-success")">
-                        @(user.IsActive ? "Khóa" : "Mở khóa")
-                    </button>
-                </form>
-            </td>
-        </tr>
+                @for (int p = 1; p <= totalPages; p++)
+                {
+                    <a href="?searchKey=@Model.SearchKey&page=@p" class="page-btn @(p == currentPage ? "page-btn-active" : "")">@p</a>
+                }
+                @if (currentPage < totalPages)
+                {
+                    <a href="?searchKey=@Model.SearchKey&page=@(currentPage + 1)" class="page-btn">→</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Thêm người dùng -->
+<div id="addModal" class="modal-overlay" style="display:none;">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 class="modal-title">Thêm người dùng</h3>
+            <button type="button" id="btnCloseModal" class="modal-close">✕</button>
+        </div>
+        <form method="post" asp-page="./Index" asp-page-handler="CreateUser" class="modal-form">
+            <div class="form-group">
+                <label class="form-label">Họ tên</label>
+                <input type="text" name="name" class="form-input" placeholder="Nhập họ tên..." required />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" class="form-input" placeholder="email@example.com" required />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Số điện thoại</label>
+                <input type="text" name="phone" class="form-input" placeholder="09xx xxx xxx" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Mật khẩu</label>
+                <input type="password" name="password" class="form-input" placeholder="Nhập mật khẩu..." required />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Vai trò</label>
+                <select name="roleId" class="form-input">
+                    @foreach (var role in Model.Roles)
+                    {
+                        <option value="@role.RoleId">@role.RoleName</option>
+                    }
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCancelModal" class="btn-cancel-modal">Hủy</button>
+                <button type="submit" class="btn-submit-modal">Thêm người dùng</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .page-wrapper {
+        min-height: 100vh;
+        background: #0f172a;
+        padding: 28px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
-    </tbody>
-</table>
 
+    /* ── Header ── */
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 22px;
+    }
+
+    .page-breadcrumb {
+        font-size: 11px;
+        color: rgba(255,255,255,0.35);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        margin-bottom: 4px;
+    }
+
+    .page-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #fff;
+        margin: 0;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .search-container {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 8px;
+        padding: 7px 14px;
+        color: rgba(255,255,255,0.35);
+        font-size: 12px;
+        flex: 1;
+        max-width: 300px;
+        transition: border-color 0.2s;
+    }
+
+        .search-container:focus-within {
+            border-color: rgba(255,255,255,0.25);
+            background: rgba(255,255,255,0.08);
+        }
+
+    .search-input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: #fff;
+        font-size: 12px;
+        padding: 0;
+    }
+
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.35);
+        }
+
+    .btn-add {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: linear-gradient(135deg,#4f46e5,#7c3aed);
+        border: none;
+        border-radius: 8px;
+        padding: 8px 16px;
+        font-size: 12px;
+        font-weight: 500;
+        color: #fff;
+        cursor: pointer;
+        transition: opacity 0.15s;
+    }
+
+        .btn-add:hover {
+            opacity: 0.88;
+        }
+
+    /* ── Table ── */
+    .table-card {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .user-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .user-table thead tr {
+            background: rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .user-table th {
+            padding: 12px 16px;
+            font-size: 11px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.4);
+            text-align: left;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .user-table tbody tr {
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.15s;
+        }
+
+            .user-table tbody tr:last-child {
+                border-bottom: none;
+            }
+
+            .user-table tbody tr:hover {
+                background: rgba(255,255,255,0.03);
+            }
+
+        .user-table td {
+            padding: 13px 16px;
+        }
+
+    .row-inactive {
+        opacity: 0.55;
+    }
+
+    .col-id {
+        font-size: 12px;
+        color: rgba(255,255,255,0.3);
+        font-family: monospace;
+    }
+
+    .col-muted {
+        font-size: 13px;
+        color: rgba(255,255,255,0.55);
+    }
+
+    .user-cell {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .user-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg,#4f46e5,#7c3aed);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 600;
+        color: #fff;
+        flex-shrink: 0;
+    }
+
+    .row-inactive .user-avatar {
+        background: rgba(255,255,255,0.1);
+        color: rgba(255,255,255,0.4);
+    }
+
+    .user-name {
+        font-size: 13px;
+        font-weight: 500;
+        color: #fff;
+    }
+
+    .row-inactive .user-name {
+        color: rgba(255,255,255,0.45);
+    }
+
+    .role-form {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .role-select {
+        background: rgba(255,255,255,0.07);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 6px;
+        padding: 5px 10px;
+        font-size: 12px;
+        color: #fff;
+        cursor: pointer;
+        outline: none;
+        min-width: 120px;
+    }
+
+    .btn-save {
+        background: linear-gradient(135deg,#4f46e5,#7c3aed);
+        border: none;
+        border-radius: 6px;
+        padding: 5px 12px;
+        font-size: 11px;
+        font-weight: 500;
+        color: #fff;
+        cursor: pointer;
+        transition: opacity 0.15s;
+    }
+
+        .btn-save:hover {
+            opacity: 0.85;
+        }
+
+    .badge {
+        font-size: 11px;
+        font-weight: 500;
+        padding: 3px 10px;
+        border-radius: 20px;
+        border: 1px solid transparent;
+    }
+
+    .badge-active {
+        background: rgba(52,211,153,0.12);
+        color: #34d399;
+        border-color: rgba(52,211,153,0.3);
+    }
+
+    .badge-locked {
+        background: rgba(148,163,184,0.08);
+        color: rgba(148,163,184,0.55);
+        border-color: rgba(148,163,184,0.18);
+    }
+
+    .btn-action {
+        border-radius: 6px;
+        padding: 5px 13px;
+        font-size: 11px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: opacity 0.15s;
+    }
+
+        .btn-action:hover {
+            opacity: 0.8;
+        }
+
+    .btn-lock {
+        background: rgba(251,191,36,0.1);
+        border: 1px solid rgba(251,191,36,0.28);
+        color: #fbbf24;
+    }
+
+    .btn-unlock {
+        background: rgba(52,211,153,0.1);
+        border: 1px solid rgba(52,211,153,0.25);
+        color: #34d399;
+    }
+
+    /* ── Pagination ── */
+    .pagination-bar {
+        padding: 12px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .page-info {
+        font-size: 12px;
+        color: rgba(255,255,255,0.3);
+    }
+
+    .pagination-btns {
+        display: flex;
+        gap: 4px;
+    }
+
+    .page-btn {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 6px;
+        padding: 4px 11px;
+        font-size: 12px;
+        color: rgba(255,255,255,0.4);
+        text-decoration: none;
+        transition: background 0.15s;
+    }
+
+        .page-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+    .page-btn-active {
+        background: linear-gradient(135deg,#4f46e5,#7c3aed) !important;
+        border-color: transparent !important;
+        color: #fff !important;
+    }
+
+    /* ── Toast ── */
+    .toast {
+        position: sticky;
+        top: 12px;
+        margin: 12px 12px 0 12px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        font-size: 13px;
+        color: #fff;
+        border: 1px solid rgba(255,255,255,0.14);
+        background: rgba(15, 23, 42, 0.75);
+        backdrop-filter: blur(8px);
+        z-index: 10;
+        animation: toastIn 180ms ease-out;
+    }
+
+    .toast-success {
+        border-color: rgba(52,211,153,0.25);
+        background: rgba(52,211,153,0.12);
+        color: #a7f3d0;
+    }
+
+    .toast-error {
+        border-color: rgba(248,113,113,0.25);
+        background: rgba(248,113,113,0.10);
+        color: #fecaca;
+    }
+
+    @@keyframes toastIn {
+        from {
+            transform: translateY(-6px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    /* ── Modal ── */
+    .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.65);
+        z-index: 999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-box {
+        background: #1e293b;
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 16px;
+        padding: 28px;
+        width: 420px;
+        max-width: 90vw;
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 22px;
+    }
+
+    .modal-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #fff;
+        margin: 0;
+    }
+
+    .modal-close {
+        background: rgba(255,255,255,0.08);
+        border: none;
+        border-radius: 6px;
+        width: 28px;
+        height: 28px;
+        color: rgba(255,255,255,0.5);
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-form {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .form-label {
+        font-size: 11px;
+        color: rgba(255,255,255,0.4);
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+    }
+
+    .form-input {
+        background: rgba(255,255,255,0.07);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 8px;
+        padding: 9px 13px;
+        font-size: 13px;
+        color: #fff;
+        outline: none;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+        .form-input:focus {
+            border-color: rgba(99,102,241,0.6);
+        }
+
+    .modal-footer {
+        display: flex;
+        gap: 10px;
+        margin-top: 6px;
+    }
+
+    .btn-cancel-modal {
+        flex: 1;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 13px;
+        color: rgba(255,255,255,0.6);
+        cursor: pointer;
+    }
+
+    .btn-submit-modal {
+        flex: 2;
+        background: linear-gradient(135deg,#4f46e5,#7c3aed);
+        border: none;
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #fff;
+        cursor: pointer;
+    }
+
+        .btn-submit-modal:hover {
+            opacity: 0.88;
+        }
+
+
+    
+    .role-select option {
+        background-color: #1e293b; 
+        color: #fff; 
+        padding: 10px;
+    }
+
+    
+    .role-select:focus {
+        background-color: rgba(255,255,255,0.1);
+        outline: none;
+    }
+</style>
+
+<script>
+    const modal = document.getElementById('addModal');
+    document.getElementById('btnOpenModal').onclick  = () => modal.style.display = 'flex';
+    document.getElementById('btnCloseModal').onclick = () => modal.style.display = 'none';
+    document.getElementById('btnCancelModal').onclick = () => modal.style.display = 'none';
+    modal.addEventListener('click', e => { if (e.target === modal) modal.style.display = 'none'; });
+
+    // Auto-submit search form with debounce
+    let searchTimeout;
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                this.form.submit();
+            }, 500); // 500ms debounce
+        });
+    }
+
+    // Auto hide toast messages
+    document.querySelectorAll('.toast[data-autohide="true"]').forEach(t => {
+        setTimeout(() => {
+            t.style.transition = 'opacity 180ms ease, transform 180ms ease';
+            t.style.opacity = '0';
+            t.style.transform = 'translateY(-6px)';
+            setTimeout(() => t.remove(), 220);
+        }, 2500);
+    });
+</script>

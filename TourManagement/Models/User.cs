@@ -35,7 +35,7 @@ public partial class User
 
     public virtual Role Role { get; set; } = null!;
 
-    public virtual ICollection<TourGroup> TourGroups { get; set; } = new List<TourGroup>();
+    public virtual ICollection<Tour> TourCreatedByNavigations { get; set; } = new List<Tour>();
 
-    public virtual ICollection<Tour> Tours { get; set; } = new List<Tour>();
+    public virtual ICollection<Tour> TourGuides { get; set; } = new List<Tour>();
 }

@@ -4,109 +4,356 @@
     ViewData["Title"] = "Bảng điều khiển Admin";
 }
 
-<div class="admin-header">
-    <div class="admin-header-left">
-        <span class="admin-logo">TourManagement Admin</span>
+<div class="admin-wrapper">
+
+    <div class="admin-header">
+        <div class="admin-header-left">
+            <div class="admin-logo-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                </svg>
+            </div>
+            <span class="admin-logo">TourManagement Admin</span>
+        </div>
+        <div class="admin-header-right">
+            <div class="admin-avatar">@(User.Identity?.Name?.Substring(0, 1).ToUpper() ?? "A")</div>
+            <div class="admin-user-info">
+                <span class="admin-greeting">Xin chào</span>
+                <span class="admin-name">@User.Identity?.Name</span>
+            </div>
+            <a href="/Accounts/Logout" class="btn-logout">Đăng xuất</a>
+        </div>
     </div>
-    <div class="admin-header-right">
-        <span class="admin-user">Xin chào, @User.Identity?.Name</span>
-        <a href="/Accounts/Logout" class="btn btn-sm btn-outline-light ms-3">Đăng xuất</a>
+
+    <div class="dashboard-body">
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-label">Người dùng</div>
+                <div class="stat-value">1,284</div>
+                <div class="stat-trend trend-up">↑ 12% tháng này</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Tour hoạt động</div>
+                <div class="stat-value">48</div>
+                <div class="stat-trend trend-info">↑ 5 tour mới</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Booking chờ duyệt</div>
+                <div class="stat-value">17</div>
+                <div class="stat-trend trend-warn">⚠ Cần xử lý</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Doanh thu</div>
+                <div class="stat-value">842M</div>
+                <div class="stat-trend trend-up">↑ 8% tháng trước</div>
+            </div>
+        </div>
+
+        <div class="section-label">Chức năng quản lý</div>
+
+        <div class="menu-grid">
+            <a href="/Admin/Users" class="box box--purple">
+                <div class="box-orb"></div>
+                <div class="box-icon-wrap">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>
+                </div>
+                <div class="box-title">Quản lý người dùng</div>
+                <div class="box-sub">Tài khoản & phân quyền</div>
+            </a>
+            <a href="/Admin/Tours" class="box box--teal">
+                <div class="box-orb"></div>
+                <div class="box-icon-wrap">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="8" x2="12" y2="16" />
+                        <line x1="8" y1="12" x2="16" y2="12" />
+                    </svg>
+                </div>
+                <div class="box-title">Quản lý tour</div>
+                <div class="box-sub">Thêm / sửa / xóa tour</div>
+            </a>
+            <a href="/Admin/Groups" class="box box--red">
+                <div class="box-orb"></div>
+                <div class="box-icon-wrap">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                </div>
+                <div class="box-title">Quản lý đoàn</div>
+                <div class="box-sub">Danh sách & phân nhóm</div>
+            </a>
+            <a href="/Admin/Bookings/Approve" class="box box--amber">
+                <div class="box-orb"></div>
+                <span class="box-badge">17</span>
+                <div class="box-icon-wrap">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8">
+                        <path d="M9 11l3 3L22 4" />
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                    </svg>
+                </div>
+                <div class="box-title">Duyệt booking</div>
+                <div class="box-sub">Phê duyệt đặt chỗ</div>
+            </a>
+            <a href="/Admin/Reports" class="box box--blue">
+                <div class="box-orb"></div>
+                <div class="box-icon-wrap">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8">
+                        <line x1="18" y1="20" x2="18" y2="10" />
+                        <line x1="12" y1="20" x2="12" y2="4" />
+                        <line x1="6" y1="20" x2="6" y2="14" />
+                    </svg>
+                </div>
+                <div class="box-title">Báo cáo</div>
+                <div class="box-sub">Thống kê & doanh thu</div>
+            </a>
+        </div>
     </div>
-</div>
-
-<div class="dashboard">
-
-    <a href="/Admin/Users" class="box">
-        <div class="icon">👤</div>
-        <div class="title">Quản lý người dùng</div>
-    </a>
-
-    <a href="/Admin/Tours/Create" class="box">
-        <div class="icon">✈️</div>
-        <div class="title">Tạo tour</div>
-    </a>
-
-    <a href="/Admin/Groups" class="box">
-        <div class="icon">👥</div>
-        <div class="title">Quản lý đoàn</div>
-    </a>
-
-    <a href="/Admin/Bookings/Approve" class="box">
-        <div class="icon">✅</div>
-        <div class="title">Duyệt booking</div>
-    </a>
-
-    <a href="/Admin/Reports" class="box">
-        <div class="icon">📊</div>
-        <div class="title">Báo cáo</div>
-    </a>
-
 </div>
 
 <style>
+    .admin-wrapper {
+        min-height: 100vh;
+        background: #0f172a;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    /* ── Header ── */
     .admin-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 12px 24px;
-        background: #0d6efd;
-        color: #fff;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        padding: 14px 28px;
+        background: linear-gradient(135deg, #1e40af, #4f46e5);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .admin-header-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .admin-logo-icon {
+        width: 32px;
+        height: 32px;
+        background: rgba(255,255,255,0.18);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .admin-logo {
-        font-size: 20px;
-        font-weight: 700;
+        font-size: 16px;
+        font-weight: 600;
+        color: #fff;
+        letter-spacing: -0.3px;
     }
 
     .admin-header-right {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 12px;
     }
 
-    .admin-user {
-        font-weight: 500;
-    }
-
-    .dashboard {
+    .admin-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.25);
         display: flex;
-        flex-wrap: wrap;
+        align-items: center;
         justify-content: center;
-        gap: 40px;
-        padding: 40px 60px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #fff;
+    }
+
+    .admin-user-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .admin-greeting {
+        font-size: 11px;
+        color: rgba(255,255,255,0.65);
+        line-height: 1.2;
+    }
+
+    .admin-name {
+        font-size: 13px;
+        font-weight: 500;
+        color: #fff;
+        line-height: 1.2;
+    }
+
+    .btn-logout {
+        font-size: 12px;
+        color: #fff;
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.3);
+        border-radius: 6px;
+        padding: 6px 14px;
+        text-decoration: none;
+        transition: background 0.15s;
+    }
+
+        .btn-logout:hover {
+            background: rgba(255,255,255,0.22);
+        }
+
+    /* ── Body ── */
+    .dashboard-body {
+        padding: 28px;
+    }
+
+    /* ── Stats ── */
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 12px;
+        margin-bottom: 28px;
+    }
+
+    .stat-card {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        padding: 16px 18px;
+    }
+
+    .stat-label {
+        font-size: 11px;
+        color: rgba(255,255,255,0.45);
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        margin-bottom: 6px;
+    }
+
+    .stat-value {
+        font-size: 26px;
+        font-weight: 600;
+        color: #fff;
+    }
+
+    .stat-trend {
+        font-size: 11px;
+        margin-top: 5px;
+    }
+
+    .trend-up {
+        color: #34d399;
+    }
+
+    .trend-info {
+        color: #60a5fa;
+    }
+
+    .trend-warn {
+        color: #fbbf24;
+    }
+
+    /* ── Menu Grid ── */
+    .section-label {
+        font-size: 11px;
+        color: rgba(255,255,255,0.35);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        font-weight: 500;
+        margin-bottom: 14px;
+    }
+
+    .menu-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 12px;
     }
 
     .box {
-        width: 220px;
-        height: 130px;
-        border-radius: 25px;
-        border: 3px solid #333;
+        position: relative;
+        overflow: hidden;
+        border-radius: 14px;
+        padding: 22px 18px;
         text-decoration: none;
-        color: #333;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background: #f9f9f9;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        transition: 0.25s;
+        gap: 12px;
+        transition: transform 0.2s, opacity 0.2s;
     }
 
         .box:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            background: #ffffff;
+            transform: translateY(-3px);
+            opacity: 0.92;
         }
 
-    .icon {
-        font-size: 30px;
-        margin-bottom: 8px;
+    .box--purple {
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
     }
 
-    .title {
+    .box--teal {
+        background: linear-gradient(135deg, #0d9488, #059669);
+    }
+
+    .box--red {
+        background: linear-gradient(135deg, #ea580c, #dc2626);
+    }
+
+    .box--amber {
+        background: linear-gradient(135deg, #d97706, #b45309);
+    }
+
+    .box--blue {
+        background: linear-gradient(135deg, #0284c7, #1d4ed8);
+    }
+
+    .box-orb {
+        position: absolute;
+        right: -10px;
+        top: -10px;
+        width: 70px;
+        height: 70px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 50%;
+    }
+
+    .box-badge {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        background: #fbbf24;
+        color: #78350f;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 7px;
+        border-radius: 20px;
+    }
+
+    .box-icon-wrap {
+        width: 40px;
+        height: 40px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .box-title {
+        font-size: 14px;
         font-weight: 600;
-        text-align: center;
+        color: #fff;
     }
 
+    .box-sub {
+        font-size: 11px;
+        color: rgba(255,255,255,0.6);
+        margin-top: -6px;
+    }
 </style>

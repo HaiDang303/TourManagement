@@ -40,14 +40,13 @@ public partial class TourManagementContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=(local);Database=TourManagement;User Id=sa;Password=123;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Name=ConnectionStrings:MyCnn");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Booking>(entity =>
         {
-            entity.HasKey(e => e.BookingId).HasName("PK__Bookings__5DE3A5B15B2BB5A4");
+            entity.HasKey(e => e.BookingId).HasName("PK__Bookings__5DE3A5B17A58FC83");
 
             entity.Property(e => e.BookingId)
                 .HasMaxLength(20)
@@ -99,7 +98,7 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<BookingPassenger>(entity =>
         {
-            entity.HasKey(e => e.PassengerId).HasName("PK__BookingP__0376458687BF25B3");
+            entity.HasKey(e => e.PassengerId).HasName("PK__BookingP__03764586221805B5");
 
             entity.Property(e => e.PassengerId)
                 .HasMaxLength(20)
@@ -146,7 +145,7 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<Destination>(entity =>
         {
-            entity.HasKey(e => e.DestinationId).HasName("PK__Destinat__550153911D5E6731");
+            entity.HasKey(e => e.DestinationId).HasName("PK__Destinat__550153910B6F1C3F");
 
             entity.Property(e => e.DestinationId)
                 .HasMaxLength(20)
@@ -166,7 +165,7 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<Gender>(entity =>
         {
-            entity.HasKey(e => e.GenderId).HasName("PK__Genders__9DF18F87693E46BF");
+            entity.HasKey(e => e.GenderId).HasName("PK__Genders__9DF18F87F74D5300");
 
             entity.Property(e => e.GenderId)
                 .HasMaxLength(2)
@@ -179,7 +178,7 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<PassengerCategory>(entity =>
         {
-            entity.HasKey(e => e.CategoryId).HasName("PK__Passenge__D54EE9B44567AB2A");
+            entity.HasKey(e => e.CategoryId).HasName("PK__Passenge__D54EE9B49854CB65");
 
             entity.Property(e => e.CategoryId)
                 .HasMaxLength(10)
@@ -195,7 +194,7 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<Payment>(entity =>
         {
-            entity.HasKey(e => e.PaymentId).HasName("PK__Payments__ED1FC9EABD40536D");
+            entity.HasKey(e => e.PaymentId).HasName("PK__Payments__ED1FC9EAEBE2E695");
 
             entity.Property(e => e.PaymentId)
                 .HasMaxLength(20)
@@ -242,9 +241,9 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.RoleId).HasName("PK__Roles__760965CC00C2D950");
+            entity.HasKey(e => e.RoleId).HasName("PK__Roles__760965CC1740807B");
 
-            entity.HasIndex(e => e.RoleName, "UQ__Roles__783254B19CF1263A").IsUnique();
+            entity.HasIndex(e => e.RoleName, "UQ__Roles__783254B1E5946EFC").IsUnique();
 
             entity.Property(e => e.RoleId).HasColumnName("role_id");
             entity.Property(e => e.CreatedAt)
@@ -261,7 +260,7 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<Status>(entity =>
         {
-            entity.HasKey(e => e.StatusId).HasName("PK__Statuses__3683B5319536B4CA");
+            entity.HasKey(e => e.StatusId).HasName("PK__Statuses__3683B531D2F20AE1");
 
             entity.Property(e => e.StatusId)
                 .HasMaxLength(10)
@@ -277,7 +276,9 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<Tour>(entity =>
         {
-            entity.HasKey(e => e.TourId).HasName("PK__Tours__4B16B9E6ABAC005E");
+            entity.HasKey(e => e.TourId).HasName("PK__Tours__4B16B9E6202F8BC0");
+
+            entity.HasIndex(e => e.CreatedAt, "IX_Tours_CreatedAt").IsDescending();
 
             entity.Property(e => e.TourId)
                 .HasMaxLength(20)
@@ -300,6 +301,7 @@ public partial class TourManagementContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("destination_id");
             entity.Property(e => e.DurationDays).HasColumnName("duration_days");
+            entity.Property(e => e.GuideId).HasColumnName("guide_id");
             entity.Property(e => e.MaxParticipants).HasColumnName("max_participants");
             entity.Property(e => e.Name)
                 .HasMaxLength(150)
@@ -308,7 +310,7 @@ public partial class TourManagementContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("updated_at");
 
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.Tours)
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.TourCreatedByNavigations)
                 .HasForeignKey(d => d.CreatedBy)
                 .HasConstraintName("FK_Tours_Users");
 
@@ -316,11 +318,15 @@ public partial class TourManagementContext : DbContext
                 .HasForeignKey(d => d.DestinationId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tours_Destinations");
+
+            entity.HasOne(d => d.Guide).WithMany(p => p.TourGuides)
+                .HasForeignKey(d => d.GuideId)
+                .HasConstraintName("FK_Tours_Guide");
         });
 
         modelBuilder.Entity<TourGroup>(entity =>
         {
-            entity.HasKey(e => e.GroupId).HasName("PK__TourGrou__D57795A0A02668A9");
+            entity.HasKey(e => e.GroupId).HasName("PK__TourGrou__D57795A03D9F0B61");
 
             entity.Property(e => e.GroupId)
                 .HasMaxLength(20)
@@ -332,7 +338,6 @@ public partial class TourManagementContext : DbContext
                 .HasColumnName("created_at");
             entity.Property(e => e.CurrentBookings).HasColumnName("current_bookings");
             entity.Property(e => e.DepartDate).HasColumnName("depart_date");
-            entity.Property(e => e.GuideId).HasColumnName("guide_id");
             entity.Property(e => e.MaxCapacity)
                 .HasDefaultValue(50)
                 .HasColumnName("max_capacity");
@@ -347,10 +352,6 @@ public partial class TourManagementContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("tour_id");
 
-            entity.HasOne(d => d.Guide).WithMany(p => p.TourGroups)
-                .HasForeignKey(d => d.GuideId)
-                .HasConstraintName("FK_TourGroups_Users");
-
             entity.HasOne(d => d.Status).WithMany(p => p.TourGroups)
                 .HasForeignKey(d => d.StatusId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -364,7 +365,7 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<TourPrice>(entity =>
         {
-            entity.HasKey(e => e.PriceId).HasName("PK__TourPric__1681726DB22AB050");
+            entity.HasKey(e => e.PriceId).HasName("PK__TourPric__1681726D4A4B5B8E");
 
             entity.Property(e => e.PriceId)
                 .HasMaxLength(20)
@@ -391,9 +392,9 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3213E83F67C1CE8A");
+            entity.HasKey(e => e.Id).HasName("PK__Users__3213E83F0459C5BF");
 
-            entity.HasIndex(e => e.Email, "UQ__Users__AB6E6164C9BCCC86").IsUnique();
+            entity.HasIndex(e => e.Email, "UQ__Users__AB6E6164DF658BF1").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Address)

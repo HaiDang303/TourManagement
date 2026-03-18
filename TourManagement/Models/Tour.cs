@@ -27,9 +27,13 @@ public partial class Tour
 
     public DateTime? UpdatedAt { get; set; }
 
+    public int? GuideId { get; set; }
+
     public virtual User? CreatedByNavigation { get; set; }
 
     public virtual Destination Destination { get; set; } = null!;
+
+    public virtual User? Guide { get; set; }
 
     public virtual ICollection<TourGroup> TourGroups { get; set; } = new List<TourGroup>();
 
