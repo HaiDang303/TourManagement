@@ -70,7 +70,9 @@ namespace TourManagement.Pages.Accounts
                 Password = Input.Password,
                 IsActive = true,
                 CreatedAt = DateTime.Now,
-                RoleId = 1 // tạm cho role mặc định là 1
+                RoleId = 1
+
+                // tạm cho role mặc định là 1
             };
 
             _context.Users.Add(user);

@@ -113,7 +113,16 @@
                         <li><a href="#contact" class="navbar-link" data-nav-link>Liên hệ</a></li>
                     </ul>
 
-                    <button class="btn btn-primary">Đặt tour ngay</button>
+                    <button class="btn btn-primary">
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            <a asp-page="/Tours/Index" class="btn btn-primary">Đặt tour ngay</a>
+                        }
+                        else
+                        {
+                            <a asp-page="/Accounts/Login" asp-route-returnUrl="/Tours/Index" class="btn btn-primary">Đặt tour ngay</a>
+                        }
+                    </button>
 
                 </nav>
 
@@ -148,7 +157,16 @@
                     <div class="btn-group">
                         <button class="btn btn-primary">Learn more</button>
 
-                        <button  class="btn btn-secondary">Book now</button>
+                        <button class="btn btn-secondary">
+                            @if (User.Identity != null && User.Identity.IsAuthenticated)
+                            {
+                                <a asp-page="/Tours/Index" class="btn btn-secondary">Book now</a>
+                            }
+                            else
+                            {
+                                <a asp-page="/Accounts/Login" asp-route-returnUrl="/Tours/Index" class="btn btn-secondary">Book now</a>
+                            }
+                        </button>
                     </div>
 
                 </div>

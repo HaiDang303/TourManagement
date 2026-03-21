@@ -1,85 +1,330 @@
 ﻿@page "{id}"
 @model TourManagement.Pages.Tours.DetailsModel
-
 @{
-    ViewData["Title"] = "Chi tiết Tour - " + Model.Tour?.Name;
-    Layout = "~/Pages/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Chi tiết tour";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>@Model.Tour?.Name</h2>
-    <div>
-        <a asp-page="./Edit" asp-route-id="@Model.Tour?.TourId" class="btn btn-warning me-2">Sửa</a>
-        <a asp-page="./Index" class="btn btn-secondary">Quay lại danh sách</a>
-    </div>
-</div>
+<style>
+    .detail-hero {
+        background: linear-gradient(rgba(6, 24, 54, 0.72), rgba(6, 24, 54, 0.78)), url('/images/popular-1.jpg') center/cover no-repeat;
+        padding: 150px 0 80px;
+        color: white;
+    }
 
-<div class="card mb-4">
-    <div class="card-body">
-        <dl class="row">
-            <dt class="col-sm-3">Mã tour</dt>
-            <dd class="col-sm-9"><code>@Model.Tour?.TourId</code></dd>
+        .detail-hero .hero-title {
+            font-size: 42px;
+            margin-bottom: 14px;
+        }
 
-            <dt class="col-sm-3">Điểm đến</dt>
-            <dd class="col-sm-9">@Model.Tour?.Destination?.Name (@Model.Tour?.Destination?.City, @Model.Tour?.Destination?.Country)</dd>
+    .detail-wrapper {
+        background: #f6fbff;
+        padding: 80px 0;
+    }
 
-            <dt class="col-sm-3">Thời gian</dt>
-            <dd class="col-sm-9">@Model.Tour?.DurationDays ngày</dd>
+    .detail-grid {
+        display: grid;
+        grid-template-columns: 1.2fr .8fr;
+        gap: 30px;
+        align-items: start;
+    }
 
-            <dt class="col-sm-3">Giá cơ bản</dt>
-            <dd class="col-sm-9">@Model.Tour?.BasePrice.ToString("N0") ₫ / người</dd>
+    .detail-card,
+    .group-card,
+    .summary-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 12px 35px rgba(12,31,56,.08);
+    }
 
-            <dt class="col-sm-3">Mô tả</dt>
-            <dd class="col-sm-9">@Model.Tour?.Description</dd>
+    .detail-card {
+        overflow: hidden;
+    }
 
-            <dt class="col-sm-3">Danh mục</dt>
-            <dd class="col-sm-9">@Model.Tour?.Category</dd>
+        .detail-card img {
+            width: 100%;
+            height: 360px;
+            object-fit: cover;
+            display: block;
+        }
 
-            <dt class="col-sm-3">Số người tối đa</dt>
-            <dd class="col-sm-9">
-                @(Model.Tour?.MaxParticipants?.ToString() ?? "Không giới hạn")
-            </dd>
-        </dl>
-    </div>
-</div>
+        .detail-card .content {
+            padding: 28px;
+        }
 
-<h3 class="mt-5 mb-3">Các nhóm khởi hành</h3>
+    .info-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        margin: 24px 0;
+    }
 
-@if (!Model.Tour?.TourGroups.Any() ?? true)
-{
-    <div class="alert alert-info">Chưa có nhóm khởi hành nào cho tour này.</div>
-}
-else
-{
-    <table class="table table-striped table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th>Mã nhóm</th>
-                <th>Khởi hành</th>
-                <th>Về</th>
-                <th>Sức chứa</th>
-                <th>Đã đặt</th>
-                <th>Trạng thái</th>
-                <th class="text-end">Hành động</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var group in Model.Tour.TourGroups)
-            {
-                <tr>
-                    <td><code>@group.GroupId</code></td>
-                    <td>@group.DepartDate.ToString("dd/MM/yyyy")</td>
-                    <td>@group.ReturnDate.ToString("dd/MM/yyyy")</td>
-                    <td>@group.MaxCapacity</td>
-                    <td>@group.CurrentBookings</td>
-                    <td>
-                        <span class="badge bg-@(group.StatusId == "OPEN" ? "success" : "danger")">@group.StatusId</span>
-                    </td>
-                    <td class="text-end">
-                        <a asp-page="/Bookings/Create" asp-route-groupId="@group.GroupId" class="btn btn-sm btn-primary">Đặt chỗ</a>
-                    </td>
-                </tr>
+    .info-item {
+        background: #f7fbff;
+        border-radius: 16px;
+        padding: 18px;
+    }
+
+        .info-item .label {
+            font-size: 13px;
+            color: #7b8ea4;
+            margin-bottom: 8px;
+        }
+
+        .info-item .value {
+            font-weight: 700;
+            color: #102542;
+            font-size: 17px;
+        }
+
+    .group-list {
+        display: grid;
+        gap: 20px;
+    }
+
+    .group-card {
+        padding: 22px;
+    }
+
+    .group-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        align-items: start;
+        margin-bottom: 16px;
+    }
+
+    .group-id {
+        font-size: 14px;
+        color: #0d6efd;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .group-title {
+        font-size: 22px;
+        color: #102542;
+        margin-bottom: 6px;
+    }
+
+    .badge-open {
+        background: rgba(35, 197, 94, .14);
+        color: #1f9d55;
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .group-meta {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin: 14px 0 18px;
+    }
+
+        .group-meta .meta-box {
+            background: #f7fbff;
+            border-radius: 14px;
+            padding: 15px;
+            text-align: center;
+        }
+
+            .group-meta .meta-box p:first-child {
+                font-size: 12px;
+                color: #7b8ea4;
+                margin-bottom: 6px;
             }
-        </tbody>
-    </table>
+
+            .group-meta .meta-box p:last-child {
+                font-size: 16px;
+                font-weight: 700;
+                color: #102542;
+            }
+
+    .summary-card {
+        padding: 28px;
+        position: sticky;
+        top: 110px;
+    }
+
+        .summary-card .price {
+            font-size: 34px;
+            color: #0d6efd;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .summary-card .price-note {
+            color: #7b8ea4;
+            margin-bottom: 18px;
+        }
+
+    .summary-list {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+    }
+
+        .summary-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e9f1f8;
+            color: #5e7187;
+        }
+
+            .summary-list li strong {
+                color: #102542;
+            }
+
+    @@media (max-width: 991px) {
+        .detail-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .summary-card {
+            position: static;
+        }
+
+        .group-meta,
+        .info-list {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+@if (Model.Tour != null)
+{
+    <section class="detail-hero">
+        <div class="container">
+            <p class="section-subtitle">Chi tiết tour</p>
+            <h1 class="hero-title">@Model.Tour.Name</h1>
+            <p class="hero-text">
+                Khám phá lịch trình, điểm đến và chọn đợt khởi hành phù hợp ngay hôm nay.
+            </p>
+        </div>
+    </section>
+
+    <section class="detail-wrapper">
+        <div class="container">
+            <div class="detail-grid">
+                <div>
+                    <div class="detail-card">
+                        <img src="@(string.IsNullOrEmpty(Model.Tour.ImageUrl) ? "/images/packege-2.jpg" : Model.Tour.ImageUrl)"
+                             alt="@Model.Tour.Name" />
+
+                        <div class="content">
+                            <p class="section-subtitle">Thông tin tour</p>
+                            <h2 class="h2 section-title">@Model.Tour.Name</h2>
+
+                            <p class="section-text">
+                                @(string.IsNullOrWhiteSpace(Model.Tour.Description)
+                                                            ? "Tour được thiết kế với trải nghiệm hài hòa giữa tham quan, nghỉ dưỡng và khám phá văn hóa địa phương."
+                                                            : Model.Tour.Description)
+                        </p>
+
+                            <div class="info-list">
+                                <div class="info-item">
+                                    <div class="label">Điểm đến</div>
+                                    <div class="value">@Model.Tour.Destination?.Name - @Model.Tour.Destination?.City</div>
+                                </div>
+
+                                <div class="info-item">
+                                    <div class="label">Thời lượng</div>
+                                    <div class="value">@Model.Tour.DurationDays ngày</div>
+                                </div>
+
+                                <div class="info-item">
+                                    <div class="label">Danh mục</div>
+                                    <div class="value">@(Model.Tour.Category ?? "Tour du lịch")</div>
+                                </div>
+
+                                <div class="info-item">
+                                    <div class="label">Giá từ</div>
+                                    <div class="value">@Model.Tour.BasePrice.ToString("N0") VNĐ</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:32px;">
+                        <p class="section-subtitle">Lịch khởi hành</p>
+                        <h2 class="h2 section-title">Chọn đợt khởi hành phù hợp</h2>
+
+                    @if (Model.OpenGroups != null && Model.OpenGroups.Any())
+                        {
+                            <div class="group-list">
+                                @foreach (var g in Model.OpenGroups)
+                                {
+                                    var remain = g.MaxCapacity - g.CurrentBookings;
+
+                                    <div class="group-card">
+                                        <div class="group-top">
+                                            <div>
+                                                <div class="group-id">Mã đoàn: @g.GroupId</div>
+                                                <h3 class="group-title">Đợt khởi hành ngày @g.DepartDate.ToString("dd/MM/yyyy")</h3>
+                                                <p class="section-text" style="margin-bottom:0;">
+                                                    Trải nghiệm hành trình trọn vẹn từ @g.DepartDate.ToString("dd/MM/yyyy")
+                                                    đến @g.ReturnDate.ToString("dd/MM/yyyy").
+                                                </p>
+                                            </div>
+
+                                            <span class="badge-open">Đang mở bán</span>
+                                        </div>
+
+                                        <div class="group-meta">
+                                            <div class="meta-box">
+                                                <p>Ngày đi</p>
+                                                <p>@g.DepartDate.ToString("dd/MM/yyyy")</p>
+                                            </div>
+
+                                            <div class="meta-box">
+                                                <p>Ngày về</p>
+                                                <p>@g.ReturnDate.ToString("dd/MM/yyyy")</p>
+                                            </div>
+
+                                            <div class="meta-box">
+                                                <p>Chỗ còn lại</p>
+                                                <p>@remain / @g.MaxCapacity</p>
+                                            </div>
+                                        </div>
+
+                                        <a asp-page="/Bookings/Create" asp-route-groupId="@g.GroupId" class="btn btn-secondary">
+                                            Đặt tour cho đợt này
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="group-card">
+                                Hiện chưa có đợt khởi hành nào đang mở bán.
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <aside class="summary-card">
+                    <p class="section-subtitle">Tóm tắt tour</p>
+                    <h3 class="h3 section-title" style="margin-bottom:10px;">Thông tin nhanh</h3>
+
+                    <div class="price">@Model.Tour.BasePrice.ToString("N0") VNĐ</div>
+                    <div class="price-note">Giá cơ bản / 1 người lớn</div>
+
+                    <ul class="summary-list">
+                        <li><span>Điểm đến</span> <strong>@Model.Tour.Destination?.Name</strong></li>
+                        <li><span>Thành phố</span> <strong>@Model.Tour.Destination?.City</strong></li>
+                        <li><span>Thời lượng</span> <strong>@Model.Tour.DurationDays ngày</strong></li>
+                        <li><span>Số đợt mở bán</span> <strong>@(Model.OpenGroups?.Count ?? 0)</strong></li>
+                    </ul>
+
+                    <a asp-page="/Tours/Index" class="btn btn-primary" style="width:100%; text-align:center;">
+                        Xem tour khác
+                    </a>
+                </aside>
+            </div>
+        </div>
+    </section>
 }

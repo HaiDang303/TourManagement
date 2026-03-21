@@ -1,92 +1,183 @@
 ﻿@page
 @model TourManagement.Pages.Tours.IndexModel
-
 @{
-    ViewData["Title"] = "Danh sách Tour";
-    Layout = "~/Pages/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Danh sách tour";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2><i class="fas fa-route me-2 text-primary"></i> Danh sách Tour</h2>
-    <a asp-page="Create" class="btn btn-success">
-        <i class="fas fa-plus me-1"></i> Thêm tour mới
-    </a>
-</div>
+<style>
+    .page-hero {
+        background: linear-gradient(rgba(3, 18, 43, 0.72), rgba(3, 18, 43, 0.78)), url('/images/hero-banner.jpg') center/cover no-repeat;
+        padding: 160px 0 90px;
+        color: white;
+        text-align: center;
+    }
 
-<!-- Search & Filter -->
-<div class="card mb-4 shadow-sm">
-    <div class="card-body">
-        <form method="get" class="row g-3">
-            <div class="col-md-4">
-                <input type="text" name="search" class="form-control" placeholder="Tìm theo tên tour..." value="@Model.SearchString" />
-            </div>
-            <div class="col-md-4">
-                <select name="destinationId" class="form-select">
-                    <option value="">Tất cả điểm đến</option>
-                    @foreach (var dest in Model.Destinations)
-                    {
-                        <option value="@dest.DestinationId" selected="@(Model.DestinationId == dest.DestinationId)">@dest.Name</option>
-                    }
-                </select>
-            </div>
-            <div class="col-md-4 d-flex gap-2">
-                <button type="submit" class="btn btn-primary flex-grow-1"><i class="fas fa-search"></i> Tìm</button>
-                <a asp-page="./Index" class="btn btn-outline-secondary">Xóa lọc</a>
-            </div>
-        </form>
-    </div>
-</div>
+        .page-hero .hero-title {
+            margin-bottom: 14px;
+            font-size: 42px;
+            font-weight: 800;
+        }
 
-@if (!Model.Tours.Any())
-{
-    <div class="alert alert-info text-center py-5">
-        <i class="fas fa-info-circle fa-3x mb-3 text-muted"></i>
-        <h5>Chưa có tour nào</h5>
-        <p>Nhấn "Thêm tour mới" để bắt đầu.</p>
+        .page-hero .hero-text {
+            max-width: 760px;
+            margin: 0 auto;
+            color: rgba(255,255,255,0.88);
+        }
+
+    .tour-page-section {
+        padding: 80px 0;
+        background: #f7fbff;
+    }
+
+    .tour-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+    }
+
+    .tour-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 12px 35px rgba(12, 31, 56, 0.09);
+        transition: 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+        .tour-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 38px rgba(12, 31, 56, 0.14);
+        }
+
+        .tour-card .card-banner img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .tour-card .card-content {
+            padding: 24px;
+            flex: 1;
+        }
+
+        .tour-card .card-title {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #102542;
+        }
+
+        .tour-card .destination-text {
+            color: #5d738d;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .tour-card .card-text {
+            color: #667b94;
+            line-height: 1.7;
+            margin-bottom: 18px;
+            min-height: 75px;
+        }
+
+    .tour-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-top: auto;
+    }
+
+        .tour-meta .price {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0d6efd;
+        }
+
+            .tour-meta .price span {
+                display: block;
+                font-size: 13px;
+                color: #7b8ea4;
+                font-weight: 500;
+            }
+
+    .empty-box {
+        margin-top: 35px;
+        background: white;
+        border-radius: 18px;
+        padding: 32px;
+        text-align: center;
+        box-shadow: 0 12px 30px rgba(12,31,56,.08);
+        color: #5f7188;
+    }
+</style>
+
+<section class="page-hero">
+    <div class="container">
+        <p class="section-subtitle">Tourly Travel</p>
+        <h1 class="hero-title">Khám phá các tour nổi bật</h1>
+        <p class="hero-text">
+            Lựa chọn tour phù hợp, xem lịch khởi hành chi tiết và đặt chỗ nhanh chóng với giao diện đồng bộ cùng trang chủ.
+        </p>
     </div>
-}
-else
-{
-    <div class="card shadow">
-        <div class="card-header bg-light">
-            <h5 class="mb-0">Tổng cộng: @Model.Tours.Count tour</h5>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-hover table-striped align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Mã Tour</th>
-                        <th>Tên Tour</th>
-                        <th>Điểm đến</th>
-                        <th>Thời gian</th>
-                        <th>Giá cơ bản</th>
-                        <th class="text-end">Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var tour in Model.Tours)
-                    {
-                        <tr>
-                            <td><code>@tour.TourId</code></td>
-                            <td>@tour.Name</td>
-                            <td>@(tour.Destination?.Name ?? "—")</td>
-                            <td>@tour.DurationDays ngày</td>
-                            <td>@tour.BasePrice.ToString("N0") ₫</td>
-                            <td class="text-end">
-                                <a asp-page="./Details" asp-route-id="@tour.TourId" class="btn btn-sm btn-outline-primary me-1" title="Chi tiết">
-                                    <i class="fas fa-eye"></i>
+</section>
+
+<section class="tour-page-section">
+    <div class="container">
+        <p class="section-subtitle">Danh sách tour</p>
+        <h2 class="h2 section-title">Chọn hành trình dành cho bạn</h2>
+        <p class="section-text">
+            Xem thông tin điểm đến, giá cơ bản và truy cập nhanh sang trang chi tiết để chọn đợt khởi hành phù hợp.
+        </p>
+
+        @if (Model.Tours != null && Model.Tours.Any())
+        {
+            <div class="tour-grid">
+                @foreach (var tour in Model.Tours)
+                {
+                    <div class="tour-card">
+                        <figure class="card-banner">
+                            <img src="@(string.IsNullOrEmpty(tour.ImageUrl) ? "/images/packege-1.jpg" : tour.ImageUrl)"
+                                 alt="@tour.Name" />
+                        </figure>
+
+                        <div class="card-content">
+                            <h3 class="card-title">@tour.Name</h3>
+
+                            <p class="destination-text">
+                                <ion-icon name="location-outline"></ion-icon>
+                                @tour.Destination?.Name - @tour.Destination?.City
+                            </p>
+
+                            <p class="card-text">
+                                @(string.IsNullOrWhiteSpace(tour.Description)
+                                                        ? "Trải nghiệm du lịch hấp dẫn với lịch trình được thiết kế tối ưu cho người dùng."
+                                                        : (tour.Description.Length > 140 ? tour.Description.Substring(0, 140) + "..." : tour.Description))
+                    </p>
+
+                            <div class="tour-meta">
+                                <div class="price">
+                                    @tour.BasePrice.ToString("N0") VNĐ
+                                    <span>Giá từ / người</span>
+                                </div>
+
+                                <a asp-page="/Tours/Details" asp-route-id="@tour.TourId" class="btn btn-secondary">
+                                    Xem chi tiết
                                 </a>
-                                <a asp-page="./Edit" asp-route-id="@tour.TourId" class="btn btn-sm btn-outline-warning me-1" title="Sửa">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <a asp-page="./Delete" asp-route-id="@tour.TourId" class="btn btn-sm btn-outline-danger" title="Xóa">
-                                    <i class="fas fa-trash-alt"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+                            </div>
+                        </div>
+                    </div>
+                        }
+            </div>
+        }
+        else
+        {
+            <div class="empty-box">
+                Hiện chưa có tour nào để hiển thị.
+            </div>
+        }
     </div>
-}
+</section>

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
+using TourManagement.Data;
 using TourManagement.Models;
 
 namespace TourManagement.Pages.Bookings
@@ -15,120 +15,128 @@ namespace TourManagement.Pages.Bookings
             _context = context;
         }
 
-        [BindProperty(SupportsGet = true)]
-        public string GroupId { get; set; } = string.Empty;
-
-        public TourGroup? TourGroup { get; set; }
-
-        public int RemainingCapacity { get; set; }
+        public TourGroup? Group { get; set; }
+        public Tour? Tour { get; set; }
 
         [BindProperty]
-        public int Adults { get; set; } = 1;
+        public InputModel Input { get; set; } = new();
 
-        [BindProperty]
-        public int Children { get; set; }
-
-        [BindProperty]
-        public int Infants { get; set; }
+        public class InputModel
+        {
+            public string GroupId { get; set; } = string.Empty;
+            public int Adults { get; set; } = 1;
+            public int Children { get; set; }
+            public int Infants { get; set; }
+            public string? Notes { get; set; }
+        }
 
         public async Task<IActionResult> OnGetAsync(string groupId)
         {
-            if (string.IsNullOrEmpty(groupId))
-            {
+            if (string.IsNullOrWhiteSpace(groupId))
                 return NotFound();
-            }
 
-            GroupId = groupId;
-            TourGroup = await _context.TourGroups
+            Group = await _context.TourGroups
                 .Include(g => g.Tour)
-                .Include(g => g.Tour.Destination)
-                .FirstOrDefaultAsync(g => g.GroupId == groupId);
+                    .ThenInclude(t => t.Destination)
+                .FirstOrDefaultAsync(g => g.GroupId == groupId && g.StatusId == "OPEN");
 
-            if (TourGroup == null)
-            {
+            if (Group == null)
                 return NotFound();
-            }
 
-            // Kiểm tra còn chỗ không
-            RemainingCapacity = TourGroup.MaxCapacity - TourGroup.CurrentBookings;
-            if (RemainingCapacity <= 0)
-            {
-                TempData["Error"] = "Tour nhóm này đã hết chỗ.";
-                return RedirectToPage("/Tours/Details", new { id = TourGroup.TourId });
-            }
+            Tour = Group.Tour;
+            Input.GroupId = groupId;
+            Input.Adults = 1;
+            Input.Children = 0;
+            Input.Infants = 0;
 
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!User.Identity?.IsAuthenticated ?? true)
-            {
-                return RedirectToPage("/Accounts/Login", new { returnUrl = $"/Bookings/Create?groupId={GroupId}" });
-            }
+            await LoadGroupAndTourAsync(Input.GroupId);
+
+            if (Group == null || Tour == null)
+                return NotFound();
+
+            int totalPax = Input.Adults + Input.Children + Input.Infants;
+            int remain = Group.MaxCapacity - Group.CurrentBookings;
+
+            if (Input.Adults < 1)
+                ModelState.AddModelError("Input.Adults", "Phải có ít nhất 1 người lớn.");
+
+            if (Input.Children < 0)
+                ModelState.AddModelError("Input.Children", "Số trẻ em không hợp lệ.");
+
+            if (Input.Infants < 0)
+                ModelState.AddModelError("Input.Infants", "Số em bé không hợp lệ.");
+
+            if (totalPax <= 0)
+                ModelState.AddModelError(string.Empty, "Tổng số hành khách phải lớn hơn 0.");
+
+            if (totalPax > remain)
+                ModelState.AddModelError(string.Empty, $"Chỉ còn {remain} chỗ trống cho đợt khởi hành này.");
 
             if (!ModelState.IsValid)
-            {
                 return Page();
-            }
 
-            var tourGroup = await _context.TourGroups
-                .Include(g => g.Tour)
-                .FirstOrDefaultAsync(g => g.GroupId == GroupId);
+            decimal adultPrice = Tour.BasePrice;
+            decimal childPrice = Tour.BasePrice * 0.8m;
+            decimal infantPrice = Tour.BasePrice * 0.3m;
 
-            if (tourGroup == null)
-            {
-                return NotFound();
-            }
+            decimal totalPrice =
+                adultPrice * Input.Adults +
+                childPrice * Input.Children +
+                infantPrice * Input.Infants;
 
-            // Kiểm tra lại chỗ
-            int totalPax = Adults + Children + Infants;
-            if (tourGroup.MaxCapacity - tourGroup.CurrentBookings < totalPax)
-            {
-                ModelState.AddModelError("", $"Chỉ còn {tourGroup.MaxCapacity - tourGroup.CurrentBookings} chỗ.");
-                return Page();
-            }
-
-            // Lấy user hiện tại
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
-            {
-                return RedirectToPage("/Account/Login");
-            }
-
-            // Tạo booking_id (ví dụ: BK + yyyyMMdd + random 6 ký tự)
-            string bookingId = $"BK{DateTime.Now:yyyyMMdd}{Guid.NewGuid().ToString("N").Substring(0, 6).ToUpper()}";
+            int userId = GetCurrentUserId();
 
             var booking = new Booking
             {
-                BookingId = bookingId,
+                BookingId = GenerateBookingId(),
                 UserId = userId,
-                GroupId = GroupId,
+                GroupId = Input.GroupId,
                 BookingDate = DateTime.Now,
-                Adults = Adults,
-                Children = Children,
-                Infants = Infants,
-                TotalPrice = CalculateTotalPrice(tourGroup.Tour.BasePrice),
+                Adults = Input.Adults,
+                Children = Input.Children,
+                Infants = Input.Infants,
+                TotalPrice = totalPrice,
                 StatusId = "PENDING",
+                Notes = Input.Notes,
                 CreatedAt = DateTime.Now
             };
 
             _context.Bookings.Add(booking);
-
-            // Cập nhật số booking hiện tại
-            tourGroup.CurrentBookings += totalPax;
-
             await _context.SaveChangesAsync();
 
-            // Chuyển sang trang thêm hành khách
-            return RedirectToPage("/Passengers/Add", new { bookingId = booking.BookingId });
+            return RedirectToPage("/Bookings/Passengers", new { bookingId = booking.BookingId });
         }
 
-        private decimal CalculateTotalPrice(decimal basePrice)
+        private async Task LoadGroupAndTourAsync(string groupId)
         {
-            return (Adults * basePrice) +
-                   (Children * basePrice * 0.75m) +
-                   (Infants * basePrice * 0.10m);
+            Group = await _context.TourGroups
+                .Include(g => g.Tour)
+                    .ThenInclude(t => t.Destination)
+                .FirstOrDefaultAsync(g => g.GroupId == groupId && g.StatusId == "OPEN");
+
+            Tour = Group?.Tour;
+        }
+
+        private int GetCurrentUserId()
+        {
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrWhiteSpace(userIdClaim))
+            {
+                throw new Exception("Không lấy được UserId từ phiên đăng nhập.");
+            }
+
+            return int.Parse(userIdClaim);
+        }
+
+        private string GenerateBookingId()
+        {
+            return "BK" + DateTime.Now.ToString("yyMMddHHmmss");
         }
     }
 }
