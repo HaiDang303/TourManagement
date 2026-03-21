@@ -1,0 +1,311 @@
+﻿@page
+@model TourManagement.Pages.Bookings.HistoryModel
+@{
+    ViewData["Title"] = "Lịch sử đặt tour";
+}
+
+<style>
+    .history-page {
+        background: #f7fbff;
+        padding: 150px 0 80px;
+        min-height: 100vh;
+    }
+
+    .history-top {
+        margin-bottom: 30px;
+    }
+
+    .history-filter {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 12px 35px rgba(12,31,56,.08);
+        padding: 22px;
+        margin-bottom: 30px;
+    }
+
+    .filter-form {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        align-items: end;
+    }
+
+    .filter-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #102542;
+    }
+
+    .form-select {
+        min-width: 240px;
+        border: 1px solid #dce8f2;
+        border-radius: 14px;
+        padding: 12px 14px;
+        background: white;
+    }
+
+    .history-list {
+        display: grid;
+        gap: 24px;
+    }
+
+    .history-card {
+        background: white;
+        border-radius: 22px;
+        box-shadow: 0 12px 35px rgba(12,31,56,.08);
+        overflow: hidden;
+    }
+
+    .history-card-top {
+        padding: 24px 28px;
+        border-bottom: 1px solid #edf3f8;
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .history-card-body {
+        padding: 24px 28px;
+    }
+
+    .booking-code {
+        color: #0d6efd;
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .tour-name {
+        font-size: 24px;
+        font-weight: 800;
+        color: #102542;
+        margin-bottom: 8px;
+    }
+
+    .booking-date {
+        color: #6f8197;
+        font-size: 14px;
+    }
+
+    .status-group {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 9px 14px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .status-confirmed {
+        background: rgba(34,197,94,.14);
+        color: #15803d;
+    }
+
+    .status-pending {
+        background: rgba(245,158,11,.14);
+        color: #b45309;
+    }
+
+    .status-cancel {
+        background: rgba(239,68,68,.14);
+        color: #b91c1c;
+    }
+
+    .status-paid {
+        background: rgba(13,110,253,.12);
+        color: #0d6efd;
+    }
+
+    .status-unpaid {
+        background: rgba(107,114,128,.14);
+        color: #4b5563;
+    }
+
+    .history-info-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .info-box {
+        background: #f7fbff;
+        border-radius: 16px;
+        padding: 18px;
+    }
+
+    .info-box .label {
+        font-size: 13px;
+        color: #7b8ea4;
+        margin-bottom: 8px;
+    }
+
+    .info-box .value {
+        font-size: 16px;
+        font-weight: 700;
+        color: #102542;
+    }
+
+    .history-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .empty-box {
+        background: white;
+        border-radius: 22px;
+        box-shadow: 0 12px 35px rgba(12,31,56,.08);
+        padding: 40px;
+        text-align: center;
+        color: #667b94;
+    }
+
+    @@media (max-width: 991px) {
+        .history-info-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    @@media (max-width: 640px) {
+        .history-info-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<section class="history-page">
+    <div class="container">
+        <div class="history-top">
+            <p class="section-subtitle">Booking History</p>
+            <h1 class="h2 section-title">Lịch sử đặt tour của tôi</h1>
+            <p class="section-text">
+                Theo dõi các booking đã tạo, trạng thái xác nhận và tình trạng thanh toán của từng chuyến đi.
+            </p>
+        </div>
+
+        <div class="history-filter">
+            <form method="get" class="filter-form">
+                <div class="filter-group">
+                    <label for="StatusFilter">Lọc theo trạng thái</label>
+                    <select asp-for="StatusFilter" class="form-select">
+                        <option value="">Tất cả</option>
+                        <option value="PENDING">Chờ xử lý</option>
+                        <option value="CONFIRMED">Đã xác nhận</option>
+                        <option value="CANCEL">Đã hủy</option>
+                    </select>
+                </div>
+
+                <div>
+                    <button type="submit" class="btn btn-secondary">Lọc</button>
+                    <a asp-page="/Bookings/History" class="btn btn-primary">Reset</a>
+                </div>
+            </form>
+        </div>
+
+        @if (Model.Bookings != null && Model.Bookings.Any())
+        {
+            <div class="history-list">
+                @foreach (var booking in Model.Bookings)
+                {
+                    var payment = booking.Payments?
+                    .OrderByDescending(p => p.PaymentDate)
+                    .FirstOrDefault();
+
+                    var bookingStatusClass = booking.StatusId == "CONFIRMED"
+                    ? "status-confirmed"
+                    : booking.StatusId == "CANCEL"
+                    ? "status-cancel"
+                    : "status-pending";
+
+                    var paymentStatusClass = payment != null && payment.StatusId == "PAID"
+                    ? "status-paid"
+                    : "status-unpaid";
+
+                    <div class="history-card">
+                        <div class="history-card-top">
+                            <div>
+                                <div class="booking-code">Mã booking: @booking.BookingId</div>
+                                <div class="tour-name">@booking.Group?.Tour?.Name</div>
+                                <div class="booking-date">
+                                    Ngày đặt: @booking.BookingDate.ToString("dd/MM/yyyy HH:mm")
+                                </div>
+                            </div>
+
+                            <div class="status-group">
+                                <span class="status-badge @bookingStatusClass">
+                                    Trạng thái: @booking.StatusId
+                                </span>
+
+                                <span class="status-badge @paymentStatusClass">
+                                    Thanh toán: @(payment?.StatusId ?? "UNPAID")
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="history-card-body">
+                            <div class="history-info-grid">
+                                <div class="info-box">
+                                    <div class="label">Ngày khởi hành</div>
+                                    <div class="value">
+                                        @(booking.Group != null ? booking.Group.DepartDate.ToString("dd/MM/yyyy") : "-")
+                                    </div>
+                                </div>
+
+                                <div class="info-box">
+                                    <div class="label">Ngày về</div>
+                                    <div class="value">
+                                        @(booking.Group != null ? booking.Group.ReturnDate.ToString("dd/MM/yyyy") : "-")
+                                    </div>
+                                </div>
+
+                                <div class="info-box">
+                                    <div class="label">Số hành khách</div>
+                                    <div class="value">
+                                        @(booking.Adults + booking.Children + booking.Infants)
+                                    </div>
+                                </div>
+
+                                <div class="info-box">
+                                    <div class="label">Tổng tiền</div>
+                                    <div class="value">@booking.TotalPrice.ToString("N0") VNĐ</div>
+                                </div>
+                            </div>
+
+                            <div class="history-actions">
+                                <a asp-page="/Bookings/Details" asp-route-id="@booking.BookingId" class="btn btn-secondary">
+                                    Xem chi tiết
+                                </a>
+
+                                @if (booking.StatusId == "PENDING")
+                                {
+                                    <a asp-page="/Payments/Checkout" asp-route-bookingId="@booking.BookingId" class="btn btn-primary">
+                                        Thanh toán ngay
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-box">
+                Bạn chưa có booking nào. Hãy bắt đầu đặt tour để xem lịch sử tại đây.
+                <div style="margin-top:20px;">
+                    <a asp-page="/Tours/Index" class="btn btn-secondary">Khám phá tour</a>
+                </div>
+            </div>
+        }
+    </div>
+</section>
