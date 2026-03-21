@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
+using TourManagement.Data;
 using TourManagement.Models;
 
 namespace TourManagement.Pages.Bookings
 {
-    [Authorize]
     public class DetailsModel : PageModel
     {
         private readonly TourManagementContext _context;
@@ -24,18 +22,12 @@ namespace TourManagement.Pages.Bookings
             if (string.IsNullOrWhiteSpace(id))
                 return NotFound();
 
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrWhiteSpace(userIdClaim))
-                return Challenge();
-
-            int userId = int.Parse(userIdClaim);
-
             Booking = await _context.Bookings
                 .Include(b => b.Group)
                     .ThenInclude(g => g.Tour)
                 .Include(b => b.BookingPassengers)
                 .Include(b => b.Payments)
-                .FirstOrDefaultAsync(b => b.BookingId == id && b.UserId == userId);
+                .FirstOrDefaultAsync(b => b.BookingId == id);
 
             if (Booking == null)
                 return NotFound();

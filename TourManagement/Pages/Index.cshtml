@@ -111,12 +111,6 @@
                         <li><a href="#package" class="navbar-link" data-nav-link>Gói tour</a></li>
                         <li><a href="#gallery" class="navbar-link" data-nav-link>Thư viện ảnh</a></li>
                         <li><a href="#contact" class="navbar-link" data-nav-link>Liên hệ</a></li>
-                        @if (User.Identity != null && User.Identity.IsAuthenticated)
-                        {
-                            <li>
-                                <a asp-page="/Bookings/History" class="navbar-link" data-nav-link>Lịch sử đặt tour</a>
-                            </li>
-                        }
                     </ul>
 
                     <button class="btn btn-primary">

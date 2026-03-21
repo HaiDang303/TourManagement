@@ -1,12 +1,19 @@
 is_global = true
 build_property.TargetFramework = net8.0
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
 build_property.TargetPlatformMinVersion = 
 build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
 build_property.ProjectTypeGuids = 
 build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
 build_property.PlatformNeutralAssembly = 
-build_property.EnforceExtendedAnalyzerRules = 
+build_property.PlatformNeutralAssembly = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.EnforceExtendedAnalyzerRules = 
 build_property.RootNamespace = TourManagement
 build_property.RootNamespace = TourManagement
 build_property.ProjectDir = D:\CODE PRN222\TourManagement\TourManagement\
@@ -40,12 +47,40 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/CODE PRN222/TourManagement/TourManagement/Pages/Admin/Destinations/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRGVzdGluYXRpb25zXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/CODE PRN222/TourManagement/TourManagement/Pages/Admin/Destinations/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRGVzdGluYXRpb25zXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/CODE PRN222/TourManagement/TourManagement/Pages/Admin/Destinations/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRGVzdGluYXRpb25zXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/CODE PRN222/TourManagement/TourManagement/Pages/Admin/Destinations/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRGVzdGluYXRpb25zXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/CODE PRN222/TourManagement/TourManagement/Pages/Admin/Payments/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cUGF5bWVudHNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/CODE PRN222/TourManagement/TourManagement/Pages/Admin/Reports/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cUmVwb3J0c1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/CODE PRN222/TourManagement/TourManagement/Pages/Admin/Tours/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cVG91cnNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/CODE PRN222/TourManagement/TourManagement/Pages/Admin/Tours/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cVG91cnNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/CODE PRN222/TourManagement/TourManagement/Pages/Admin/Tours/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cVG91cnNcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/CODE PRN222/TourManagement/TourManagement/Pages/Admin/Tours/Edit.cshtml]
@@ -64,16 +99,32 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va2luZ3NcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/CODE PRN222/TourManagement/TourManagement/Pages/Bookings/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va2luZ3NcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/CODE PRN222/TourManagement/TourManagement/Pages/Bookings/History.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va2luZ3NcSGlzdG9yeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/CODE PRN222/TourManagement/TourManagement/Pages/Bookings/Passengers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va2luZ3NcUGFzc2VuZ2Vycy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/CODE PRN222/TourManagement/TourManagement/Pages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/CODE PRN222/TourManagement/TourManagement/Pages/Passengers/Add.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGFzc2VuZ2Vyc1xBZGQuY3NodG1s
+[D:/CODE PRN222/TourManagement/TourManagement/Pages/Payments/Checkout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF5bWVudHNcQ2hlY2tvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/CODE PRN222/TourManagement/TourManagement/Pages/Payments/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF5bWVudHNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/CODE PRN222/TourManagement/TourManagement/Pages/Staff/Bookings/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3RhZmZcQm9va2luZ3NcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/CODE PRN222/TourManagement/TourManagement/Pages/Tours/Details.cshtml]
@@ -86,6 +137,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/CODE PRN222/TourManagement/TourManagement/Pages/_AdminLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0FkbWluTGF5b3V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/CODE PRN222/TourManagement/TourManagement/Pages/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0xheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/CODE PRN222/TourManagement/TourManagement/Pages/_ViewImports.cshtml]

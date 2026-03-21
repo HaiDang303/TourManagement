@@ -25,7 +25,6 @@ namespace TourManagement.Pages.Admin.Tours
             _env = env;
         }
 
-        [BindProperty(SupportsGet = true)]
         public string TourId { get; set; } = string.Empty;
 
         public IList<Destination> Destinations { get; set; } = new List<Destination>();

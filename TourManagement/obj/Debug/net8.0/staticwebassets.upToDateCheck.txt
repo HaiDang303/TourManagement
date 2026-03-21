@@ -17,3 +17,5 @@ wwwroot\images\popular-1.jpg
 wwwroot\images\popular-2.jpg
 wwwroot\images\popular-3.jpg
 wwwroot\js\script.js
+wwwroot\uploads\tours\9123ddb0bc414ec1b9ce6878fc12d263.png
+wwwroot\uploads\tours\ee9527df2978499fa780c0a7fee6ffb4.png
