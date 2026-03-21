@@ -44,6 +44,10 @@ namespace TourManagement.Pages.Admin.Tours
             [Display(Name = "Mô tả")]
             public string? Description { get; set; }
 
+            [Display(Name = "Image URL")]
+            [Url(ErrorMessage = "Image URL không hợp lệ")]
+            public string? ImageUrl { get; set; }
+
             [Required(ErrorMessage = "Vui lòng nhập giá")]
             [Range(0, double.MaxValue, ErrorMessage = "Giá phải >= 0")]
             [Display(Name = "Giá (VNĐ)")]
@@ -126,6 +130,7 @@ namespace TourManagement.Pages.Admin.Tours
                 Category = Input.Category,
                 MaxParticipants = Input.MaxParticipants,
                 Description = Input.Description,
+                ImageUrl = Input.ImageUrl,
                 CreatedBy = createdBy,
                 CreatedAt = DateTime.Now
             };

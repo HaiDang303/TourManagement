@@ -302,6 +302,7 @@ public partial class TourManagementContext : DbContext
                 .HasColumnName("destination_id");
             entity.Property(e => e.DurationDays).HasColumnName("duration_days");
             entity.Property(e => e.GuideId).HasColumnName("guide_id");
+            entity.Property(e => e.ImageUrl).HasMaxLength(500);
             entity.Property(e => e.MaxParticipants).HasColumnName("max_participants");
             entity.Property(e => e.Name)
                 .HasMaxLength(150)

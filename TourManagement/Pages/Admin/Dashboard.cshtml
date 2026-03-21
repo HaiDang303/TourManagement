@@ -13,7 +13,7 @@
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
                 </svg>
             </div>
-            <span class="admin-logo">TourManagement Admin</span>
+            <span asp-page="/Index" class="admin-logo">TourManagement Admin</span>
         </div>
         <div class="admin-header-right">
             <div class="admin-avatar">@(User.Identity?.Name?.Substring(0, 1).ToUpper() ?? "A")</div>

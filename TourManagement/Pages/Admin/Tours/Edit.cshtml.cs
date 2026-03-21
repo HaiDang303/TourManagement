@@ -60,6 +60,10 @@ namespace TourManagement.Pages.Admin.Tours
             [Display(Name = "Mô tả")]
             public string? Description { get; set; }
 
+            [Display(Name = "Image URL")]
+            [Url(ErrorMessage = "Image URL không hợp lệ")]
+            public string? ImageUrl { get; set; }
+
             [Required(ErrorMessage = "Vui lòng nhập ngày khởi hành")]
             [Display(Name = "START DATE")]
             [DataType(DataType.Date)]
@@ -110,6 +114,7 @@ namespace TourManagement.Pages.Admin.Tours
                 Category = tour.Category,
                 MaxParticipants = tour.MaxParticipants,
                 Description = tour.Description,
+                ImageUrl = tour.ImageUrl,
                 StartDate = start,
                 EndDate = end,
                 AvailableSeats = seats
@@ -152,6 +157,7 @@ namespace TourManagement.Pages.Admin.Tours
             tour.Category = Input.Category;
             tour.MaxParticipants = Input.MaxParticipants;
             tour.Description = Input.Description;
+            tour.ImageUrl = Input.ImageUrl;
             tour.UpdatedAt = DateTime.Now;
 
             var group = tour.TourGroups

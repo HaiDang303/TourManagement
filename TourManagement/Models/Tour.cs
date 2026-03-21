@@ -29,6 +29,8 @@ public partial class Tour
 
     public int? GuideId { get; set; }
 
+    public string? ImageUrl { get; set; }
+
     public virtual User? CreatedByNavigation { get; set; }
 
     public virtual Destination Destination { get; set; } = null!;

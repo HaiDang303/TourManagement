@@ -55,7 +55,16 @@
                 {
                     <tr>
                         <td class="text-muted">@r.Stt</td>
-                        <td class="text-muted">—</td>
+                        <td style="width: 90px">
+                            @if (!string.IsNullOrWhiteSpace(r.ImageUrl))
+                            {
+                                <img src="@r.ImageUrl" alt="tour image" style="width: 72px; height: 48px; object-fit: cover; border-radius: 8px;" />
+                            }
+                            else
+                            {
+                                <span class="text-muted">—</span>
+                            }
+                        </td>
                         <td>
                             <div class="fw-semibold">@r.Name</div>
                             <div class="text-muted small text-truncate" style="max-width: 420px">@r.Description</div>

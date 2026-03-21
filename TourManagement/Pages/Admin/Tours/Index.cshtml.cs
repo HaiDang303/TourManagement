@@ -26,6 +26,7 @@ namespace TourManagement.Pages.Admin.Tours
             public int Stt { get; set; }
             public string TourId { get; set; } = string.Empty;
             public string Name { get; set; } = string.Empty;
+            public string? ImageUrl { get; set; }
             public string? Description { get; set; }
             public DateOnly? StartDate { get; set; }
             public DateOnly? EndDate { get; set; }
@@ -64,6 +65,7 @@ namespace TourManagement.Pages.Admin.Tours
                     Stt = idx + 1,
                     TourId = t.TourId,
                     Name = t.Name,
+                    ImageUrl = t.ImageUrl,
                     Description = t.Description,
                     StartDate = start,
                     EndDate = end,

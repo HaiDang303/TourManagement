@@ -81,6 +81,18 @@
         </div>
 
         <div class="mb-3">
+            <label asp-for="Input.ImageUrl" class="form-label">IMAGE</label>
+            <input asp-for="Input.ImageUrl" class="form-control" placeholder="https://..." />
+            <span asp-validation-for="Input.ImageUrl" class="text-danger"></span>
+            @if (!string.IsNullOrWhiteSpace(Model.Input.ImageUrl))
+            {
+                <div class="mt-2">
+                    <img src="@Model.Input.ImageUrl" alt="preview" style="max-width: 240px; max-height: 160px; object-fit: cover; border-radius: 10px;" />
+                </div>
+            }
+        </div>
+
+        <div class="mb-3">
             <label asp-for="Input.Category" class="form-label"></label>
             <input asp-for="Input.Category" class="form-control" />
             <span asp-validation-for="Input.Category" class="text-danger"></span>
