@@ -18,7 +18,7 @@
 <div class="container mt-4">
     <h2 class="mb-3">Tạo tour mới</h2>
 
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
         <div class="row g-3">
@@ -81,15 +81,10 @@
         </div>
 
         <div class="mb-3">
-            <label asp-for="Input.ImageUrl" class="form-label">IMAGE</label>
-            <input asp-for="Input.ImageUrl" class="form-control" placeholder="https://..." />
-            <span asp-validation-for="Input.ImageUrl" class="text-danger"></span>
-            @if (!string.IsNullOrWhiteSpace(Model.Input.ImageUrl))
-            {
-                <div class="mt-2">
-                    <img src="@Model.Input.ImageUrl" alt="preview" style="max-width: 240px; max-height: 160px; object-fit: cover; border-radius: 10px;" />
-                </div>
-            }
+            <label asp-for="Input.ImageFile" class="form-label">IMAGE (tải ảnh từ máy)</label>
+            <input asp-for="Input.ImageFile" class="form-control" type="file" accept="image/*" />
+            <span asp-validation-for="Input.ImageFile" class="text-danger"></span>
+            <small class="text-muted">Định dạng: JPG, PNG, GIF, WebP</small>
         </div>
 
         <div class="mb-3">

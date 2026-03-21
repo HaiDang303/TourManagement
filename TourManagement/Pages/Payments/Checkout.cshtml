@@ -1,0 +1,192 @@
+﻿@page "{bookingId}"
+@model TourManagement.Pages.Payments.CheckoutModel
+@{
+    ViewData["Title"] = "Thanh toán";
+}
+
+<style>
+    .payment-page {
+        background: #f7fbff;
+        padding: 150px 0 80px;
+    }
+
+    .payment-grid {
+        display: grid;
+        grid-template-columns: .95fr 1.05fr;
+        gap: 30px;
+        align-items: start;
+    }
+
+    .payment-card,
+    .invoice-card {
+        background: white;
+        border-radius: 22px;
+        padding: 28px;
+        box-shadow: 0 12px 35px rgba(12,31,56,.08);
+    }
+
+    .invoice-title {
+        margin-bottom: 16px;
+    }
+
+    .invoice-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 13px 0;
+        border-bottom: 1px solid #ebf2f8;
+        color: #62758c;
+    }
+
+        .invoice-row strong {
+            color: #102542;
+        }
+
+    .invoice-total {
+        margin-top: 20px;
+        padding-top: 16px;
+        border-top: 2px dashed #d8e6f3;
+    }
+
+        .invoice-total .amount {
+            font-size: 34px;
+            font-weight: 800;
+            color: #0d6efd;
+        }
+
+    .method-list {
+        display: grid;
+        gap: 16px;
+        margin-top: 20px;
+    }
+
+    .method-item {
+        border: 1px solid #dce8f2;
+        border-radius: 16px;
+        padding: 16px 18px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: .25s ease;
+    }
+
+        .method-item:hover {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 4px rgba(13,110,253,.06);
+        }
+
+        .method-item input {
+            transform: scale(1.15);
+        }
+
+        .method-item .title {
+            font-weight: 700;
+            color: #102542;
+            margin-bottom: 2px;
+        }
+
+        .method-item .desc {
+            color: #71849a;
+            font-size: 14px;
+        }
+
+    @@media (max-width: 991px) {
+        .payment-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<section class="payment-page">
+    <div class="container">
+        <p class="section-subtitle">Thanh toán</p>
+        <h1 class="h2 section-title">Xác nhận thanh toán booking</h1>
+        <p class="section-text" style="margin-bottom:30px;">
+            Kiểm tra lại thông tin booking và chọn phương thức thanh toán phù hợp.
+        </p>
+
+        @if (Model.Booking != null)
+        {
+            <div class="payment-grid">
+                <div class="invoice-card">
+                    <p class="section-subtitle">Hóa đơn booking</p>
+                    <h3 class="h3 invoice-title">@Model.Booking.Group?.Tour?.Name</h3>
+
+                    <div class="invoice-row">
+                        <span>Mã booking</span>
+                        <strong>@Model.Booking.BookingId</strong>
+                    </div>
+
+                    <div class="invoice-row">
+                        <span>Mã đoàn</span>
+                        <strong>@Model.Booking.GroupId</strong>
+                    </div>
+
+                    <div class="invoice-row">
+                        <span>Ngày khởi hành</span>
+                        <strong>@Model.Booking.Group?.DepartDate.ToString("dd/MM/yyyy")</strong>
+                    </div>
+
+                    <div class="invoice-row">
+                        <span>Người lớn</span>
+                        <strong>@Model.Booking.Adults</strong>
+                    </div>
+
+                    <div class="invoice-row">
+                        <span>Trẻ em</span>
+                        <strong>@Model.Booking.Children</strong>
+                    </div>
+
+                    <div class="invoice-row">
+                        <span>Em bé</span>
+                        <strong>@Model.Booking.Infants</strong>
+                    </div>
+
+                    <div class="invoice-total">
+                        <p style="color:#7b8ea4; margin-bottom:6px;">Tổng thanh toán</p>
+                        <div class="amount">@Model.Booking.TotalPrice.ToString("N0") VNĐ</div>
+                    </div>
+                </div>
+
+                <div class="payment-card">
+                    <p class="section-subtitle">Phương thức thanh toán</p>
+                    <h3 class="h3 section-title" style="margin-bottom:10px;">Chọn cách bạn muốn thanh toán</h3>
+
+                    <form method="post">
+                        <div class="method-list">
+                            <label class="method-item">
+                                <input asp-for="Method" type="radio" value="Cash" />
+                                <div>
+                                    <div class="title">Tiền mặt</div>
+                                    <div class="desc">Thanh toán trực tiếp tại văn phòng hoặc khi xác nhận booking.</div>
+                                </div>
+                            </label>
+
+                            <label class="method-item">
+                                <input asp-for="Method" type="radio" value="Banking" />
+                                <div>
+                                    <div class="title">Chuyển khoản</div>
+                                    <div class="desc">Chuyển khoản qua ngân hàng và lưu mã giao dịch.</div>
+                                </div>
+                            </label>
+
+                            <label class="method-item">
+                                <input asp-for="Method" type="radio" value="Momo" />
+                                <div>
+                                    <div class="title">Ví điện tử Momo</div>
+                                    <div class="desc">Mô phỏng thanh toán online cho đồ án PRN222.</div>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div style="margin-top:28px;">
+                            <button type="submit" class="btn btn-secondary">
+                                Xác nhận thanh toán
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</section>

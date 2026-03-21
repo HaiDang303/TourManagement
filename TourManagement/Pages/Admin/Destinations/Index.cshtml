@@ -1,0 +1,48 @@
+@page
+@model TourManagement.Pages.Admin.Destinations.IndexModel
+@{ ViewData["Title"] = "Quản lý điểm đến"; Layout = null; }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body class="bg-light">
+<div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="m-0">Quản lý điểm đến</h2>
+        <div>
+            <a href="/Admin/Dashboard" class="btn btn-outline-secondary">Dashboard</a>
+            <a href="/Admin/Destinations/Create" class="btn btn-primary ms-2">+ Thêm</a>
+        </div>
+    </div>
+    @if (TempData["Success"] != null) { <div class="alert alert-success">@TempData["Success"]</div> }
+    @if (TempData["Error"] != null) { <div class="alert alert-danger">@TempData["Error"]</div> }
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead><tr><th>Id</th><th>Tên</th><th>Thành phố</th><th>Quốc gia</th><th>Mô tả</th><th></th></tr></thead>
+                <tbody>
+                @foreach (var d in Model.Destinations)
+                {
+                    <tr>
+                        <td>@d.DestinationId</td>
+                        <td>@d.Name</td>
+                        <td>@d.City</td>
+                        <td>@d.Country</td>
+                        <td class="text-truncate" style="max-width:200px">@d.Description</td>
+                        <td class="text-nowrap">
+                            <a class="btn btn-sm btn-outline-primary" asp-page="/Admin/Destinations/Edit" asp-route-id="@d.DestinationId">Sửa</a>
+                            <a class="btn btn-sm btn-outline-danger ms-1" asp-page="/Admin/Destinations/Delete" asp-route-id="@d.DestinationId">Xóa</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

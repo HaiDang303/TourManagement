@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TourManagement.Models;
@@ -15,10 +17,12 @@ namespace TourManagement.Pages.Admin.Tours
     public class CreateModel : PageModel
     {
         private readonly TourManagementContext _context;
+        private readonly IWebHostEnvironment _env;
 
-        public CreateModel(TourManagementContext context)
+        public CreateModel(TourManagementContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
         }
 
         [BindProperty]
@@ -44,9 +48,8 @@ namespace TourManagement.Pages.Admin.Tours
             [Display(Name = "Mô tả")]
             public string? Description { get; set; }
 
-            [Display(Name = "Image URL")]
-            [Url(ErrorMessage = "Image URL không hợp lệ")]
-            public string? ImageUrl { get; set; }
+            [Display(Name = "Ảnh tour")]
+            public IFormFile? ImageFile { get; set; }
 
             [Required(ErrorMessage = "Vui lòng nhập giá")]
             [Range(0, double.MaxValue, ErrorMessage = "Giá phải >= 0")]
@@ -130,7 +133,7 @@ namespace TourManagement.Pages.Admin.Tours
                 Category = Input.Category,
                 MaxParticipants = Input.MaxParticipants,
                 Description = Input.Description,
-                ImageUrl = Input.ImageUrl,
+                ImageUrl = await SaveImageAsync(Input.ImageFile),
                 CreatedBy = createdBy,
                 CreatedAt = DateTime.Now
             };
@@ -155,6 +158,20 @@ namespace TourManagement.Pages.Admin.Tours
 
             TempData["Success"] = "Tạo tour thành công.";
             return RedirectToPage("/Admin/Tours/Index");
+        }
+
+        private async Task<string?> SaveImageAsync(IFormFile? file)
+        {
+            if (file == null || file.Length == 0) return null;
+            var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
+            if (ext != ".jpg" && ext != ".jpeg" && ext != ".png" && ext != ".gif" && ext != ".webp") return null;
+            var dir = Path.Combine(_env.WebRootPath, "uploads", "tours");
+            Directory.CreateDirectory(dir);
+            var fileName = $"{Guid.NewGuid():N}{ext}";
+            var path = Path.Combine(dir, fileName);
+            using (var stream = new FileStream(path, FileMode.Create))
+                await file.CopyToAsync(stream);
+            return $"/uploads/tours/{fileName}";
         }
     }
 }

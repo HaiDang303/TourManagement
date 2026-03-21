@@ -30,23 +30,20 @@
         <div class="stats-row">
             <div class="stat-card">
                 <div class="stat-label">Người dùng</div>
-                <div class="stat-value">1,284</div>
-                <div class="stat-trend trend-up">↑ 12% tháng này</div>
+                <div class="stat-value">@Model.UserCount.ToString("N0")</div>
             </div>
             <div class="stat-card">
                 <div class="stat-label">Tour hoạt động</div>
-                <div class="stat-value">48</div>
-                <div class="stat-trend trend-info">↑ 5 tour mới</div>
+                <div class="stat-value">@Model.TourCount.ToString("N0")</div>
             </div>
             <div class="stat-card">
                 <div class="stat-label">Booking chờ duyệt</div>
-                <div class="stat-value">17</div>
-                <div class="stat-trend trend-warn">⚠ Cần xử lý</div>
+                <div class="stat-value">@Model.PendingBookingCount.ToString("N0")</div>
+                <div class="stat-trend trend-warn">@(Model.PendingBookingCount > 0 ? "⚠ Cần xử lý" : "")</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">Doanh thu</div>
-                <div class="stat-value">842M</div>
-                <div class="stat-trend trend-up">↑ 8% tháng trước</div>
+                <div class="stat-label">Doanh thu (tổng)</div>
+                <div class="stat-value">@(Model.TotalRevenue >= 1_000_000 ? $"{Model.TotalRevenue / 1_000_000:F1}M" : Model.TotalRevenue.ToString("N0")) đ</div>
             </div>
         </div>
 
@@ -76,6 +73,28 @@
                 <div class="box-title">Quản lý tour</div>
                 <div class="box-sub">Thêm / sửa / xóa tour</div>
             </a>
+            <a href="/Admin/Destinations" class="box box--green">
+                <div class="box-orb"></div>
+                <div class="box-icon-wrap">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                        <circle cx="12" cy="10" r="3" />
+                    </svg>
+                </div>
+                <div class="box-title">Quản lý điểm đến</div>
+                <div class="box-sub">CRUD danh mục địa điểm</div>
+            </a>
+            <a href="/Admin/Payments" class="box box--orange">
+                <div class="box-orb"></div>
+                <div class="box-icon-wrap">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8">
+                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+                        <line x1="1" y1="10" x2="23" y2="10" />
+                    </svg>
+                </div>
+                <div class="box-title">Quản lý thanh toán</div>
+                <div class="box-sub">Xác nhận TT / Lịch sử giao dịch</div>
+            </a>
             <a href="/Admin/Groups" class="box box--red">
                 <div class="box-orb"></div>
                 <div class="box-icon-wrap">
@@ -89,9 +108,9 @@
                 <div class="box-title">Quản lý đoàn</div>
                 <div class="box-sub">Danh sách & phân nhóm</div>
             </a>
-            <a href="/Admin/Bookings/Approve" class="box box--amber">
+            <a href="/Staff/Bookings" class="box box--amber">
                 <div class="box-orb"></div>
-                <span class="box-badge">17</span>
+                @if (Model.PendingBookingCount > 0) { <span class="box-badge">@Model.PendingBookingCount</span> }
                 <div class="box-icon-wrap">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8">
                         <path d="M9 11l3 3L22 4" />
@@ -311,6 +330,12 @@
 
     .box--blue {
         background: linear-gradient(135deg, #0284c7, #1d4ed8);
+    }
+    .box--green {
+        background: linear-gradient(135deg, #16a34a, #15803d);
+    }
+    .box--orange {
+        background: linear-gradient(135deg, #ea580c, #c2410c);
     }
 
     .box-orb {

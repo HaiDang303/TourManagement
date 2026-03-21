@@ -113,7 +113,16 @@
                         <li><a href="#contact" class="navbar-link" data-nav-link>Liên hệ</a></li>
                     </ul>
 
-                    <button class="btn btn-primary">Đặt tour ngay</button>
+                    <button class="btn btn-primary">
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            <a asp-page="/Tours/Index" class="btn btn-primary">Đặt tour ngay</a>
+                        }
+                        else
+                        {
+                            <a asp-page="/Accounts/Login" asp-route-returnUrl="/Tours/Index" class="btn btn-primary">Đặt tour ngay</a>
+                        }
+                    </button>
 
                 </nav>
 
@@ -148,7 +157,7 @@
                     <div class="btn-group">
                         <button class="btn btn-primary">Learn more</button>
 
-                        <button  class="btn btn-secondary">Book now</button>
+                        
                     </div>
 
                 </div>
@@ -336,249 +345,78 @@
 
 
             <!--
-              - #PACKAGE
+              - #PACKAGE (3-4 gói nổi bật từ DB)
             -->
 
             <section class="package" id="package">
                 <div class="container">
 
-                    <p class="section-subtitle">Popular Packeges</p>
+                    <p class="section-subtitle">Gói nổi bật</p>
 
-                    <h2 class="h2 section-title">Checkout Our Packeges</h2>
+                    <h2 class="h2 section-title">Các gói tour phổ biến</h2>
 
                     <p class="section-text">
-                        Fusce hic augue velit wisi quibusdam pariatur, iusto primis, nec nemo, rutrum. Vestibulum cumque laudantium.
-                        Sit ornare
-                        mollitia tenetur, aptent.
+                        Khám phá các tour du lịch chất lượng, giá tốt do chúng tôi thiết kế.
                     </p>
 
                     <ul class="package-list">
-
-                        <li>
-                            <div class="package-card">
-
-                                <figure class="card-banner">
-                                    <img src="./images/packege-1.jpg" alt="Experience The Great Holiday On Beach" loading="lazy">
-                                </figure>
-
-                                <div class="card-content">
-
-                                    <h3 class="h3 card-title">Experience The Great Holiday On Beach</h3>
-
-                                    <p class="card-text">
-                                        Laoreet, voluptatum nihil dolor esse quaerat mattis explicabo maiores, est aliquet porttitor! Eaque,
-                                        cras, aspernatur.
-                                    </p>
-
-                                    <ul class="card-meta-list">
-
-                                        <li class="card-meta-item">
-                                            <div class="meta-box">
-                                                <ion-icon name="time"></ion-icon>
-
-                                                <p class="text">7D/6N</p>
-                                            </div>
-                                        </li>
-
-                                        <li class="card-meta-item">
-                                            <div class="meta-box">
-                                                <ion-icon name="people"></ion-icon>
-
-                                                <p class="text">pax: 10</p>
-                                            </div>
-                                        </li>
-
-                                        <li class="card-meta-item">
-                                            <div class="meta-box">
-                                                <ion-icon name="location"></ion-icon>
-
-                                                <p class="text">Malaysia</p>
-                                            </div>
-                                        </li>
-
-                                    </ul>
-
-                                </div>
-
-                                <div class="card-price">
-
-                                    <div class="wrapper">
-
-                                        <p class="reviews">(25 reviews)</p>
-
-                                        <div class="card-rating">
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                        </div>
-
+                        @foreach (var tour in Model.FeaturedTours)
+                        {
+                            <li>
+                                <div class="package-card">
+                                    <figure class="card-banner">
+                                        <img src="@(string.IsNullOrEmpty(tour.ImageUrl) ? "/images/packege-1.jpg" : tour.ImageUrl)" alt="@tour.Name" loading="lazy">
+                                    </figure>
+                                    <div class="card-content">
+                                        <h3 class="h3 card-title">@tour.Name</h3>
+                                        <p class="card-text">@(tour.Description ?? "Tour chất lượng, trải nghiệm tuyệt vời.")</p>
+                                        <ul class="card-meta-list">
+                                            <li class="card-meta-item">
+                                                <div class="meta-box">
+                                                    <ion-icon name="time"></ion-icon>
+                                                    <p class="text">@tour.DurationDays ngày</p>
+                                                </div>
+                                            </li>
+                                            <li class="card-meta-item">
+                                                <div class="meta-box">
+                                                    <ion-icon name="people"></ion-icon>
+                                                    <p class="text">pax: @tour.MaxPax</p>
+                                                </div>
+                                            </li>
+                                            <li class="card-meta-item">
+                                                <div class="meta-box">
+                                                    <ion-icon name="location"></ion-icon>
+                                                    <p class="text">@(tour.City ?? tour.Country ?? "N/A")</p>
+                                                </div>
+                                            </li>
+                                        </ul>
                                     </div>
-
-                                    <p class="price">
-                                        $750
-                                        <span>/ per person</span>
-                                    </p>
-
-                                    <button class="btn btn-secondary">Book Now</button>
-
-                                </div>
-
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="package-card">
-
-                                <figure class="card-banner">
-                                    <img src="./images/packege-2.jpg" alt="Summer Holiday To The Oxolotan River" loading="lazy">
-                                </figure>
-
-                                <div class="card-content">
-
-                                    <h3 class="h3 card-title">Summer Holiday To The Oxolotan River</h3>
-
-                                    <p class="card-text">
-                                        Laoreet, voluptatum nihil dolor esse quaerat mattis explicabo maiores, est aliquet porttitor! Eaque,
-                                        cras, aspernatur.
-                                    </p>
-
-                                    <ul class="card-meta-list">
-
-                                        <li class="card-meta-item">
-                                            <div class="meta-box">
-                                                <ion-icon name="time"></ion-icon>
-
-                                                <p class="text">7D/6N</p>
+                                    <div class="card-price">
+                                        <div class="wrapper">
+                                            <div class="card-rating">
+                                                <ion-icon name="star"></ion-icon>
+                                                <ion-icon name="star"></ion-icon>
+                                                <ion-icon name="star"></ion-icon>
+                                                <ion-icon name="star"></ion-icon>
+                                                <ion-icon name="star"></ion-icon>
                                             </div>
-                                        </li>
-
-                                        <li class="card-meta-item">
-                                            <div class="meta-box">
-                                                <ion-icon name="people"></ion-icon>
-
-                                                <p class="text">pax: 10</p>
-                                            </div>
-                                        </li>
-
-                                        <li class="card-meta-item">
-                                            <div class="meta-box">
-                                                <ion-icon name="location"></ion-icon>
-
-                                                <p class="text">Malaysia</p>
-                                            </div>
-                                        </li>
-
-                                    </ul>
-
-                                </div>
-
-                                <div class="card-price">
-
-                                    <div class="wrapper">
-
-                                        <p class="reviews">(20 reviews)</p>
-
-                                        <div class="card-rating">
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
                                         </div>
-
+                                        <p class="price">
+                                            @tour.BasePrice.ToString("N0") ₫
+                                            <span>/ người</span>
+                                        </p>
+                                        <a href="/Tours/Details/@tour.TourId" class="btn btn-secondary">Đặt ngay</a>
                                     </div>
-
-                                    <p class="price">
-                                        $520
-                                        <span>/ per person</span>
-                                    </p>
-
-                                    <button class="btn btn-secondary">Book Now</button>
-
                                 </div>
-
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="package-card">
-
-                                <figure class="card-banner">
-                                    <img src="./images/packege-3.jpg" alt="Santorini Island's Weekend Vacation" loading="lazy">
-                                </figure>
-
-                                <div class="card-content">
-
-                                    <h3 class="h3 card-title">Santorini Island's Weekend Vacation</h3>
-
-                                    <p class="card-text">
-                                        Laoreet, voluptatum nihil dolor esse quaerat mattis explicabo maiores, est aliquet porttitor! Eaque,
-                                        cras, aspernatur.
-                                    </p>
-
-                                    <ul class="card-meta-list">
-
-                                        <li class="card-meta-item">
-                                            <div class="meta-box">
-                                                <ion-icon name="time"></ion-icon>
-
-                                                <p class="text">7D/6N</p>
-                                            </div>
-                                        </li>
-
-                                        <li class="card-meta-item">
-                                            <div class="meta-box">
-                                                <ion-icon name="people"></ion-icon>
-
-                                                <p class="text">pax: 10</p>
-                                            </div>
-                                        </li>
-
-                                        <li class="card-meta-item">
-                                            <div class="meta-box">
-                                                <ion-icon name="location"></ion-icon>
-
-                                                <p class="text">Malaysia</p>
-                                            </div>
-                                        </li>
-
-                                    </ul>
-
-                                </div>
-
-                                <div class="card-price">
-
-                                    <div class="wrapper">
-
-                                        <p class="reviews">(40 reviews)</p>
-
-                                        <div class="card-rating">
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                            <ion-icon name="star"></ion-icon>
-                                        </div>
-
-                                    </div>
-
-                                    <p class="price">
-                                        $660
-                                        <span>/ per person</span>
-                                    </p>
-
-                                    <button class="btn btn-secondary">Book Now</button>
-
-                                </div>
-
-                            </div>
-                        </li>
-
+                            </li>
+                        }
+                        @if (!Model.FeaturedTours.Any())
+                        {
+                            <li><p class="section-text">Chưa có tour nào. Vui lòng quay lại sau.</p></li>
+                        }
                     </ul>
 
-                    <button class="btn btn-primary">View All Packages</button>
+                    <a href="/Tours" class="btn btn-primary">Xem tất cả tour</a>
 
                 </div>
             </section>

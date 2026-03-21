@@ -33,7 +33,7 @@
         <dd class="col-sm-9">@Model.Tour?.Destination?.Name</dd>
     </dl>
 
-    <form method="post">
+    <form method="post" asp-route-id="@Model.Tour?.TourId">
         <button type="submit" class="btn btn-danger">Xóa</button>
         <a href="/Admin/Tours" class="btn btn-secondary ms-2">Hủy</a>
     </form>

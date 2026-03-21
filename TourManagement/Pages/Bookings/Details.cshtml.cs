@@ -1,9 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using TourManagement.Data;
 using TourManagement.Models;
 
-namespace TourManagement.Pages.Tours
+namespace TourManagement.Pages.Bookings
 {
     public class DetailsModel : PageModel
     {
@@ -14,25 +15,22 @@ namespace TourManagement.Pages.Tours
             _context = context;
         }
 
-        public Tour? Tour { get; set; }
-        public List<TourGroup> OpenGroups { get; set; } = new();
+        public Booking? Booking { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 return NotFound();
 
-            Tour = await _context.Tours
-                .Include(t => t.Destination)
-                .FirstOrDefaultAsync(t => t.TourId == id);
+            Booking = await _context.Bookings
+                .Include(b => b.Group)
+                    .ThenInclude(g => g.Tour)
+                .Include(b => b.BookingPassengers)
+                .Include(b => b.Payments)
+                .FirstOrDefaultAsync(b => b.BookingId == id);
 
-            if (Tour == null)
+            if (Booking == null)
                 return NotFound();
-
-            OpenGroups = await _context.TourGroups
-                .Where(g => g.TourId == id && g.StatusId == "OPEN")
-                .OrderBy(g => g.DepartDate)
-                .ToListAsync();
 
             return Page();
         }

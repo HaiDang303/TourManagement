@@ -45,11 +45,19 @@ namespace TourManagement.Pages.Admin.Tours
                 return NotFound();
             }
 
-            // Không cho xóa nếu tour đã có đoàn
+            // Không cho xóa nếu đã có booking liên quan bất kỳ group nào
+            var groupIds = tour.TourGroups.Select(g => g.GroupId).ToList();
+            var hasBookings = await _context.Bookings.AnyAsync(b => groupIds.Contains(b.GroupId));
+            if (hasBookings)
+            {
+                TempData["Error"] = "Không thể xóa tour vì đã có booking liên quan.";
+                return RedirectToPage("/Admin/Tours/Index");
+            }
+
+            // Nếu chỉ có group rỗng (chưa booking), xóa group trước rồi xóa tour
             if (tour.TourGroups.Any())
             {
-                TempData["Error"] = "Không thể xóa tour vì đã có đoàn (TourGroup) liên quan.";
-                return RedirectToPage("/Admin/Tours/Index");
+                _context.TourGroups.RemoveRange(tour.TourGroups);
             }
 
             _context.Tours.Remove(tour);

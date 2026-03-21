@@ -76,6 +76,7 @@
                         <td>@r.Category</td>
                         <td>@r.City</td>
                         <td class="text-nowrap">
+                            <a class="btn btn-sm btn-outline-info" asp-page="/Admin/Tours/Details" asp-route-id="@r.TourId">Chi tiết</a>
                             <a class="btn btn-sm btn-outline-primary" asp-page="/Admin/Tours/Edit" asp-route-id="@r.TourId">Sửa</a>
                             <a class="btn btn-sm btn-outline-danger ms-1" asp-page="/Admin/Tours/Delete" asp-route-id="@r.TourId">Xóa</a>
                         </td>

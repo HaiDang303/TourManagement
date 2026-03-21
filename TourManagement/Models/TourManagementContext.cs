@@ -40,13 +40,14 @@ public partial class TourManagementContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Name=ConnectionStrings:MyCnn");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=(local);Database=TourManagement;User Id=sa;Password=123;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Booking>(entity =>
         {
-            entity.HasKey(e => e.BookingId).HasName("PK__Bookings__5DE3A5B17A58FC83");
+            entity.HasKey(e => e.BookingId).HasName("PK__Bookings__5DE3A5B1FB082D41");
 
             entity.Property(e => e.BookingId)
                 .HasMaxLength(20)
@@ -98,7 +99,7 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<BookingPassenger>(entity =>
         {
-            entity.HasKey(e => e.PassengerId).HasName("PK__BookingP__03764586221805B5");
+            entity.HasKey(e => e.PassengerId).HasName("PK__BookingP__03764586065B1681");
 
             entity.Property(e => e.PassengerId)
                 .HasMaxLength(20)
@@ -145,7 +146,7 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<Destination>(entity =>
         {
-            entity.HasKey(e => e.DestinationId).HasName("PK__Destinat__550153910B6F1C3F");
+            entity.HasKey(e => e.DestinationId).HasName("PK__Destinat__5501539107688A0D");
 
             entity.Property(e => e.DestinationId)
                 .HasMaxLength(20)
@@ -165,7 +166,7 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<Gender>(entity =>
         {
-            entity.HasKey(e => e.GenderId).HasName("PK__Genders__9DF18F87F74D5300");
+            entity.HasKey(e => e.GenderId).HasName("PK__Genders__9DF18F8705461F9D");
 
             entity.Property(e => e.GenderId)
                 .HasMaxLength(2)
@@ -178,7 +179,7 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<PassengerCategory>(entity =>
         {
-            entity.HasKey(e => e.CategoryId).HasName("PK__Passenge__D54EE9B49854CB65");
+            entity.HasKey(e => e.CategoryId).HasName("PK__Passenge__D54EE9B44E86B46C");
 
             entity.Property(e => e.CategoryId)
                 .HasMaxLength(10)
@@ -194,7 +195,7 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<Payment>(entity =>
         {
-            entity.HasKey(e => e.PaymentId).HasName("PK__Payments__ED1FC9EAEBE2E695");
+            entity.HasKey(e => e.PaymentId).HasName("PK__Payments__ED1FC9EA25275CB2");
 
             entity.Property(e => e.PaymentId)
                 .HasMaxLength(20)
@@ -241,9 +242,9 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.RoleId).HasName("PK__Roles__760965CC1740807B");
+            entity.HasKey(e => e.RoleId).HasName("PK__Roles__760965CCE293F042");
 
-            entity.HasIndex(e => e.RoleName, "UQ__Roles__783254B1E5946EFC").IsUnique();
+            entity.HasIndex(e => e.RoleName, "UQ__Roles__783254B1FFBA11B8").IsUnique();
 
             entity.Property(e => e.RoleId).HasColumnName("role_id");
             entity.Property(e => e.CreatedAt)
@@ -260,7 +261,7 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<Status>(entity =>
         {
-            entity.HasKey(e => e.StatusId).HasName("PK__Statuses__3683B531D2F20AE1");
+            entity.HasKey(e => e.StatusId).HasName("PK__Statuses__3683B53159A2DE85");
 
             entity.Property(e => e.StatusId)
                 .HasMaxLength(10)
@@ -276,7 +277,7 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<Tour>(entity =>
         {
-            entity.HasKey(e => e.TourId).HasName("PK__Tours__4B16B9E6202F8BC0");
+            entity.HasKey(e => e.TourId).HasName("PK__Tours__4B16B9E60FBF1533");
 
             entity.HasIndex(e => e.CreatedAt, "IX_Tours_CreatedAt").IsDescending();
 
@@ -327,7 +328,7 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<TourGroup>(entity =>
         {
-            entity.HasKey(e => e.GroupId).HasName("PK__TourGrou__D57795A03D9F0B61");
+            entity.HasKey(e => e.GroupId).HasName("PK__TourGrou__D57795A0D6756CDD");
 
             entity.Property(e => e.GroupId)
                 .HasMaxLength(20)
@@ -366,7 +367,7 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<TourPrice>(entity =>
         {
-            entity.HasKey(e => e.PriceId).HasName("PK__TourPric__1681726D4A4B5B8E");
+            entity.HasKey(e => e.PriceId).HasName("PK__TourPric__1681726D122C813E");
 
             entity.Property(e => e.PriceId)
                 .HasMaxLength(20)
@@ -393,9 +394,9 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3213E83F0459C5BF");
+            entity.HasKey(e => e.Id).HasName("PK__Users__3213E83F3A16B90E");
 
-            entity.HasIndex(e => e.Email, "UQ__Users__AB6E6164DF658BF1").IsUnique();
+            entity.HasIndex(e => e.Email, "UQ__Users__AB6E616472A634E6").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Address)

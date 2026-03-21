@@ -1,10 +1,8 @@
-
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,7 +11,6 @@ using System.Threading.Tasks;
 using TourManagement.Models;
 
 namespace TourManagement.Pages.Accounts
-
 {
     public class LoginModel : PageModel
     {
@@ -27,6 +24,7 @@ namespace TourManagement.Pages.Accounts
         [BindProperty]
         public InputModel Input { get; set; } = new InputModel();
 
+        [BindProperty(SupportsGet = true)]
         public string? ReturnUrl { get; set; }
 
         [TempData]
@@ -36,15 +34,12 @@ namespace TourManagement.Pages.Accounts
         {
             [Required(ErrorMessage = "Vui lòng nhập email")]
             [EmailAddress(ErrorMessage = "Email không hợp lệ")]
-            [Display(Name = "Email")]
             public string Email { get; set; } = string.Empty;
 
             [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
             [DataType(DataType.Password)]
-            [Display(Name = "Mật khẩu")]
             public string Password { get; set; } = string.Empty;
 
-            [Display(Name = "Ghi nhớ đăng nhập?")]
             public bool RememberMe { get; set; }
         }
 
@@ -55,9 +50,7 @@ namespace TourManagement.Pages.Accounts
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
 
-            // Đảm bảo xóa mọi cookie đăng nhập cũ (nếu có)
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
             ReturnUrl = returnUrl;
         }
 
@@ -67,46 +60,40 @@ namespace TourManagement.Pages.Accounts
 
             if (!ModelState.IsValid)
             {
-                // Nếu validation thất bại → quay lại trang với lỗi (client-side + server-side)
                 return Page();
             }
 
-            // Tìm user theo email trong bảng Users (kèm role)
             var user = await _context.Users
                 .Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.Email == Input.Email && u.IsActive);
 
-
             if (user == null || user.Password != Input.Password)
-
             {
                 ModelState.AddModelError(string.Empty, "Email hoặc mật khẩu không đúng.");
                 return Page();
             }
 
-            // Tạo danh sách claim đơn giản
-
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim("UserId", user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Name ?? user.Email),
                 new Claim(ClaimTypes.Email, user.Email)
             };
 
             if (user.Role != null)
             {
-                // Chuẩn hóa role về chữ thường để dùng với [Authorize(Roles = "admin")]
                 var normalizedRole = (user.Role.RoleName ?? string.Empty).ToLowerInvariant();
                 claims.Add(new Claim(ClaimTypes.Role, normalizedRole));
             }
 
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var claimsIdentity = new ClaimsIdentity(
+                claims,
+                CookieAuthenticationDefaults.AuthenticationScheme);
 
             var authProperties = new AuthenticationProperties
             {
-
                 IsPersistent = Input.RememberMe
-
             };
 
             await HttpContext.SignInAsync(
@@ -114,18 +101,20 @@ namespace TourManagement.Pages.Accounts
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
 
-            // Đăng nhập thành công → nếu là admin thì vào trang Dashboard
             var roleName = user.Role?.RoleName;
             if (!string.IsNullOrEmpty(roleName) &&
                 roleName.Equals("admin", StringComparison.OrdinalIgnoreCase))
             {
                 return RedirectToPage("/Admin/Dashboard");
             }
+            else if (!string.IsNullOrEmpty(roleName) &&
+                roleName.Equals("staff", StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToPage("/Staff/Bookings/Index");
+            }
 
-            // Các role khác → dùng redirect mặc định (Home hoặc returnUrl)
-            return LocalRedirect(GetRedirectUrl(returnUrl));
+            return LocalRedirect(GetRedirectUrl(ReturnUrl));
         }
-
 
         private string GetRedirectUrl(string? returnUrl)
         {
@@ -134,9 +123,7 @@ namespace TourManagement.Pages.Accounts
                 return returnUrl;
             }
 
-            // Mặc định redirect tạm thời về trang Home (trang Index)
             return Url.Content("~/") ?? "/";
         }
-
     }
 }

@@ -1,71 +1,204 @@
-﻿@page "{groupId}"
+﻿@page
 @model TourManagement.Pages.Bookings.CreateModel
-
 @{
-    ViewData["Title"] = "Đặt tour - " + Model.TourGroup?.Tour?.Name;
-    Layout = null;  // giữ giao diện công khai, không dùng admin layout
+    ViewData["Title"] = "Đặt booking";
 }
 
-<div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
+<style>
+    .booking-page {
+        background: #f7fbff;
+        padding: 150px 0 80px;
+    }
 
-            <div class="card shadow-lg">
-                <div class="card-header bg-primary text-white text-center py-4">
-                    <h3 class="mb-1">Đặt Tour: @Model.TourGroup?.Tour?.Name</h3>
-                    <p class="mb-0">
-                        Khởi hành: <strong>@Model.TourGroup?.DepartDate.ToString("dd/MM/yyyy")</strong>
-                        → Về: <strong>@Model.TourGroup?.ReturnDate.ToString("dd/MM/yyyy")</strong>
-                    </p>
-                    <small>Sức chứa còn lại: @Model.RemainingCapacity người</small>
-                </div>
+    .booking-grid {
+        display: grid;
+        grid-template-columns: 1.1fr .9fr;
+        gap: 30px;
+        align-items: start;
+    }
 
-                <div class="card-body p-5">
-                    <form method="post">
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+    .booking-card,
+    .booking-summary {
+        background: white;
+        border-radius: 22px;
+        box-shadow: 0 12px 35px rgba(12,31,56,.08);
+    }
 
-                        <div class="row g-4">
-                            <div class="col-md-4">
-                                <label asp-for="Adults" class="form-label fw-bold">Người lớn</label>
-                                <input asp-for="Adults" class="form-control form-control-lg" min="1" required />
-                                <span asp-validation-for="Adults" class="text-danger"></span>
-                            </div>
+    .booking-card {
+        padding: 30px;
+    }
 
-                            <div class="col-md-4">
-                                <label asp-for="Children" class="form-label fw-bold">Trẻ em</label>
-                                <input asp-for="Children" class="form-control form-control-lg" min="0" />
-                                <span asp-validation-for="Children" class="text-danger"></span>
-                            </div>
+    .booking-summary {
+        padding: 28px;
+        position: sticky;
+        top: 110px;
+    }
 
-                            <div class="col-md-4">
-                                <label asp-for="Infants" class="form-label fw-bold">Em bé</label>
-                                <input asp-for="Infants" class="form-control form-control-lg" min="0" />
-                                <span asp-validation-for="Infants" class="text-danger"></span>
-                            </div>
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #102542;
+            margin-bottom: 8px;
+        }
+
+    .form-control, .form-select {
+        width: 100%;
+        border: 1px solid #dce8f2;
+        border-radius: 14px;
+        padding: 14px 16px;
+        font-size: 15px;
+        outline: none;
+        background: #fff;
+    }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 4px rgba(13,110,253,.08);
+        }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid #edf3f8;
+        color: #5f7289;
+    }
+
+        .summary-row strong {
+            color: #102542;
+        }
+
+    .summary-price {
+        font-size: 30px;
+        font-weight: 800;
+        color: #0d6efd;
+        margin-top: 18px;
+    }
+
+    .validation-summary-errors {
+        background: #fff4f4;
+        border: 1px solid #ffd2d2;
+        color: #c62828;
+        padding: 14px 16px;
+        border-radius: 14px;
+        margin-bottom: 18px;
+    }
+
+    @@media (max-width: 991px) {
+        .booking-grid,
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .booking-summary {
+            position: static;
+        }
+    }
+</style>
+
+<section class="booking-page">
+    <div class="container">
+        <p class="section-subtitle">Đặt tour</p>
+        <h1 class="h2 section-title">Thông tin booking của bạn</h1>
+        <p class="section-text" style="margin-bottom:34px;">
+            Xác nhận số lượng hành khách và ghi chú cần thiết trước khi chuyển sang bước nhập danh sách hành khách.
+        </p>
+
+        <div class="booking-grid">
+            <div class="booking-card">
+                <h3 class="h3" style="margin-bottom:20px;">Thông tin đặt tour</h3>
+
+                <div asp-validation-summary="ModelOnly"></div>
+
+                <form method="post">
+                    <input type="hidden" asp-for="Input.GroupId" />
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label asp-for="Input.Adults">Người lớn</label>
+                            <input asp-for="Input.Adults" type="number" min="1" class="form-control" />
                         </div>
 
-                        <div class="mt-5 text-center">
-                            <button type="submit" class="btn btn-primary btn-lg px-5 py-3">
-                                Tiếp tục → Thêm thông tin hành khách
-                            </button>
+                        <div class="form-group">
+                            <label asp-for="Input.Children">Trẻ em</label>
+                            <input asp-for="Input.Children" type="number" min="0" class="form-control" />
                         </div>
 
-                        <div class="mt-4 text-center text-muted">
-                            <small>Lưu ý: Bạn cần đăng nhập để hoàn tất đặt chỗ</small>
+                        <div class="form-group">
+                            <label asp-for="Input.Infants">Em bé</label>
+                            <input asp-for="Input.Infants" type="number" min="0" class="form-control" />
                         </div>
-                    </form>
-                </div>
+
+                        <div class="form-group full">
+                            <label asp-for="Input.Notes">Ghi chú</label>
+                            <textarea asp-for="Input.Notes" rows="5" class="form-control"
+                                      placeholder="Nhập yêu cầu đặc biệt, ghi chú liên hệ hoặc lưu ý cho chuyến đi..."></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-secondary">
+                        Tiếp tục nhập hành khách
+                    </button>
+                </form>
             </div>
 
-            <div class="mt-4 text-center">
-                <a asp-page="/Tours/Details" asp-route-id="@Model.TourGroup?.TourId" class="btn btn-outline-secondary">
-                    ← Quay lại chi tiết tour
-                </a>
-            </div>
+            <aside class="booking-summary">
+                <p class="section-subtitle">Tóm tắt</p>
+                <h3 class="h3 section-title" style="margin-bottom:16px;">Chi tiết đợt khởi hành</h3>
 
+                @if (Model.Group != null && Model.Tour != null)
+                {
+                    var remain = Model.Group.MaxCapacity - Model.Group.CurrentBookings;
+
+                    <div class="summary-row">
+                        <span>Tên tour</span>
+                        <strong>@Model.Tour.Name</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>Mã đoàn</span>
+                        <strong>@Model.Group.GroupId</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>Ngày đi</span>
+                        <strong>@Model.Group.DepartDate.ToString("dd/MM/yyyy")</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>Ngày về</span>
+                        <strong>@Model.Group.ReturnDate.ToString("dd/MM/yyyy")</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>Chỗ còn lại</span>
+                        <strong>@remain / @Model.Group.MaxCapacity</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>Giá cơ bản</span>
+                        <strong>@Model.Tour.BasePrice.ToString("N0") VNĐ</strong>
+                    </div>
+
+                    <div class="summary-price">
+                        @Model.Tour.BasePrice.ToString("N0") VNĐ
+                    </div>
+                    <p style="color:#7b8ea4; margin-top:4px;">Áp dụng cho 1 người lớn</p>
+                }
+            </aside>
         </div>
     </div>
-</div>
+</section>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

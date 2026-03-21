@@ -1,0 +1,243 @@
+﻿@page "{id}"
+@model TourManagement.Pages.Bookings.DetailsModel
+@{
+    ViewData["Title"] = "Chi tiết booking";
+}
+
+<style>
+    .booking-detail-page {
+        background: #f7fbff;
+        padding: 150px 0 80px;
+    }
+
+    .top-card,
+    .detail-box {
+        background: white;
+        border-radius: 22px;
+        box-shadow: 0 12px 35px rgba(12,31,56,.08);
+    }
+
+    .top-card {
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+
+    .booking-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 16px;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .status-confirmed {
+        background: rgba(34,197,94,.14);
+        color: #15803d;
+    }
+
+    .status-pending {
+        background: rgba(245,158,11,.14);
+        color: #b45309;
+    }
+
+    .detail-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+
+    .detail-box {
+        padding: 26px;
+    }
+
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 12px 0;
+        border-bottom: 1px solid #edf3f8;
+        color: #667b93;
+    }
+
+        .detail-row strong {
+            color: #102542;
+            text-align: right;
+        }
+
+    .passenger-table-wrap,
+    .payment-table-wrap {
+        background: white;
+        border-radius: 22px;
+        box-shadow: 0 12px 35px rgba(12,31,56,.08);
+        padding: 26px;
+        overflow-x: auto;
+        margin-bottom: 30px;
+    }
+
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 720px;
+    }
+
+        .styled-table thead th {
+            background: #0d6efd;
+            color: white;
+            text-align: left;
+            padding: 14px 16px;
+            font-size: 14px;
+        }
+
+        .styled-table tbody td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #ecf2f8;
+            color: #5f7288;
+        }
+
+    .action-group {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+
+    @@media (max-width: 991px) {
+        .detail-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<section class="booking-detail-page">
+    <div class="container">
+        @if (Model.Booking != null)
+        {
+            var isConfirmed = Model.Booking.StatusId == "CONFIRMED";
+
+            <div class="top-card">
+                <p class="section-subtitle">Booking thành công</p>
+                <h1 class="h2 section-title" style="margin-bottom:14px;">Chi tiết booking @Model.Booking.BookingId</h1>
+
+                <div class="booking-status @(isConfirmed ? "status-confirmed" : "status-pending")">
+                    <ion-icon name="checkmark-circle-outline"></ion-icon>
+                    @(isConfirmed ? "Đã xác nhận" : "Đang chờ xử lý")
+                </div>
+
+                <div class="action-group" style="margin-top:24px;">
+                    <a asp-page="/Tours/Index" class="btn btn-primary">Tiếp tục xem tour</a>
+                    <a asp-page="/Tours/Details" asp-route-id="@Model.Booking.Group?.TourId" class="btn btn-secondary">Xem lại tour</a>
+                </div>
+            </div>
+
+            <div class="detail-grid">
+                <div class="detail-box">
+                    <p class="section-subtitle">Thông tin booking</p>
+                    <h3 class="h3 section-title" style="margin-bottom:10px;">Thông tin chung</h3>
+
+                    <div class="detail-row"><span>Mã booking</span><strong>@Model.Booking.BookingId</strong></div>
+                    <div class="detail-row"><span>Ngày đặt</span><strong>@Model.Booking.BookingDate.ToString("dd/MM/yyyy HH:mm")</strong></div>
+                    <div class="detail-row"><span>Trạng thái</span><strong>@Model.Booking.StatusId</strong></div>
+                    <div class="detail-row"><span>Người lớn</span><strong>@Model.Booking.Adults</strong></div>
+                    <div class="detail-row"><span>Trẻ em</span><strong>@Model.Booking.Children</strong></div>
+                    <div class="detail-row"><span>Em bé</span><strong>@Model.Booking.Infants</strong></div>
+                    <div class="detail-row"><span>Tổng tiền</span><strong>@Model.Booking.TotalPrice.ToString("N0") VNĐ</strong></div>
+                    <div class="detail-row"><span>Ghi chú</span><strong>@(string.IsNullOrWhiteSpace(Model.Booking.Notes) ? "-" : Model.Booking.Notes)</strong></div>
+                </div>
+
+                <div class="detail-box">
+                    <p class="section-subtitle">Thông tin tour</p>
+                    <h3 class="h3 section-title" style="margin-bottom:10px;">Đợt khởi hành đã chọn</h3>
+
+                    <div class="detail-row"><span>Tên tour</span><strong>@Model.Booking.Group?.Tour?.Name</strong></div>
+                    <div class="detail-row"><span>Mã đoàn</span><strong>@Model.Booking.GroupId</strong></div>
+                    <div class="detail-row"><span>Ngày đi</span><strong>@Model.Booking.Group?.DepartDate.ToString("dd/MM/yyyy")</strong></div>
+                    <div class="detail-row"><span>Ngày về</span><strong>@Model.Booking.Group?.ReturnDate.ToString("dd/MM/yyyy")</strong></div>
+                    <div class="detail-row"><span>Thời lượng</span><strong>@Model.Booking.Group?.Tour?.DurationDays ngày</strong></div>
+                    <div class="detail-row"><span>Điểm đến</span><strong>@Model.Booking.Group?.Tour?.DestinationId</strong></div>
+                </div>
+            </div>
+
+            <div class="passenger-table-wrap">
+                <p class="section-subtitle">Danh sách hành khách</p>
+                <h3 class="h3 section-title" style="margin-bottom:16px;">Thông tin hành khách đi cùng</h3>
+
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Họ tên</th>
+                            <th>Giới tính</th>
+                            <th>Ngày sinh</th>
+                            <th>Loại hành khách</th>
+                            <th>Passport / CCCD</th>
+                            <th>Ghi chú</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Booking.BookingPassengers != null && Model.Booking.BookingPassengers.Any())
+                        {
+                            @foreach (var p in Model.Booking.BookingPassengers)
+                            {
+                                <tr>
+                                    <td>@p.FullName</td>
+                                    <td>@(string.IsNullOrWhiteSpace(p.GenderId) ? "-" : p.GenderId)</td>
+                                    <td>@(p.Dob.HasValue? p.Dob.Value.ToString("dd/MM/yyyy") : "-")</td>
+                                    <td>@p.CategoryId</td>
+                                    <td>@(string.IsNullOrWhiteSpace(p.PassportNo) ? "-" : p.PassportNo)</td>
+                                    <td>@(string.IsNullOrWhiteSpace(p.Notes) ? "-" : p.Notes)</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6">Chưa có hành khách nào.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="payment-table-wrap">
+                <p class="section-subtitle">Thanh toán</p>
+                <h3 class="h3 section-title" style="margin-bottom:16px;">Lịch sử thanh toán</h3>
+
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Mã thanh toán</th>
+                            <th>Ngày thanh toán</th>
+                            <th>Phương thức</th>
+                            <th>Mã giao dịch</th>
+                            <th>Số tiền</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Booking.Payments != null && Model.Booking.Payments.Any())
+                        {
+                            @foreach (var pay in Model.Booking.Payments)
+                            {
+                                <tr>
+                                    <td>@pay.PaymentId</td>
+                                    <td>@pay.PaymentDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>@pay.Method</td>
+                                    <td>@(string.IsNullOrWhiteSpace(pay.TransactionRef) ? "-" : pay.TransactionRef)</td>
+                                    <td>@pay.Amount.ToString("N0") VNĐ</td>
+                                    <td>@pay.StatusId</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6">Chưa có thanh toán nào.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</section>
