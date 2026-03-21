@@ -63,20 +63,6 @@ namespace TourManagement.Pages.Admin.Tours
             [Range(1, 10000, ErrorMessage = "Số người tối đa phải >= 1")]
             public int? MaxParticipants { get; set; }
 
-            [Required(ErrorMessage = "Vui lòng nhập ngày khởi hành")]
-            [Display(Name = "Ngày khởi hành")]
-            [DataType(DataType.Date)]
-            public DateOnly StartDate { get; set; }
-
-            [Required(ErrorMessage = "Vui lòng nhập ngày kết thúc")]
-            [Display(Name = "Ngày kết thúc")]
-            [DataType(DataType.Date)]
-            public DateOnly EndDate { get; set; }
-
-            [Required(ErrorMessage = "Vui lòng nhập số chỗ")]
-            [Range(1, 10000, ErrorMessage = "Số chỗ phải >= 1")]
-            [Display(Name = "Số chỗ (MaxCapacity)")]
-            public int AvailableSeats { get; set; } = 50;
         }
 
         public async Task OnGetAsync()
@@ -84,10 +70,6 @@ namespace TourManagement.Pages.Admin.Tours
             Destinations = await _context.Destinations
                 .OrderBy(d => d.Name)
                 .ToListAsync();
-
-            var today = DateOnly.FromDateTime(DateTime.Today);
-            Input.StartDate = today.AddDays(7);
-            Input.EndDate = today.AddDays(7 + Math.Max(1, Input.DurationDays));
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -101,11 +83,6 @@ namespace TourManagement.Pages.Admin.Tours
                 return Page();
             }
 
-            if (Input.EndDate < Input.StartDate)
-            {
-                ModelState.AddModelError(string.Empty, "END DATE phải lớn hơn hoặc bằng START DATE.");
-                return Page();
-            }
 
             var destinationExists = await _context.Destinations.AnyAsync(d => d.DestinationId == Input.DestinationId);
             if (!destinationExists)
@@ -140,19 +117,6 @@ namespace TourManagement.Pages.Admin.Tours
 
             _context.Tours.Add(tour);
 
-            var groupId = $"GR{DateTime.Now:yyyyMMdd}{Guid.NewGuid().ToString("N")[..6].ToUpperInvariant()}";
-            var group = new TourGroup
-            {
-                GroupId = groupId,
-                TourId = tourId,
-                DepartDate = Input.StartDate,
-                ReturnDate = Input.EndDate,
-                MaxCapacity = Input.AvailableSeats,
-                CurrentBookings = 0,
-                StatusId = "OPEN",
-                CreatedAt = DateTime.Now
-            };
-            _context.TourGroups.Add(group);
 
             await _context.SaveChangesAsync();
 

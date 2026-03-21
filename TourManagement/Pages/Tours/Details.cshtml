@@ -5,179 +5,311 @@
 }
 
 <style>
+    /* ── Hero ── */
     .detail-hero {
-        background: linear-gradient(rgba(6, 24, 54, 0.72), rgba(6, 24, 54, 0.78)), url('/images/popular-1.jpg') center/cover no-repeat;
-        padding: 150px 0 80px;
+        background: linear-gradient(rgba(6,24,54,0.8), rgba(6,24,54,0.88)), url('/images/popular-1.jpg') center/cover no-repeat;
+        padding: 140px 0 70px;
         color: white;
     }
 
-        .detail-hero .hero-title {
-            font-size: 42px;
-            margin-bottom: 14px;
+        .detail-hero .hero-label {
+            font-size: 11px;
+            color: #60a5fa;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            display: block;
         }
 
+        .detail-hero .hero-title {
+            font-size: 38px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            line-height: 1.25;
+        }
+
+        .detail-hero .hero-text {
+            font-size: 14px;
+            color: rgba(255,255,255,0.68);
+            line-height: 1.75;
+            max-width: 560px;
+        }
+
+    /* ── Wrapper & Grid ── */
     .detail-wrapper {
-        background: #f6fbff;
-        padding: 80px 0;
+        background: #f0f6ff;
+        padding: 60px 0 80px;
     }
 
     .detail-grid {
         display: grid;
-        grid-template-columns: 1.2fr .8fr;
-        gap: 30px;
+        grid-template-columns: 1.3fr 0.7fr;
+        gap: 24px;
         align-items: start;
     }
 
-    .detail-card,
-    .group-card,
-    .summary-card {
-        background: white;
-        border-radius: 20px;
-        box-shadow: 0 12px 35px rgba(12,31,56,.08);
-    }
-
+    /* ── Detail Card ── */
     .detail-card {
+        background: #fff;
+        border-radius: 16px;
+        border: 1px solid #daeaf8;
         overflow: hidden;
     }
 
         .detail-card img {
             width: 100%;
-            height: 360px;
+            height: 300px;
             object-fit: cover;
             display: block;
         }
 
         .detail-card .content {
-            padding: 28px;
+            padding: 24px;
         }
 
+    /* ── Section labels ── */
+    .sec-label {
+        font-size: 11px;
+        color: #2563eb;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    .sec-title {
+        font-size: 20px;
+        font-weight: 800;
+        color: #0c1f38;
+        margin-bottom: 10px;
+    }
+
+    .sec-desc {
+        font-size: 13px;
+        color: #667b94;
+        line-height: 1.75;
+        margin-bottom: 20px;
+    }
+
+    /* ── Info grid ── */
     .info-list {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-        margin: 24px 0;
+        gap: 10px;
+        margin: 0;
     }
 
     .info-item {
-        background: #f7fbff;
-        border-radius: 16px;
-        padding: 18px;
+        background: #f0f6ff;
+        border-radius: 10px;
+        padding: 14px 16px;
     }
 
         .info-item .label {
-            font-size: 13px;
+            font-size: 11px;
             color: #7b8ea4;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
         }
 
         .info-item .value {
+            font-size: 15px;
             font-weight: 700;
-            color: #102542;
-            font-size: 17px;
+            color: #0c1f38;
         }
+
+        .info-item .value-price {
+            color: #1d4ed8;
+        }
+
+    /* ── Group section ── */
+    .group-section-header {
+        margin: 30px 0 18px;
+    }
 
     .group-list {
         display: grid;
-        gap: 20px;
+        gap: 16px;
     }
 
     .group-card {
-        padding: 22px;
+        background: #fff;
+        border-radius: 14px;
+        border: 1px solid #daeaf8;
+        padding: 20px 22px;
     }
 
     .group-top {
         display: flex;
         justify-content: space-between;
-        gap: 18px;
-        align-items: start;
-        margin-bottom: 16px;
+        gap: 14px;
+        align-items: flex-start;
+        margin-bottom: 14px;
     }
 
     .group-id {
-        font-size: 14px;
-        color: #0d6efd;
-        font-weight: 700;
-        margin-bottom: 6px;
+        font-size: 11px;
+        color: #2563eb;
+        font-weight: 600;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
     .group-title {
-        font-size: 22px;
-        color: #102542;
-        margin-bottom: 6px;
+        font-size: 16px;
+        font-weight: 700;
+        color: #0c1f38;
+        margin-bottom: 4px;
+    }
+
+    .group-sub {
+        font-size: 12px;
+        color: #7b8ea4;
     }
 
     .badge-open {
-        background: rgba(35, 197, 94, .14);
-        color: #1f9d55;
-        padding: 8px 14px;
-        border-radius: 999px;
-        font-size: 13px;
-        font-weight: 700;
+        background: #dcfce7;
+        color: #15803d;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
         white-space: nowrap;
+        flex-shrink: 0;
     }
 
     .group-meta {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
-        margin: 14px 0 18px;
+        gap: 8px;
+        margin-bottom: 16px;
     }
 
-        .group-meta .meta-box {
-            background: #f7fbff;
-            border-radius: 14px;
-            padding: 15px;
-            text-align: center;
+    .meta-box {
+        background: #f0f6ff;
+        border-radius: 8px;
+        padding: 12px;
+        text-align: center;
+    }
+
+        .meta-box p:first-child {
+            font-size: 11px;
+            color: #7b8ea4;
+            margin-bottom: 4px;
         }
 
-            .group-meta .meta-box p:first-child {
-                font-size: 12px;
-                color: #7b8ea4;
-                margin-bottom: 6px;
-            }
+        .meta-box p:last-child {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0c1f38;
+        }
 
-            .group-meta .meta-box p:last-child {
-                font-size: 16px;
-                font-weight: 700;
-                color: #102542;
-            }
+    .btn-book {
+        display: inline-block;
+        background: #1d4ed8;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background 0.15s;
+        cursor: pointer;
+    }
 
-    .summary-card {
+        .btn-book:hover {
+            background: #1e40af;
+            color: #fff;
+        }
+
+    .group-empty {
+        background: #fff;
+        border-radius: 14px;
+        border: 1px solid #daeaf8;
         padding: 28px;
+        text-align: center;
+        font-size: 14px;
+        color: #7b95b2;
+    }
+
+    /* ── Sidebar ── */
+    .summary-card {
+        background: #fff;
+        border-radius: 16px;
+        border: 1px solid #daeaf8;
+        padding: 22px;
         position: sticky;
         top: 110px;
     }
 
-        .summary-card .price {
-            font-size: 34px;
-            color: #0d6efd;
-            font-weight: 800;
+        .summary-card .sidebar-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0c1f38;
             margin-bottom: 6px;
         }
 
+        .summary-card .price {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1d4ed8;
+            margin: 8px 0 4px;
+            line-height: 1;
+        }
+
         .summary-card .price-note {
-            color: #7b8ea4;
-            margin-bottom: 18px;
+            font-size: 12px;
+            color: #8da4be;
+            margin-bottom: 16px;
         }
 
     .summary-list {
         list-style: none;
         padding: 0;
-        margin: 20px 0;
+        margin: 0 0 18px;
     }
 
         .summary-list li {
             display: flex;
             justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #e9f1f8;
+            padding: 10px 0;
+            border-bottom: 1px solid #e8f0f8;
+            font-size: 13px;
             color: #5e7187;
         }
 
-            .summary-list li strong {
-                color: #102542;
+            .summary-list li:last-child {
+                border-bottom: none;
             }
 
+            .summary-list li strong {
+                color: #0c1f38;
+            }
+
+    .btn-outline-tour {
+        display: block;
+        text-align: center;
+        background: #f0f6ff;
+        color: #1d4ed8;
+        border: 1px solid #bdd7f5;
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background 0.15s;
+        margin-top: 10px;
+    }
+
+        .btn-outline-tour:hover {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+    /* ── Responsive ── */
     @@media (max-width: 991px) {
         .detail-grid {
             grid-template-columns: 1fr;
@@ -187,8 +319,7 @@
             position: static;
         }
 
-        .group-meta,
-        .info-list {
+        .group-meta, .info-list {
             grid-template-columns: 1fr;
         }
     }
@@ -198,7 +329,7 @@
 {
     <section class="detail-hero">
         <div class="container">
-            <p class="section-subtitle">Chi tiết tour</p>
+            <span class="hero-label">Chi tiết tour</span>
             <h1 class="hero-title">@Model.Tour.Name</h1>
             <p class="hero-text">
                 Khám phá lịch trình, điểm đến và chọn đợt khởi hành phù hợp ngay hôm nay.
@@ -210,117 +341,105 @@
         <div class="container">
             <div class="detail-grid">
                 <div>
+                    <!-- Tour Info Card -->
                     <div class="detail-card">
                         <img src="@(string.IsNullOrEmpty(Model.Tour.ImageUrl) ? "/images/packege-2.jpg" : Model.Tour.ImageUrl)"
                              alt="@Model.Tour.Name" />
-
                         <div class="content">
-                            <p class="section-subtitle">Thông tin tour</p>
-                            <h2 class="h2 section-title">@Model.Tour.Name</h2>
-
-                            <p class="section-text">
+                            <span class="sec-label">Thông tin tour</span>
+                            <h2 class="sec-title">@Model.Tour.Name</h2>
+                            <p class="sec-desc">
                                 @(string.IsNullOrWhiteSpace(Model.Tour.Description)
-                                                            ? "Tour được thiết kế với trải nghiệm hài hòa giữa tham quan, nghỉ dưỡng và khám phá văn hóa địa phương."
-                                                            : Model.Tour.Description)
-                        </p>
-
+                                    ? "Tour được thiết kế với trải nghiệm hài hòa giữa tham quan, nghỉ dưỡng và khám phá văn hóa địa phương."
+                                    : Model.Tour.Description)
+                            </p>
                             <div class="info-list">
                                 <div class="info-item">
                                     <div class="label">Điểm đến</div>
                                     <div class="value">@Model.Tour.Destination?.Name - @Model.Tour.Destination?.City</div>
                                 </div>
-
                                 <div class="info-item">
                                     <div class="label">Thời lượng</div>
                                     <div class="value">@Model.Tour.DurationDays ngày</div>
                                 </div>
-
                                 <div class="info-item">
                                     <div class="label">Danh mục</div>
                                     <div class="value">@(Model.Tour.Category ?? "Tour du lịch")</div>
                                 </div>
-
                                 <div class="info-item">
                                     <div class="label">Giá từ</div>
-                                    <div class="value">@Model.Tour.BasePrice.ToString("N0") VNĐ</div>
+                                    <div class="value value-price">@Model.Tour.BasePrice.ToString("N0") VNĐ</div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div style="margin-top:32px;">
-                        <p class="section-subtitle">Lịch khởi hành</p>
-                        <h2 class="h2 section-title">Chọn đợt khởi hành phù hợp</h2>
+                    <!-- Group List -->
+                    <div class="group-section-header">
+                        <span class="sec-label">Lịch khởi hành</span>
+                        <h2 class="sec-title">Chọn đợt khởi hành phù hợp</h2>
+                    </div>
 
                     @if (Model.OpenGroups != null && Model.OpenGroups.Any())
-                        {
-                            <div class="group-list">
-                                @foreach (var g in Model.OpenGroups)
-                                {
-                                    var remain = g.MaxCapacity - g.CurrentBookings;
-
-                                    <div class="group-card">
-                                        <div class="group-top">
-                                            <div>
-                                                <div class="group-id">Mã đoàn: @g.GroupId</div>
-                                                <h3 class="group-title">Đợt khởi hành ngày @g.DepartDate.ToString("dd/MM/yyyy")</h3>
-                                                <p class="section-text" style="margin-bottom:0;">
-                                                    Trải nghiệm hành trình trọn vẹn từ @g.DepartDate.ToString("dd/MM/yyyy")
-                                                    đến @g.ReturnDate.ToString("dd/MM/yyyy").
-                                                </p>
-                                            </div>
-
-                                            <span class="badge-open">Đang mở bán</span>
+                    {
+                        <div class="group-list">
+                            @foreach (var g in Model.OpenGroups)
+                            {
+                                var remain = g.MaxCapacity - g.CurrentBookings;
+                                <div class="group-card">
+                                    <div class="group-top">
+                                        <div>
+                                            <div class="group-id">Mã đoàn: @g.GroupId</div>
+                                            <h3 class="group-title">Đợt khởi hành ngày @g.DepartDate.ToString("dd/MM/yyyy")</h3>
+                                            <p class="group-sub">
+                                                Trải nghiệm hành trình từ @g.DepartDate.ToString("dd/MM/yyyy")
+                                                đến @g.ReturnDate.ToString("dd/MM/yyyy").
+                                            </p>
                                         </div>
-
-                                        <div class="group-meta">
-                                            <div class="meta-box">
-                                                <p>Ngày đi</p>
-                                                <p>@g.DepartDate.ToString("dd/MM/yyyy")</p>
-                                            </div>
-
-                                            <div class="meta-box">
-                                                <p>Ngày về</p>
-                                                <p>@g.ReturnDate.ToString("dd/MM/yyyy")</p>
-                                            </div>
-
-                                            <div class="meta-box">
-                                                <p>Chỗ còn lại</p>
-                                                <p>@remain / @g.MaxCapacity</p>
-                                            </div>
-                                        </div>
-
-                                        <a asp-page="/Bookings/Create" asp-route-groupId="@g.GroupId" class="btn btn-secondary">
-                                            Đặt tour cho đợt này
-                                        </a>
+                                        <span class="badge-open">Đang mở bán</span>
                                     </div>
-                                }
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="group-card">
-                                Hiện chưa có đợt khởi hành nào đang mở bán.
-                            </div>
-                        }
-                    </div>
+                                    <div class="group-meta">
+                                        <div class="meta-box">
+                                            <p>Ngày đi</p>
+                                            <p>@g.DepartDate.ToString("dd/MM/yyyy")</p>
+                                        </div>
+                                        <div class="meta-box">
+                                            <p>Ngày về</p>
+                                            <p>@g.ReturnDate.ToString("dd/MM/yyyy")</p>
+                                        </div>
+                                        <div class="meta-box">
+                                            <p>Chỗ còn lại</p>
+                                            <p>@remain / @g.MaxCapacity</p>
+                                        </div>
+                                    </div>
+                                    <a asp-page="/Bookings/Create" asp-route-groupId="@g.GroupId" class="btn-book">
+                                        Đặt tour cho đợt này
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="group-empty">
+                            Hiện chưa có đợt khởi hành nào đang mở bán.
+                        </div>
+                    }
                 </div>
 
+                <!-- Sidebar -->
                 <aside class="summary-card">
-                    <p class="section-subtitle">Tóm tắt tour</p>
-                    <h3 class="h3 section-title" style="margin-bottom:10px;">Thông tin nhanh</h3>
-
+                    <span class="sec-label">Tóm tắt tour</span>
+                    <div class="sidebar-title">Thông tin nhanh</div>
                     <div class="price">@Model.Tour.BasePrice.ToString("N0") VNĐ</div>
                     <div class="price-note">Giá cơ bản / 1 người lớn</div>
-
                     <ul class="summary-list">
-                        <li><span>Điểm đến</span> <strong>@Model.Tour.Destination?.Name</strong></li>
-                        <li><span>Thành phố</span> <strong>@Model.Tour.Destination?.City</strong></li>
+                        <li><span>Điểm đến</span>   <strong>@Model.Tour.Destination?.Name</strong></li>
+                        <li><span>Thành phố</span>  <strong>@Model.Tour.Destination?.City</strong></li>
                         <li><span>Thời lượng</span> <strong>@Model.Tour.DurationDays ngày</strong></li>
-                        <li><span>Số đợt mở bán</span> <strong>@(Model.OpenGroups?.Count ?? 0)</strong></li>
+                        <li><span>Số đợt mở bán</span><strong>@(Model.OpenGroups?.Count ?? 0)</strong></li>
                     </ul>
-
-                    <a asp-page="/Tours/Index" class="btn btn-primary" style="width:100%; text-align:center;">
+                    <a asp-page="/Tours/Index" class="btn-outline-tour">
                         Xem tour khác
                     </a>
                 </aside>

@@ -5,119 +5,193 @@
 }
 
 <style>
+    /* ── Hero ── */
     .page-hero {
-        background: linear-gradient(rgba(3, 18, 43, 0.72), rgba(3, 18, 43, 0.78)), url('/images/hero-banner.jpg') center/cover no-repeat;
-        padding: 160px 0 90px;
+        background: linear-gradient(rgba(3,18,43,0.78), rgba(3,18,43,0.85)), url('/images/hero-banner.jpg') center/cover no-repeat;
+        padding: 140px 0 80px;
         color: white;
         text-align: center;
     }
 
-        .page-hero .hero-title {
+        .page-hero .hero-label {
+            font-size: 11px;
+            color: #60a5fa;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            font-weight: 500;
             margin-bottom: 14px;
-            font-size: 42px;
+            display: block;
+        }
+
+        .page-hero .hero-title {
+            font-size: 40px;
             font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 16px;
         }
 
         .page-hero .hero-text {
-            max-width: 760px;
+            max-width: 600px;
             margin: 0 auto;
-            color: rgba(255,255,255,0.88);
+            color: rgba(255,255,255,0.75);
+            font-size: 15px;
+            line-height: 1.75;
         }
 
+    /* ── Section ── */
     .tour-page-section {
-        padding: 80px 0;
-        background: #f7fbff;
+        padding: 70px 0 80px;
+        background: #f0f6ff;
     }
 
+    .section-label-custom {
+        font-size: 11px;
+        color: #1d4ed8;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .section-title-custom {
+        font-size: 28px;
+        font-weight: 800;
+        color: #0c1f38;
+        margin-bottom: 10px;
+    }
+
+    .section-desc-custom {
+        font-size: 14px;
+        color: #5d738d;
+        line-height: 1.75;
+        max-width: 600px;
+        margin-bottom: 40px;
+    }
+
+    /* ── Grid ── */
     .tour-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 30px;
-        margin-top: 40px;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 24px;
+        margin-top: 0;
     }
 
+    /* ── Card ── */
     .tour-card {
-        background: white;
-        border-radius: 20px;
+        background: #ffffff;
+        border-radius: 16px;
         overflow: hidden;
-        box-shadow: 0 12px 35px rgba(12, 31, 56, 0.09);
-        transition: 0.3s ease;
-        height: 100%;
+        border: 1px solid #daeaf8;
         display: flex;
         flex-direction: column;
+        transition: transform 0.22s ease, box-shadow 0.22s ease;
     }
 
         .tour-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 18px 38px rgba(12, 31, 56, 0.14);
+            transform: translateY(-5px);
+            box-shadow: 0 16px 36px rgba(12,31,80,0.13);
         }
 
         .tour-card .card-banner img {
             width: 100%;
-            height: 240px;
+            height: 210px;
             object-fit: cover;
             display: block;
         }
 
         .tour-card .card-content {
-            padding: 24px;
+            padding: 20px 22px 22px;
             flex: 1;
-        }
-
-        .tour-card .card-title {
-            font-size: 22px;
-            margin-bottom: 10px;
-            color: #102542;
+            display: flex;
+            flex-direction: column;
         }
 
         .tour-card .destination-text {
-            color: #5d738d;
-            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
             font-weight: 600;
+            color: #2563eb;
+            margin-bottom: 8px;
+        }
+
+        .tour-card .card-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #0c1f38;
+            margin-bottom: 10px;
+            line-height: 1.35;
         }
 
         .tour-card .card-text {
+            font-size: 13px;
             color: #667b94;
             line-height: 1.7;
+            flex: 1;
             margin-bottom: 18px;
-            min-height: 75px;
+            min-height: 65px;
         }
 
+    /* ── Card Footer ── */
     .tour-meta {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        gap: 16px;
+        align-items: flex-end;
+        padding-top: 14px;
+        border-top: 1px solid #e4eef8;
         margin-top: auto;
     }
 
         .tour-meta .price {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 800;
-            color: #0d6efd;
+            color: #1d4ed8;
+            line-height: 1;
         }
 
             .tour-meta .price span {
                 display: block;
-                font-size: 13px;
-                color: #7b8ea4;
-                font-weight: 500;
+                font-size: 11px;
+                color: #8da4be;
+                font-weight: 400;
+                margin-top: 4px;
             }
 
+        .tour-meta .btn-detail {
+            background: #1d4ed8;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 9px 18px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background 0.15s;
+        }
+
+            .tour-meta .btn-detail:hover {
+                background: #1e40af;
+                color: #fff;
+            }
+
+    /* ── Empty ── */
     .empty-box {
-        margin-top: 35px;
-        background: white;
-        border-radius: 18px;
-        padding: 32px;
+        margin-top: 30px;
+        background: #fff;
+        border-radius: 14px;
+        padding: 36px;
         text-align: center;
-        box-shadow: 0 12px 30px rgba(12,31,56,.08);
-        color: #5f7188;
+        border: 1px solid #daeaf8;
+        color: #7b95b2;
+        font-size: 14px;
     }
 </style>
 
 <section class="page-hero">
     <div class="container">
-        <p class="section-subtitle">Tourly Travel</p>
+        <span class="hero-label">Tourly Travel</span>
         <h1 class="hero-title">Khám phá các tour nổi bật</h1>
         <p class="hero-text">
             Lựa chọn tour phù hợp, xem lịch khởi hành chi tiết và đặt chỗ nhanh chóng với giao diện đồng bộ cùng trang chủ.
@@ -127,9 +201,9 @@
 
 <section class="tour-page-section">
     <div class="container">
-        <p class="section-subtitle">Danh sách tour</p>
-        <h2 class="h2 section-title">Chọn hành trình dành cho bạn</h2>
-        <p class="section-text">
+        <p class="section-label-custom">Danh sách tour</p>
+        <h2 class="section-title-custom">Chọn hành trình dành cho bạn</h2>
+        <p class="section-desc-custom">
             Xem thông tin điểm đến, giá cơ bản và truy cập nhanh sang trang chi tiết để chọn đợt khởi hành phù hợp.
         </p>
 
@@ -145,32 +219,34 @@
                         </figure>
 
                         <div class="card-content">
-                            <h3 class="card-title">@tour.Name</h3>
-
                             <p class="destination-text">
-                                <ion-icon name="location-outline"></ion-icon>
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z" />
+                                    <circle cx="12" cy="10" r="3" />
+                                </svg>
                                 @tour.Destination?.Name - @tour.Destination?.City
                             </p>
 
+                            <h3 class="card-title">@tour.Name</h3>
+
                             <p class="card-text">
                                 @(string.IsNullOrWhiteSpace(tour.Description)
-                                                        ? "Trải nghiệm du lịch hấp dẫn với lịch trình được thiết kế tối ưu cho người dùng."
-                                                        : (tour.Description.Length > 140 ? tour.Description.Substring(0, 140) + "..." : tour.Description))
-                    </p>
+                                    ? "Trải nghiệm du lịch hấp dẫn với lịch trình được thiết kế tối ưu cho người dùng."
+                                    : (tour.Description.Length > 140 ? tour.Description.Substring(0, 140) + "..." : tour.Description))
+                            </p>
 
                             <div class="tour-meta">
                                 <div class="price">
                                     @tour.BasePrice.ToString("N0") VNĐ
                                     <span>Giá từ / người</span>
                                 </div>
-
-                                <a asp-page="/Tours/Details" asp-route-id="@tour.TourId" class="btn btn-secondary">
+                                <a asp-page="/Tours/Details" asp-route-id="@tour.TourId" class="btn-detail">
                                     Xem chi tiết
                                 </a>
                             </div>
                         </div>
                     </div>
-                        }
+                }
             </div>
         }
         else

@@ -22,14 +22,16 @@ namespace TourManagement.Pages.Staff.Bookings
         public IList<Booking> Bookings { get; set; } = new List<Booking>();
         public IList<Tour> Tours { get; set; } = new List<Tour>();
         public string? SelectedTourId { get; set; }
+        public string? StatusFilter { get; set; } // "pending" | "confirmed" | null = all
         public IList<BookingPassenger> Passengers { get; set; } = new List<BookingPassenger>();
 
         public HashSet<string> PaidStatusSet { get; } = new HashSet<string> { "PAID", "SUCCESS", "COMPLETED", "CONFIRMED" };
 
-        public async Task OnGetAsync(string? tourId = null)
+        public async Task OnGetAsync(string? tourId = null, string? status = null)
         {
             Tours = await _context.Tours.Include(t => t.Destination).OrderBy(t => t.Name).ToListAsync();
             SelectedTourId = tourId;
+            StatusFilter = status;
 
             var query = _context.Bookings
                 .Include(b => b.User)
@@ -43,6 +45,10 @@ namespace TourManagement.Pages.Staff.Bookings
                 var groupIds = await _context.TourGroups.Where(g => g.TourId == tourId).Select(g => g.GroupId).ToListAsync();
                 query = query.Where(b => groupIds.Contains(b.GroupId));
             }
+            if (status == "pending")
+                query = query.Where(b => b.StatusId == "PENDING");
+            else if (status == "confirmed")
+                query = query.Where(b => new[] { "CONFIRMED", "APPROVED", "BOOKED" }.Contains(b.StatusId));
 
             Bookings = await query.ToListAsync();
 
@@ -101,25 +107,6 @@ namespace TourManagement.Pages.Staff.Bookings
             return RedirectToPage();
         }
 
-        // Flow 3: Xác nhận thanh toán - Update payment = PAID, gửi thông báo
-        public async Task<IActionResult> OnPostConfirmPaymentAsync(string paymentId)
-        {
-            var payment = await _context.Payments
-                .Include(p => p.Booking).ThenInclude(b => b!.User)
-                .FirstOrDefaultAsync(p => p.PaymentId == paymentId);
-            if (payment == null)
-            {
-                TempData["Error"] = "Không tìm thấy payment.";
-                return RedirectToPage();
-            }
-            var paidId = await ResolveStatusIdAsync("PAID", "SUCCESS", "COMPLETED", "CONFIRMED");
-            if (paidId == null) { TempData["Error"] = "Không tìm thấy status PAID trong Statuses."; return RedirectToPage(); }
-            payment.StatusId = paidId;
-            await _context.SaveChangesAsync();
-            var customerName = payment.Booking?.User?.Name ?? "Khách hàng";
-            TempData["Success"] = $"Đã xác nhận thanh toán. Đã gửi thông báo cho {customerName} (email: {payment.Booking?.User?.Email}).";
-            return RedirectToPage();
-        }
 
         // Flow 5: Hoàn thành tour - Update booking status = Completed
         public async Task<IActionResult> OnPostCompleteAsync(string bookingId)
@@ -134,35 +121,56 @@ namespace TourManagement.Pages.Staff.Bookings
             return RedirectToPage();
         }
 
-        // Flow 6: Xử lý hủy - Update status = Cancelled
+        // Flow 6: Xử lý hủy - Update status = Cancelled (đã thanh toán → chuyển Admin)
         public async Task<IActionResult> OnPostCancelAsync(string bookingId)
         {
             var booking = await _context.Bookings
                 .Include(b => b.Group)
+                .Include(b => b.Payments)
                 .FirstOrDefaultAsync(b => b.BookingId == bookingId);
             if (booking == null) { TempData["Error"] = "Không tìm thấy booking."; return RedirectToPage(); }
+
+            var isPaid = booking.Payments.Any(p => PaidStatusSet.Contains((p.StatusId ?? "").ToUpperInvariant()));
+            if (isPaid)
+            {
+                TempData["Error"] = "Booking đã thanh toán. Vui lòng chuyển Admin để phê duyệt hoàn tiền.";
+                return RedirectToPage();
+            }
+
             var cancelledId = await ResolveStatusIdAsync("CANCELLED", "CANCELED", "CANCEL");
             if (cancelledId == null) { TempData["Error"] = "Không tìm thấy status CANCELLED."; return RedirectToPage(); }
 
             if (booking.StatusId != cancelledId)
             {
-                // Nếu booking trước đó đã được duyệt (đã chiếm chỗ), cần hoàn trả số chỗ
                 var activeStatusIds = new HashSet<string> { "CONFIRMED", "APPROVED", "BOOKED", "COMPLETED", "DONE", "FINISHED" };
                 bool wasTakingSeats = booking.StatusId != null && activeStatusIds.Contains(booking.StatusId.ToUpperInvariant());
-                
                 booking.StatusId = cancelledId;
-
                 if (wasTakingSeats)
                 {
                     int totalPax = booking.Adults + booking.Children + booking.Infants;
                     booking.Group.CurrentBookings -= totalPax;
                     if (booking.Group.CurrentBookings < 0) booking.Group.CurrentBookings = 0;
                 }
-                
                 await _context.SaveChangesAsync();
             }
-
             TempData["Success"] = "Đã xác nhận hủy booking.";
+            return RedirectToPage();
+        }
+
+        // Từ chối booking (hết chỗ hoặc lý do khác) - gửi lý do qua Notes
+        public async Task<IActionResult> OnPostRejectAsync(string bookingId, string rejectReason)
+        {
+            var booking = await _context.Bookings
+                .Include(b => b.Group)
+                .FirstOrDefaultAsync(b => b.BookingId == bookingId);
+            if (booking == null) { TempData["Error"] = "Không tìm thấy booking."; return RedirectToPage(); }
+            var rejectedId = await ResolveStatusIdAsync("REJECTED", "DENIED", "CANCELLED", "CANCELED");
+            if (rejectedId == null) rejectedId = await ResolveStatusIdAsync("CANCELLED", "CANCELED");
+            if (rejectedId == null) { TempData["Error"] = "Không tìm thấy status từ chối."; return RedirectToPage(); }
+            booking.StatusId = rejectedId;
+            booking.Notes = (booking.Notes ?? "") + (string.IsNullOrWhiteSpace(rejectReason) ? "" : " [Từ chối: " + rejectReason.Trim() + "]");
+            await _context.SaveChangesAsync();
+            TempData["Success"] = "Đã từ chối booking. Lý do đã được lưu và sẽ gửi đến khách hàng.";
             return RedirectToPage();
         }
 

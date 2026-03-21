@@ -28,10 +28,7 @@ namespace TourManagement.Pages.Admin.Tours
             public string Name { get; set; } = string.Empty;
             public string? ImageUrl { get; set; }
             public string? Description { get; set; }
-            public DateOnly? StartDate { get; set; }
-            public DateOnly? EndDate { get; set; }
             public decimal Price { get; set; }
-            public int? AvailableSeats { get; set; }
             public string? Category { get; set; }
             public string? City { get; set; }
         }
@@ -40,25 +37,11 @@ namespace TourManagement.Pages.Admin.Tours
         {
             var tours = await _context.Tours
                 .Include(t => t.Destination)
-                .Include(t => t.TourGroups)
                 .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();
 
             Rows = tours.Select((t, idx) =>
             {
-                var nextGroup = t.TourGroups
-                    .OrderBy(g => g.DepartDate)
-                    .FirstOrDefault();
-
-                int? availableSeats = null;
-                DateOnly? start = null;
-                DateOnly? end = null;
-                if (nextGroup != null)
-                {
-                    start = nextGroup.DepartDate;
-                    end = nextGroup.ReturnDate;
-                    availableSeats = nextGroup.MaxCapacity - nextGroup.CurrentBookings;
-                }
 
                 return new TourRow
                 {
@@ -67,10 +50,7 @@ namespace TourManagement.Pages.Admin.Tours
                     Name = t.Name,
                     ImageUrl = t.ImageUrl,
                     Description = t.Description,
-                    StartDate = start,
-                    EndDate = end,
                     Price = t.BasePrice,
-                    AvailableSeats = availableSeats,
                     Category = t.Category,
                     City = t.Destination?.City
                 };

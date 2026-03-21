@@ -41,10 +41,7 @@
                         <th>STT</th>
                         <th>IMAGE</th>
                         <th>DESCRIPTION</th>
-                        <th>START DATE</th>
-                        <th>END DATE</th>
                         <th>PRICE</th>
-                        <th>AVAIABLESEATS</th>
                         <th>CATEGORY</th>
                         <th>CITY</th>
                         <th>ACTION</th>
@@ -69,10 +66,7 @@
                             <div class="fw-semibold">@r.Name</div>
                             <div class="text-muted small text-truncate" style="max-width: 420px">@r.Description</div>
                         </td>
-                        <td>@(r.StartDate?.ToString("dd/MM/yyyy") ?? "—")</td>
-                        <td>@(r.EndDate?.ToString("dd/MM/yyyy") ?? "—")</td>
                         <td>@r.Price.ToString("N0")</td>
-                        <td>@(r.AvailableSeats?.ToString() ?? "—")</td>
                         <td>@r.Category</td>
                         <td>@r.City</td>
                         <td class="text-nowrap">

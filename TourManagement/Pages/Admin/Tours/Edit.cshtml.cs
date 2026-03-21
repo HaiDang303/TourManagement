@@ -28,7 +28,6 @@ namespace TourManagement.Pages.Admin.Tours
         public string TourId { get; set; } = string.Empty;
 
         public IList<Destination> Destinations { get; set; } = new List<Destination>();
-        public TourGroup? PrimaryGroup { get; set; }
         public string? CurrentImageUrl { get; set; }
 
         [BindProperty]
@@ -67,20 +66,6 @@ namespace TourManagement.Pages.Admin.Tours
             [Display(Name = "Ảnh tour")]
             public IFormFile? ImageFile { get; set; }
 
-            [Required(ErrorMessage = "Vui lòng nhập ngày khởi hành")]
-            [Display(Name = "START DATE")]
-            [DataType(DataType.Date)]
-            public DateOnly StartDate { get; set; }
-
-            [Required(ErrorMessage = "Vui lòng nhập ngày kết thúc")]
-            [Display(Name = "END DATE")]
-            [DataType(DataType.Date)]
-            public DateOnly EndDate { get; set; }
-
-            [Required(ErrorMessage = "Vui lòng nhập số chỗ")]
-            [Range(1, 10000, ErrorMessage = "Số chỗ phải >= 1")]
-            [Display(Name = "AVAIABLESEATS")]
-            public int AvailableSeats { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync(string id)
@@ -92,21 +77,11 @@ namespace TourManagement.Pages.Admin.Tours
                 .ToListAsync();
 
             var tour = await _context.Tours
-                .Include(t => t.TourGroups)
                 .FirstOrDefaultAsync(t => t.TourId == id);
             if (tour == null)
             {
                 return NotFound();
             }
-
-            PrimaryGroup = tour.TourGroups
-                .OrderBy(g => g.DepartDate)
-                .FirstOrDefault();
-
-            var today = DateOnly.FromDateTime(DateTime.Today);
-            var start = PrimaryGroup?.DepartDate ?? today.AddDays(7);
-            var end = PrimaryGroup?.ReturnDate ?? today.AddDays(7 + Math.Max(1, tour.DurationDays));
-            var seats = PrimaryGroup?.MaxCapacity ?? (tour.MaxParticipants ?? 50);
 
             CurrentImageUrl = tour.ImageUrl;
             Input = new InputModel
@@ -117,10 +92,7 @@ namespace TourManagement.Pages.Admin.Tours
                 Price = tour.BasePrice,
                 Category = tour.Category,
                 MaxParticipants = tour.MaxParticipants,
-                Description = tour.Description,
-                StartDate = start,
-                EndDate = end,
-                AvailableSeats = seats
+                Description = tour.Description
             };
 
             return Page();
@@ -143,16 +115,8 @@ namespace TourManagement.Pages.Admin.Tours
                 return Page();
             }
 
-            if (Input.EndDate < Input.StartDate)
-            {
-                var t0 = await _context.Tours.AsNoTracking().FirstOrDefaultAsync(x => x.TourId == id);
-                CurrentImageUrl = t0?.ImageUrl;
-                ModelState.AddModelError(string.Empty, "END DATE phải lớn hơn hoặc bằng START DATE.");
-                return Page();
-            }
 
             var tour = await _context.Tours
-                .Include(t => t.TourGroups)
                 .FirstOrDefaultAsync(t => t.TourId == id);
             if (tour == null)
             {
@@ -171,40 +135,6 @@ namespace TourManagement.Pages.Admin.Tours
                 tour.ImageUrl = newImageUrl;
             tour.UpdatedAt = DateTime.Now;
 
-            var group = tour.TourGroups
-                .OrderBy(g => g.DepartDate)
-                .FirstOrDefault();
-
-            if (group == null)
-            {
-                var groupId = $"GR{DateTime.Now:yyyyMMdd}{Guid.NewGuid().ToString("N")[..6].ToUpperInvariant()}";
-                group = new TourGroup
-                {
-                    GroupId = groupId,
-                    TourId = tour.TourId,
-                    DepartDate = Input.StartDate,
-                    ReturnDate = Input.EndDate,
-                    MaxCapacity = Input.AvailableSeats,
-                    CurrentBookings = 0,
-                    StatusId = "OPEN",
-                    CreatedAt = DateTime.Now
-                };
-                _context.TourGroups.Add(group);
-            }
-            else
-            {
-                // Không cho giảm số chỗ < số booking hiện tại
-                if (Input.AvailableSeats < group.CurrentBookings)
-                {
-                    CurrentImageUrl = tour.ImageUrl;
-                    ModelState.AddModelError(string.Empty, $"AVAIABLESEATS không thể nhỏ hơn số booking hiện tại ({group.CurrentBookings}).");
-                    return Page();
-                }
-
-                group.DepartDate = Input.StartDate;
-                group.ReturnDate = Input.EndDate;
-                group.MaxCapacity = Input.AvailableSeats;
-            }
 
             await _context.SaveChangesAsync();
 

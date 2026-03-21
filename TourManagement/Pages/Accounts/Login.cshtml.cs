@@ -110,7 +110,7 @@ namespace TourManagement.Pages.Accounts
             else if (!string.IsNullOrEmpty(roleName) &&
                 roleName.Equals("staff", StringComparison.OrdinalIgnoreCase))
             {
-                return RedirectToPage("/Staff/Bookings/Index");
+                return RedirectToPage("/Staff/Tours/Index");
             }
 
             return LocalRedirect(GetRedirectUrl(ReturnUrl));
