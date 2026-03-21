@@ -63,7 +63,10 @@ namespace TourManagement.Pages.Staff.Bookings
         // Flow 2: Xác nhận booking (đã thanh toán)
         public async Task<IActionResult> OnPostConfirmAsync(string bookingId)
         {
-            var booking = await _context.Bookings.Include(b => b.Payments).FirstOrDefaultAsync(b => b.BookingId == bookingId);
+            var booking = await _context.Bookings
+                .Include(b => b.Group)
+                .Include(b => b.Payments)
+                .FirstOrDefaultAsync(b => b.BookingId == bookingId);
             if (booking == null)
             {
                 TempData["Error"] = "Không tìm thấy booking.";
@@ -77,9 +80,24 @@ namespace TourManagement.Pages.Staff.Bookings
             }
             var confirmedId = await ResolveStatusIdAsync("CONFIRMED", "APPROVED", "BOOKED");
             if (confirmedId == null) { TempData["Error"] = "Không tìm thấy status CONFIRMED."; return RedirectToPage(); }
-            booking.StatusId = confirmedId;
-            await _context.SaveChangesAsync();
-            TempData["Success"] = "Đã xác nhận booking thành công.";
+            
+            if (booking.StatusId != confirmedId)
+            {
+                int totalPax = booking.Adults + booking.Children + booking.Infants;
+                int remain = booking.Group.MaxCapacity - booking.Group.CurrentBookings;
+                
+                if (totalPax > remain)
+                {
+                    TempData["Error"] = $"Không đủ chỗ trống để duyệt! (Còn: {remain}, Yêu cầu: {totalPax})";
+                    return RedirectToPage();
+                }
+
+                booking.StatusId = confirmedId;
+                booking.Group.CurrentBookings += totalPax;
+                await _context.SaveChangesAsync();
+            }
+
+            TempData["Success"] = "Đã duyệt và xác nhận booking thành công.";
             return RedirectToPage();
         }
 
@@ -119,12 +137,31 @@ namespace TourManagement.Pages.Staff.Bookings
         // Flow 6: Xử lý hủy - Update status = Cancelled
         public async Task<IActionResult> OnPostCancelAsync(string bookingId)
         {
-            var booking = await _context.Bookings.FirstOrDefaultAsync(b => b.BookingId == bookingId);
+            var booking = await _context.Bookings
+                .Include(b => b.Group)
+                .FirstOrDefaultAsync(b => b.BookingId == bookingId);
             if (booking == null) { TempData["Error"] = "Không tìm thấy booking."; return RedirectToPage(); }
             var cancelledId = await ResolveStatusIdAsync("CANCELLED", "CANCELED", "CANCEL");
             if (cancelledId == null) { TempData["Error"] = "Không tìm thấy status CANCELLED."; return RedirectToPage(); }
-            booking.StatusId = cancelledId;
-            await _context.SaveChangesAsync();
+
+            if (booking.StatusId != cancelledId)
+            {
+                // Nếu booking trước đó đã được duyệt (đã chiếm chỗ), cần hoàn trả số chỗ
+                var activeStatusIds = new HashSet<string> { "CONFIRMED", "APPROVED", "BOOKED", "COMPLETED", "DONE", "FINISHED" };
+                bool wasTakingSeats = booking.StatusId != null && activeStatusIds.Contains(booking.StatusId.ToUpperInvariant());
+                
+                booking.StatusId = cancelledId;
+
+                if (wasTakingSeats)
+                {
+                    int totalPax = booking.Adults + booking.Children + booking.Infants;
+                    booking.Group.CurrentBookings -= totalPax;
+                    if (booking.Group.CurrentBookings < 0) booking.Group.CurrentBookings = 0;
+                }
+                
+                await _context.SaveChangesAsync();
+            }
+
             TempData["Success"] = "Đã xác nhận hủy booking.";
             return RedirectToPage();
         }

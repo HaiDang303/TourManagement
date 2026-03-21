@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "eaSOqDqrRu2KAJXg8zN4vKGOm7qk66pYFjFbDbTMnrM=",
+  "Hash": "XAPYTG/tz/sfFnKRhNA9PBOgJQ+TsYdRwqOpcNIWDtc=",
   "Source": "TourManagement",
   "BasePath": "_content/TourManagement",
   "Mode": "Default",
@@ -1676,6 +1676,48 @@
       "OriginalItemSpec": "wwwroot\\js\\script.js"
     },
     {
+      "Identity": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\uploads\\tours\\0af219a3ae004d93abed4542df6081a8.jpg",
+      "SourceId": "TourManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\",
+      "BasePath": "_content/TourManagement",
+      "RelativePath": "uploads/tours/0af219a3ae004d93abed4542df6081a8#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "1joasgkr3u",
+      "Integrity": "rXZImvJneHpV+MeU3DiRAVg+/DK8p1aDN82+QJtuF5c=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\tours\\0af219a3ae004d93abed4542df6081a8.jpg"
+    },
+    {
+      "Identity": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\uploads\\tours\\6a603bd659ad48cab099582c2de7e415.png",
+      "SourceId": "TourManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\",
+      "BasePath": "_content/TourManagement",
+      "RelativePath": "uploads/tours/6a603bd659ad48cab099582c2de7e415#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "omeepjyocv",
+      "Integrity": "kEZDRdKe9vFVzdTEnah7vKCS2kuMWLBD3malnlGh6fk=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\tours\\6a603bd659ad48cab099582c2de7e415.png"
+    },
+    {
       "Identity": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\uploads\\tours\\9123ddb0bc414ec1b9ce6878fc12d263.png",
       "SourceId": "TourManagement",
       "SourceType": "Discovered",
@@ -1695,6 +1737,69 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\uploads\\tours\\9123ddb0bc414ec1b9ce6878fc12d263.png"
+    },
+    {
+      "Identity": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\uploads\\tours\\c35258df3f094e74b215e810901ef101.jpg",
+      "SourceId": "TourManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\",
+      "BasePath": "_content/TourManagement",
+      "RelativePath": "uploads/tours/c35258df3f094e74b215e810901ef101#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "synlemjf8n",
+      "Integrity": "lELYJxAdEvsTZFrR/AZcwWVkSpw8Bv3IBfRlhUc+tKk=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\tours\\c35258df3f094e74b215e810901ef101.jpg"
+    },
+    {
+      "Identity": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\uploads\\tours\\cb47f87709f24f6295b3eba780d7c6f7.jpg",
+      "SourceId": "TourManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\",
+      "BasePath": "_content/TourManagement",
+      "RelativePath": "uploads/tours/cb47f87709f24f6295b3eba780d7c6f7#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "ql2cdo3fd4",
+      "Integrity": "0ur6loi94r/kBYnUt5NVnkbUbelyzlCM0HYNlk4uw68=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\tours\\cb47f87709f24f6295b3eba780d7c6f7.jpg"
+    },
+    {
+      "Identity": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\uploads\\tours\\cc4da7f8d63042a6a059770fc80ea7cf.jpg",
+      "SourceId": "TourManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\",
+      "BasePath": "_content/TourManagement",
+      "RelativePath": "uploads/tours/cc4da7f8d63042a6a059770fc80ea7cf#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "ql2cdo3fd4",
+      "Integrity": "0ur6loi94r/kBYnUt5NVnkbUbelyzlCM0HYNlk4uw68=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\tours\\cc4da7f8d63042a6a059770fc80ea7cf.jpg"
     },
     {
       "Identity": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\uploads\\tours\\ee9527df2978499fa780c0a7fee6ffb4.png",
@@ -5498,6 +5603,170 @@
       ]
     },
     {
+      "Route": "uploads/tours/0af219a3ae004d93abed4542df6081a8.1joasgkr3u.jpg",
+      "AssetFile": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\uploads\\tours\\0af219a3ae004d93abed4542df6081a8.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "12304"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"rXZImvJneHpV+MeU3DiRAVg+/DK8p1aDN82+QJtuF5c=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 21 Mar 2026 13:12:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "1joasgkr3u"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/tours/0af219a3ae004d93abed4542df6081a8.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-rXZImvJneHpV+MeU3DiRAVg+/DK8p1aDN82+QJtuF5c="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/tours/0af219a3ae004d93abed4542df6081a8.jpg",
+      "AssetFile": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\uploads\\tours\\0af219a3ae004d93abed4542df6081a8.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "12304"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"rXZImvJneHpV+MeU3DiRAVg+/DK8p1aDN82+QJtuF5c=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 21 Mar 2026 13:12:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-rXZImvJneHpV+MeU3DiRAVg+/DK8p1aDN82+QJtuF5c="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/tours/6a603bd659ad48cab099582c2de7e415.omeepjyocv.png",
+      "AssetFile": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\uploads\\tours\\6a603bd659ad48cab099582c2de7e415.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "887008"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"kEZDRdKe9vFVzdTEnah7vKCS2kuMWLBD3malnlGh6fk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 21 Mar 2026 13:10:31 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "omeepjyocv"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/tours/6a603bd659ad48cab099582c2de7e415.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-kEZDRdKe9vFVzdTEnah7vKCS2kuMWLBD3malnlGh6fk="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/tours/6a603bd659ad48cab099582c2de7e415.png",
+      "AssetFile": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\uploads\\tours\\6a603bd659ad48cab099582c2de7e415.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "887008"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"kEZDRdKe9vFVzdTEnah7vKCS2kuMWLBD3malnlGh6fk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 21 Mar 2026 13:10:31 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-kEZDRdKe9vFVzdTEnah7vKCS2kuMWLBD3malnlGh6fk="
+        }
+      ]
+    },
+    {
       "Route": "uploads/tours/9123ddb0bc414ec1b9ce6878fc12d263.omeepjyocv.png",
       "AssetFile": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\uploads\\tours\\9123ddb0bc414ec1b9ce6878fc12d263.png",
       "Selectors": [],
@@ -5576,6 +5845,252 @@
         {
           "Name": "integrity",
           "Value": "sha256-kEZDRdKe9vFVzdTEnah7vKCS2kuMWLBD3malnlGh6fk="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/tours/c35258df3f094e74b215e810901ef101.jpg",
+      "AssetFile": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\uploads\\tours\\c35258df3f094e74b215e810901ef101.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "9127"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"lELYJxAdEvsTZFrR/AZcwWVkSpw8Bv3IBfRlhUc+tKk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 21 Mar 2026 13:12:05 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-lELYJxAdEvsTZFrR/AZcwWVkSpw8Bv3IBfRlhUc+tKk="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/tours/c35258df3f094e74b215e810901ef101.synlemjf8n.jpg",
+      "AssetFile": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\uploads\\tours\\c35258df3f094e74b215e810901ef101.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "9127"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"lELYJxAdEvsTZFrR/AZcwWVkSpw8Bv3IBfRlhUc+tKk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 21 Mar 2026 13:12:05 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "synlemjf8n"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/tours/c35258df3f094e74b215e810901ef101.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-lELYJxAdEvsTZFrR/AZcwWVkSpw8Bv3IBfRlhUc+tKk="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/tours/cb47f87709f24f6295b3eba780d7c6f7.jpg",
+      "AssetFile": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\uploads\\tours\\cb47f87709f24f6295b3eba780d7c6f7.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "16312"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"0ur6loi94r/kBYnUt5NVnkbUbelyzlCM0HYNlk4uw68=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 21 Mar 2026 13:11:57 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-0ur6loi94r/kBYnUt5NVnkbUbelyzlCM0HYNlk4uw68="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/tours/cb47f87709f24f6295b3eba780d7c6f7.ql2cdo3fd4.jpg",
+      "AssetFile": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\uploads\\tours\\cb47f87709f24f6295b3eba780d7c6f7.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "16312"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"0ur6loi94r/kBYnUt5NVnkbUbelyzlCM0HYNlk4uw68=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 21 Mar 2026 13:11:57 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ql2cdo3fd4"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/tours/cb47f87709f24f6295b3eba780d7c6f7.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-0ur6loi94r/kBYnUt5NVnkbUbelyzlCM0HYNlk4uw68="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/tours/cc4da7f8d63042a6a059770fc80ea7cf.jpg",
+      "AssetFile": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\uploads\\tours\\cc4da7f8d63042a6a059770fc80ea7cf.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "16312"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"0ur6loi94r/kBYnUt5NVnkbUbelyzlCM0HYNlk4uw68=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 21 Mar 2026 13:12:29 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-0ur6loi94r/kBYnUt5NVnkbUbelyzlCM0HYNlk4uw68="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/tours/cc4da7f8d63042a6a059770fc80ea7cf.ql2cdo3fd4.jpg",
+      "AssetFile": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\uploads\\tours\\cc4da7f8d63042a6a059770fc80ea7cf.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "16312"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"0ur6loi94r/kBYnUt5NVnkbUbelyzlCM0HYNlk4uw68=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 21 Mar 2026 13:12:29 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ql2cdo3fd4"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/tours/cc4da7f8d63042a6a059770fc80ea7cf.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-0ur6loi94r/kBYnUt5NVnkbUbelyzlCM0HYNlk4uw68="
         }
       ]
     },
