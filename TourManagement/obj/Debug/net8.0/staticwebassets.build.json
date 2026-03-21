@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "XAPYTG/tz/sfFnKRhNA9PBOgJQ+TsYdRwqOpcNIWDtc=",
+  "Hash": "kCqg6YsHVpM2klb98ccUkL5P11SFv8/wFlWztBhOs9I=",
   "Source": "TourManagement",
   "BasePath": "_content/TourManagement",
   "Mode": "Default",
@@ -1737,6 +1737,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\uploads\\tours\\9123ddb0bc414ec1b9ce6878fc12d263.png"
+    },
+    {
+      "Identity": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\uploads\\tours\\a7e86d22e04745f389ac89e1eaf9f4dd.png",
+      "SourceId": "TourManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\",
+      "BasePath": "_content/TourManagement",
+      "RelativePath": "uploads/tours/a7e86d22e04745f389ac89e1eaf9f4dd#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "omeepjyocv",
+      "Integrity": "kEZDRdKe9vFVzdTEnah7vKCS2kuMWLBD3malnlGh6fk=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\tours\\a7e86d22e04745f389ac89e1eaf9f4dd.png"
     },
     {
       "Identity": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\uploads\\tours\\c35258df3f094e74b215e810901ef101.jpg",
@@ -5835,6 +5856,88 @@
         {
           "Name": "Last-Modified",
           "Value": "Sat, 21 Mar 2026 09:57:45 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-kEZDRdKe9vFVzdTEnah7vKCS2kuMWLBD3malnlGh6fk="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/tours/a7e86d22e04745f389ac89e1eaf9f4dd.omeepjyocv.png",
+      "AssetFile": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\uploads\\tours\\a7e86d22e04745f389ac89e1eaf9f4dd.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "887008"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"kEZDRdKe9vFVzdTEnah7vKCS2kuMWLBD3malnlGh6fk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 21 Mar 2026 17:40:10 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "omeepjyocv"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/tours/a7e86d22e04745f389ac89e1eaf9f4dd.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-kEZDRdKe9vFVzdTEnah7vKCS2kuMWLBD3malnlGh6fk="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/tours/a7e86d22e04745f389ac89e1eaf9f4dd.png",
+      "AssetFile": "D:\\CODE PRN222\\TourManagement\\TourManagement\\wwwroot\\uploads\\tours\\a7e86d22e04745f389ac89e1eaf9f4dd.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "887008"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"kEZDRdKe9vFVzdTEnah7vKCS2kuMWLBD3malnlGh6fk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 21 Mar 2026 17:40:10 GMT"
         },
         {
           "Name": "Cache-Control",

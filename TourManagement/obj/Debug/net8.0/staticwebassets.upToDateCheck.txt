@@ -20,6 +20,7 @@ wwwroot\js\script.js
 wwwroot\uploads\tours\0af219a3ae004d93abed4542df6081a8.jpg
 wwwroot\uploads\tours\6a603bd659ad48cab099582c2de7e415.png
 wwwroot\uploads\tours\9123ddb0bc414ec1b9ce6878fc12d263.png
+wwwroot\uploads\tours\a7e86d22e04745f389ac89e1eaf9f4dd.png
 wwwroot\uploads\tours\c35258df3f094e74b215e810901ef101.jpg
 wwwroot\uploads\tours\cb47f87709f24f6295b3eba780d7c6f7.jpg
 wwwroot\uploads\tours\cc4da7f8d63042a6a059770fc80ea7cf.jpg
