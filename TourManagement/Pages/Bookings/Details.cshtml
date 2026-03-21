@@ -125,8 +125,13 @@
                     @(isConfirmed ? "Đã xác nhận" : "Đang chờ xử lý")
                 </div>
 
+                <p style="margin-top:16px; color:#6f8197;">
+                    Booking của bạn đã được ghi nhận thành công. Bạn có thể quay về trang chủ hoặc tiếp tục khám phá thêm các tour khác.
+                </p>
+
                 <div class="action-group" style="margin-top:24px;">
-                    <a asp-page="/Tours/Index" class="btn btn-primary">Tiếp tục xem tour</a>
+                    <a asp-page="/Index" class="btn btn-primary">Về trang chủ</a>
+                    <a asp-page="/Tours/Index" class="btn btn-secondary">Tiếp tục xem tour</a>
                     <a asp-page="/Tours/Details" asp-route-id="@Model.Booking.Group?.TourId" class="btn btn-secondary">Xem lại tour</a>
                 </div>
             </div>

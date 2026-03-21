@@ -1,0 +1,103 @@
+@page "{id:int}"
+@model TourManagement.Pages.Staff.Customers.DetailsModel
+@{
+    ViewData["Title"] = "Chi tiết Khách hàng";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body class="bg-light">
+<div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="m-0">Hồ sơ khách hàng: @Model.Customer.Name</h2>
+        <div>
+            <a href="/Staff/Customers" class="btn btn-outline-secondary">Quay lại danh sách</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white">
+                    <strong>Thông tin cá nhân</strong>
+                </div>
+                <div class="card-body">
+                    <p><strong>Email:</strong> @Model.Customer.Email</p>
+                    <p><strong>Số điện thoại:</strong> @(Model.Customer.Phone ?? "Chưa cập nhật")</p>
+                    <p><strong>Giới tính:</strong> @(Model.Customer.Gender ?? "Chưa cập nhật")</p>
+                    <p><strong>Ngày sinh:</strong> @(Model.Customer.Dob?.ToString("dd/MM/yyyy") ?? "Chưa cập nhật")</p>
+                    <p><strong>Địa chỉ:</strong> @(Model.Customer.Address ?? "Chưa cập nhật")</p>
+                    <hr />
+                    <p class="mb-0 text-muted"><small>Thành viên từ: @Model.Customer.CreatedAt.ToString("dd/MM/yyyy")</small></p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-success text-white">
+                    <strong>Lịch sử đặt Booking (@Model.Bookings.Count giao dịch)</strong>
+                </div>
+                <div class="card-body">
+                    @if (!Model.Bookings.Any())
+                    {
+                        <p class="text-muted">Khách hàng này chưa có lịch sử đặt tour hợp lệ.</p>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Mã Booking</th>
+                                        <th>Tên Tour</th>
+                                        <th class="text-nowrap">Ngày đi</th>
+                                        <th class="text-nowrap">Hành khách</th>
+                                        <th>Tổng tiền</th>
+                                        <th>Trạng thái</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var b in Model.Bookings)
+                                    {
+                                        var badgeClass = b.StatusId switch {
+                                            "CONFIRMED" => "bg-primary",
+                                            "PAID" => "bg-success",
+                                            "COMPLETED" => "bg-info text-dark",
+                                            "CANCELLED" => "bg-danger",
+                                            "PENDING" => "bg-warning text-dark",
+                                            _ => "bg-secondary"
+                                        };
+                                        <tr>
+                                            <td><strong>@b.BookingId</strong><br/><small class="text-muted">Đặt: @b.BookingDate</small></td>
+                                            <td>@b.TourName</td>
+                                            <td class="text-nowrap">@b.DepartDate</td>
+                                            <td class="text-center">@b.PaxCount</td>
+                                            <td class="text-danger fw-bold text-nowrap">@b.TotalPrice.ToString("N0") ₫</td>
+                                            <td><span class="badge @badgeClass">@b.StatusId</span></td>
+                                            <td>
+                                                <a href="/Staff/Bookings/Edit/@b.BookingId" class="btn btn-sm btn-outline-secondary">Tới Booking</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
