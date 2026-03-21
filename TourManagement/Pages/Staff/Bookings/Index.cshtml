@@ -112,6 +112,12 @@
                                     var pmPaid = Model.PaidStatusSet.Contains((pm.StatusId ?? "").ToUpperInvariant());
                                     <div class="d-flex align-items-center gap-1 mb-1">
                                         <span class="badge @(pmPaid ? "bg-success" : "bg-secondary")">@pm.PaymentId: @pm.StatusId</span>
+                                        @if (!pmPaid)
+                                        {
+                                            <form method="post" asp-page-handler="ConfirmPayment" asp-route-paymentId="@pm.PaymentId" class="d-inline">
+                                                <button type="submit" class="btn btn-sm btn-success">Xác nhận thanh toán</button>
+                                            </form>
+                                        }
                                     </div>
                                 }
                             }

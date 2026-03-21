@@ -38,21 +38,6 @@ namespace TourManagement.Pages.Admin.Payments
             AllPayments = all.Select(Map).ToList();
         }
 
-        public async Task<IActionResult> OnPostConfirmAsync(string paymentId)
-        {
-            var payment = await _context.Payments.FindAsync(paymentId);
-            if (payment == null) { TempData["Error"] = "Không tìm thấy thanh toán."; return RedirectToPage(); }
-            var paidId = await _context.Statuses
-                .Where(s => PaidStatusSet.Contains(s.StatusId))
-                .Select(s => s.StatusId)
-                .FirstOrDefaultAsync();
-            if (string.IsNullOrEmpty(paidId))
-                paidId = (await _context.Statuses.FirstOrDefaultAsync(s => s.StatusId == "PAID"))?.StatusId ?? "PAID";
-            payment.StatusId = paidId;
-            await _context.SaveChangesAsync();
-            TempData["Success"] = "Đã xác nhận thanh toán.";
-            return RedirectToPage(new { tab = "pending" });
-        }
 
         private static PaymentVm Map(Payment p)
         {

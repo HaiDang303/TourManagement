@@ -57,7 +57,6 @@
                                 <th>Số tiền</th>
                                 <th>Phương thức</th>
                                 <th>Ngày TT</th>
-                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -72,12 +71,6 @@
                                     <td>@p.Amount.ToString("N0") đ</td>
                                     <td>@p.Method</td>
                                     <td>@p.PaymentDate.ToString("dd/MM/yyyy HH:mm")</td>
-                                    <td>
-                                        <form method="post" asp-page-handler="Confirm" class="d-inline" onsubmit="return confirm('Xác nhận đã thanh toán?');">
-                                            <input type="hidden" name="paymentId" value="@p.PaymentId" />
-                                            <button type="submit" class="btn btn-sm btn-success">Xác nhận</button>
-                                        </form>
-                                    </td>
                                 </tr>
                             }
                         </tbody>

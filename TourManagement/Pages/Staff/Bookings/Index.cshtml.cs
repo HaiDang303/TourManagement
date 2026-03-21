@@ -107,6 +107,25 @@ namespace TourManagement.Pages.Staff.Bookings
             return RedirectToPage();
         }
 
+        // Flow 3: Xác nhận thanh toán - Update payment = PAID, gửi thông báo
+        public async Task<IActionResult> OnPostConfirmPaymentAsync(string paymentId)
+        {
+            var payment = await _context.Payments
+                .Include(p => p.Booking).ThenInclude(b => b!.User)
+                .FirstOrDefaultAsync(p => p.PaymentId == paymentId);
+            if (payment == null)
+            {
+                TempData["Error"] = "Không tìm thấy payment.";
+                return RedirectToPage();
+            }
+            var paidId = await ResolveStatusIdAsync("PAID", "SUCCESS", "COMPLETED", "CONFIRMED");
+            if (paidId == null) { TempData["Error"] = "Không tìm thấy status PAID trong Statuses."; return RedirectToPage(); }
+            payment.StatusId = paidId;
+            await _context.SaveChangesAsync();
+            var customerName = payment.Booking?.User?.Name ?? "Khách hàng";
+            TempData["Success"] = $"Đã xác nhận thanh toán. Đã gửi thông báo cho {customerName} (email: {payment.Booking?.User?.Email}).";
+            return RedirectToPage();
+        }
 
         // Flow 5: Hoàn thành tour - Update booking status = Completed
         public async Task<IActionResult> OnPostCompleteAsync(string bookingId)
