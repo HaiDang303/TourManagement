@@ -307,3 +307,4 @@ d:\CODE PRN222\TourManagement\_build_tmp\TourManagement.deps.json
 d:\CODE PRN222\TourManagement\_build_tmp\TourManagement.runtimeconfig.json
 d:\CODE PRN222\TourManagement\_build_tmp\TourManagement.dll
 d:\CODE PRN222\TourManagement\_build_tmp\TourManagement.pdb
+D:\CODE PRN222\TourManagement\TourManagement\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
