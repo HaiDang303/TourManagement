@@ -23,7 +23,7 @@ public partial class TourGroup
 
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 
-    public virtual Status Status { get; set; } = null!;
+    public virtual TourStatus Status { get; set; } = null!;
 
     public virtual Tour Tour { get; set; } = null!;
 }

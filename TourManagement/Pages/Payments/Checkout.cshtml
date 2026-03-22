@@ -1,4 +1,4 @@
-﻿@page "{bookingId}"
+@page "{bookingId}"
 @model TourManagement.Pages.Payments.CheckoutModel
 @{
     ViewData["Title"] = "Thanh toán";
@@ -99,6 +99,14 @@
 
 <section class="payment-page">
     <div class="container">
+        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+            <a href="/" class="btn btn-primary" style="padding: 8px 16px; font-size: 14px;">Trang chủ</a>
+            <a asp-page="/Bookings/History" class="btn btn-secondary" style="padding: 8px 16px; font-size: 14px;">Lịch sử đặt tour</a>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <a href="/Accounts/Logout" class="btn btn-secondary" style="padding: 8px 16px; font-size: 14px; background: #ff4d4d; border-color: #ff4d4d;">Đăng xuất</a>
+            }
+        </div>
         <p class="section-subtitle">Thanh toán</p>
         <h1 class="h2 section-title">Xác nhận thanh toán booking</h1>
         <p class="section-text" style="margin-bottom:30px;">

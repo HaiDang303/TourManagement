@@ -43,10 +43,6 @@ namespace TourManagement.Pages.Admin.Tours
             [Display(Name = "Điểm đến")]
             public string DestinationId { get; set; } = string.Empty;
 
-            [Required(ErrorMessage = "Vui lòng nhập số ngày")]
-            [Range(1, 365, ErrorMessage = "Số ngày phải từ 1 đến 365")]
-            [Display(Name = "Thời lượng (ngày)")]
-            public int DurationDays { get; set; }
 
             [Required(ErrorMessage = "Vui lòng nhập giá")]
             [Range(0, double.MaxValue, ErrorMessage = "Giá phải >= 0")]
@@ -56,9 +52,6 @@ namespace TourManagement.Pages.Admin.Tours
             [Display(Name = "Danh mục")]
             public string? Category { get; set; }
 
-            [Display(Name = "Số người tối đa")]
-            [Range(1, 10000, ErrorMessage = "Số người tối đa phải >= 1")]
-            public int? MaxParticipants { get; set; }
 
             [Display(Name = "Mô tả")]
             public string? Description { get; set; }
@@ -88,10 +81,8 @@ namespace TourManagement.Pages.Admin.Tours
             {
                 Name = tour.Name,
                 DestinationId = tour.DestinationId,
-                DurationDays = tour.DurationDays,
                 Price = tour.BasePrice,
                 Category = tour.Category,
-                MaxParticipants = tour.MaxParticipants,
                 Description = tour.Description
             };
 
@@ -125,10 +116,8 @@ namespace TourManagement.Pages.Admin.Tours
 
             tour.Name = Input.Name;
             tour.DestinationId = Input.DestinationId;
-            tour.DurationDays = Input.DurationDays;
             tour.BasePrice = Input.Price;
             tour.Category = Input.Category;
-            tour.MaxParticipants = Input.MaxParticipants;
             tour.Description = Input.Description;
             var newImageUrl = await SaveImageAsync(Input.ImageFile);
             if (newImageUrl != null)

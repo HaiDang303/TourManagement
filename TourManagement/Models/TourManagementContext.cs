@@ -19,6 +19,8 @@ public partial class TourManagementContext : DbContext
 
     public virtual DbSet<BookingPassenger> BookingPassengers { get; set; }
 
+    public virtual DbSet<BookingStatus> BookingStatuses { get; set; }
+
     public virtual DbSet<Destination> Destinations { get; set; }
 
     public virtual DbSet<Gender> Genders { get; set; }
@@ -27,15 +29,17 @@ public partial class TourManagementContext : DbContext
 
     public virtual DbSet<Payment> Payments { get; set; }
 
-    public virtual DbSet<Role> Roles { get; set; }
+    public virtual DbSet<PaymentStatus> PaymentStatuses { get; set; }
 
-    public virtual DbSet<Status> Statuses { get; set; }
+    public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<Tour> Tours { get; set; }
 
     public virtual DbSet<TourGroup> TourGroups { get; set; }
 
     public virtual DbSet<TourPrice> TourPrices { get; set; }
+
+    public virtual DbSet<TourStatus> TourStatuses { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
@@ -47,7 +51,7 @@ public partial class TourManagementContext : DbContext
     {
         modelBuilder.Entity<Booking>(entity =>
         {
-            entity.HasKey(e => e.BookingId).HasName("PK__Bookings__5DE3A5B1FB082D41");
+            entity.HasKey(e => e.BookingId).HasName("PK__Bookings__5DE3A5B17A58FC83");
 
             entity.Property(e => e.BookingId)
                 .HasMaxLength(20)
@@ -89,7 +93,7 @@ public partial class TourManagementContext : DbContext
             entity.HasOne(d => d.Status).WithMany(p => p.Bookings)
                 .HasForeignKey(d => d.StatusId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Bookings_Statuses");
+                .HasConstraintName("FK_Bookings_BookingStatuses");
 
             entity.HasOne(d => d.User).WithMany(p => p.Bookings)
                 .HasForeignKey(d => d.UserId)
@@ -99,7 +103,7 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<BookingPassenger>(entity =>
         {
-            entity.HasKey(e => e.PassengerId).HasName("PK__BookingP__03764586065B1681");
+            entity.HasKey(e => e.PassengerId).HasName("PK__BookingP__03764586221805B5");
 
             entity.Property(e => e.PassengerId)
                 .HasMaxLength(20)
@@ -144,9 +148,25 @@ public partial class TourManagementContext : DbContext
                 .HasConstraintName("FK_BookingPassengers_Genders");
         });
 
+        modelBuilder.Entity<BookingStatus>(entity =>
+        {
+            entity.HasKey(e => e.StatusId).HasName("PK__BookingS__3683B531A0C851D6");
+
+            entity.Property(e => e.StatusId)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("status_id");
+            entity.Property(e => e.Description)
+                .HasMaxLength(200)
+                .HasColumnName("description");
+            entity.Property(e => e.StatusName)
+                .HasMaxLength(50)
+                .HasColumnName("status_name");
+        });
+
         modelBuilder.Entity<Destination>(entity =>
         {
-            entity.HasKey(e => e.DestinationId).HasName("PK__Destinat__5501539107688A0D");
+            entity.HasKey(e => e.DestinationId).HasName("PK__Destinat__550153910B6F1C3F");
 
             entity.Property(e => e.DestinationId)
                 .HasMaxLength(20)
@@ -166,7 +186,7 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<Gender>(entity =>
         {
-            entity.HasKey(e => e.GenderId).HasName("PK__Genders__9DF18F8705461F9D");
+            entity.HasKey(e => e.GenderId).HasName("PK__Genders__9DF18F87F74D5300");
 
             entity.Property(e => e.GenderId)
                 .HasMaxLength(2)
@@ -179,7 +199,7 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<PassengerCategory>(entity =>
         {
-            entity.HasKey(e => e.CategoryId).HasName("PK__Passenge__D54EE9B44E86B46C");
+            entity.HasKey(e => e.CategoryId).HasName("PK__Passenge__D54EE9B49854CB65");
 
             entity.Property(e => e.CategoryId)
                 .HasMaxLength(10)
@@ -195,7 +215,7 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<Payment>(entity =>
         {
-            entity.HasKey(e => e.PaymentId).HasName("PK__Payments__ED1FC9EA25275CB2");
+            entity.HasKey(e => e.PaymentId).HasName("PK__Payments__ED1FC9EAEBE2E695");
 
             entity.Property(e => e.PaymentId)
                 .HasMaxLength(20)
@@ -237,14 +257,30 @@ public partial class TourManagementContext : DbContext
             entity.HasOne(d => d.Status).WithMany(p => p.Payments)
                 .HasForeignKey(d => d.StatusId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Payments_Statuses");
+                .HasConstraintName("FK_Payments_PaymentStatuses");
+        });
+
+        modelBuilder.Entity<PaymentStatus>(entity =>
+        {
+            entity.HasKey(e => e.StatusId).HasName("PK__PaymentS__3683B531C1B7F85C");
+
+            entity.Property(e => e.StatusId)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("status_id");
+            entity.Property(e => e.Description)
+                .HasMaxLength(200)
+                .HasColumnName("description");
+            entity.Property(e => e.StatusName)
+                .HasMaxLength(50)
+                .HasColumnName("status_name");
         });
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.RoleId).HasName("PK__Roles__760965CCE293F042");
+            entity.HasKey(e => e.RoleId).HasName("PK__Roles__760965CC1740807B");
 
-            entity.HasIndex(e => e.RoleName, "UQ__Roles__783254B1FFBA11B8").IsUnique();
+            entity.HasIndex(e => e.RoleName, "UQ__Roles__783254B1E5946EFC").IsUnique();
 
             entity.Property(e => e.RoleId).HasColumnName("role_id");
             entity.Property(e => e.CreatedAt)
@@ -259,25 +295,9 @@ public partial class TourManagementContext : DbContext
                 .HasColumnName("updated_at");
         });
 
-        modelBuilder.Entity<Status>(entity =>
-        {
-            entity.HasKey(e => e.StatusId).HasName("PK__Statuses__3683B53159A2DE85");
-
-            entity.Property(e => e.StatusId)
-                .HasMaxLength(10)
-                .IsUnicode(false)
-                .HasColumnName("status_id");
-            entity.Property(e => e.Description)
-                .HasMaxLength(200)
-                .HasColumnName("description");
-            entity.Property(e => e.StatusName)
-                .HasMaxLength(50)
-                .HasColumnName("status_name");
-        });
-
         modelBuilder.Entity<Tour>(entity =>
         {
-            entity.HasKey(e => e.TourId).HasName("PK__Tours__4B16B9E60FBF1533");
+            entity.HasKey(e => e.TourId).HasName("PK__Tours__4B16B9E6202F8BC0");
 
             entity.HasIndex(e => e.CreatedAt, "IX_Tours_CreatedAt").IsDescending();
 
@@ -328,7 +348,7 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<TourGroup>(entity =>
         {
-            entity.HasKey(e => e.GroupId).HasName("PK__TourGrou__D57795A0D6756CDD");
+            entity.HasKey(e => e.GroupId).HasName("PK__TourGrou__D57795A03D9F0B61");
 
             entity.Property(e => e.GroupId)
                 .HasMaxLength(20)
@@ -357,7 +377,7 @@ public partial class TourManagementContext : DbContext
             entity.HasOne(d => d.Status).WithMany(p => p.TourGroups)
                 .HasForeignKey(d => d.StatusId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TourGroups_Statuses");
+                .HasConstraintName("FK_TourGroups_TourStatuses");
 
             entity.HasOne(d => d.Tour).WithMany(p => p.TourGroups)
                 .HasForeignKey(d => d.TourId)
@@ -367,7 +387,7 @@ public partial class TourManagementContext : DbContext
 
         modelBuilder.Entity<TourPrice>(entity =>
         {
-            entity.HasKey(e => e.PriceId).HasName("PK__TourPric__1681726D122C813E");
+            entity.HasKey(e => e.PriceId).HasName("PK__TourPric__1681726D4A4B5B8E");
 
             entity.Property(e => e.PriceId)
                 .HasMaxLength(20)
@@ -392,11 +412,27 @@ public partial class TourManagementContext : DbContext
                 .HasConstraintName("FK_TourPrices_Tours");
         });
 
+        modelBuilder.Entity<TourStatus>(entity =>
+        {
+            entity.HasKey(e => e.StatusId).HasName("PK__TourStat__3683B531B007CDF1");
+
+            entity.Property(e => e.StatusId)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("status_id");
+            entity.Property(e => e.Description)
+                .HasMaxLength(200)
+                .HasColumnName("description");
+            entity.Property(e => e.StatusName)
+                .HasMaxLength(50)
+                .HasColumnName("status_name");
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3213E83F3A16B90E");
+            entity.HasKey(e => e.Id).HasName("PK__Users__3213E83F0459C5BF");
 
-            entity.HasIndex(e => e.Email, "UQ__Users__AB6E616472A634E6").IsUnique();
+            entity.HasIndex(e => e.Email, "UQ__Users__AB6E6164DF658BF1").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Address)

@@ -78,6 +78,13 @@ namespace TourManagement.Pages.Staff.Tours
                 return Page();
             }
 
+            var today = DateOnly.FromDateTime(DateTime.Today);
+            if (Input.DepartDate < today)
+            {
+                ModelState.AddModelError(string.Empty, "Ngày khởi hành không được ở quá khứ.");
+                return Page();
+            }
+
             var tourExists = await _context.Tours.AnyAsync(t => t.TourId == Input.TourId);
             if (!tourExists)
             {

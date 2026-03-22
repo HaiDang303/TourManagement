@@ -26,19 +26,19 @@ namespace TourManagement.Pages.Staff.Tours
             var from = FromDate ?? DateOnly.FromDateTime(DateTime.Today);
             var to = ToDate ?? from.AddMonths(3);
 
-            var allStatusIds = await _context.Statuses.Select(s => s.StatusId).ToListAsync();
+            var allStatusIds = await _context.TourStatuses.Select(s => s.StatusId).ToListAsync();
             var closedStatuses = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "CLOSED", "CANCELLED", "CANCELED", "COMPLETED", "DONE", "FINISHED" };
             var closedIds = allStatusIds.Where(s => closedStatuses.Contains(s)).ToList();
 
             var query = _context.TourGroups
                 .Include(g => g.Tour).ThenInclude(t => t!.Destination)
                 .Where(g => g.DepartDate >= from && g.DepartDate <= to
-                    && (closedIds.Count == 0 || !closedIds.Contains(g.StatusId)))
+                    && (!closedIds.Any() || !closedIds.Contains(g.StatusId)))
                 .OrderBy(g => g.DepartDate);
 
             var groups = await query.ToListAsync();
 
-            var confirmedIds = await _context.Statuses
+            var confirmedIds = await _context.BookingStatuses
                 .Where(s => ConfirmedStatuses.Contains(s.StatusId))
                 .Select(s => s.StatusId)
                 .ToListAsync();
@@ -96,7 +96,7 @@ namespace TourManagement.Pages.Staff.Tours
 
         private async Task<string?> ResolveGroupStatusAsync(string key)
         {
-            var ids = await _context.Statuses.Select(s => s.StatusId).ToListAsync();
+            var ids = await _context.TourStatuses.Select(s => s.StatusId).ToListAsync();
             var map = ids.ToDictionary(x => x.ToUpperInvariant(), x => x);
             var preferred = key.ToUpperInvariant() switch
             {

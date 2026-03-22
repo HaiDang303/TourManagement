@@ -23,5 +23,5 @@ public partial class Payment
 
     public virtual Booking Booking { get; set; } = null!;
 
-    public virtual Status Status { get; set; } = null!;
+    public virtual PaymentStatus Status { get; set; } = null!;
 }

@@ -34,11 +34,11 @@ namespace TourManagement.Pages.Admin.Reports
             var to = ToDate ?? DateTime.Today.AddDays(1);
             if (to < from) to = from.AddDays(1);
 
-            var paidIds = await _context.Statuses
+            var paidIds = await _context.PaymentStatuses
                 .Where(s => PaidStatuses.Contains(s.StatusId))
                 .Select(s => s.StatusId)
                 .ToListAsync();
-            var confirmedIds = await _context.Statuses
+            var confirmedIds = await _context.BookingStatuses
                 .Where(s => ConfirmedStatuses.Contains(s.StatusId))
                 .Select(s => s.StatusId)
                 .ToListAsync();
@@ -96,7 +96,7 @@ namespace TourManagement.Pages.Admin.Reports
                 .Take(15)
                 .ToList();
 
-            var completedIds = await _context.Statuses
+            var completedIds = await _context.BookingStatuses
                 .Where(s => new[] { "COMPLETED", "DONE", "FINISHED" }.Contains(s.StatusId))
                 .Select(s => s.StatusId)
                 .ToListAsync();

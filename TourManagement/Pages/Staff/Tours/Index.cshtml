@@ -15,12 +15,12 @@
 <body class="bg-light">
 <div class="container my-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="m-0">Luồng 1: Danh sách lịch khởi hành</h2>
+        <h2 class="m-0"> Danh sách lịch khởi hành</h2>
         <div>
             <a href="/Staff/Tours/Create" class="btn btn-primary">+ Tạo lịch khởi hành</a>
             <a href="/Staff/Bookings" class="btn btn-outline-primary ms-2">Xử lý booking</a>
             <a href="/Staff/Customers" class="btn btn-outline-primary ms-2">Khách hàng</a>
-            <a href="/Admin/Dashboard" class="btn btn-outline-secondary ms-2">Dashboard</a>
+            <a href="/Accounts/Logout" class="btn btn-outline-danger ms-2">Đăng xuất</a>
         </div>
     </div>
 
@@ -71,10 +71,10 @@
                                 <form method="post" asp-page-handler="UpdateStatus" class="d-inline-flex gap-1 align-items-center">
                                     <input type="hidden" name="groupId" value="@r.GroupId" />
                                     <select name="newStatus" class="form-select form-select-sm" style="width:auto">
-                                        <option value="OPEN">Mở</option>
-                                        <option value="ONGOING">Đang diễn ra</option>
-                                        <option value="COMPLETED">Hoàn thành</option>
-                                        <option value="CANCELLED_WEATHER">Hủy do TT</option>
+                                        <option value="OPEN" selected="@(r.StatusId == "OPEN")">Mở</option>
+                                        <option value="ONGOING" selected="@(r.StatusId == "ONGOING")">Đang diễn ra</option>
+                                        <option value="COMPLETED" selected="@(r.StatusId == "COMPLETED")">Hoàn thành</option>
+                                        <option value="CANCELLED_WEATHER" selected="@(r.StatusId == "CANCELLED_WEATHER")">Hủy do TT</option>
                                     </select>
                                     <button type="submit" class="btn btn-sm btn-outline-warning">Cập nhật</button>
                                 </form>

@@ -1,4 +1,4 @@
-﻿@page "{id}"
+@page "{id}"
 @model TourManagement.Pages.Tours.DetailsModel
 @{
     ViewData["Title"] = "Chi tiết tour";
@@ -330,8 +330,13 @@
     <section class="detail-hero">
         <div class="container">
             <span class="hero-label">Chi tiết tour</span>
-            <div style="margin-top:20px;">
-                <a asp-page="/Index" class="btn btn-primary">Về trang chủ</a>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <a href="/" class="btn btn-primary" style="padding: 8px 16px; font-size: 14px;">Trang chủ</a>
+                <a asp-page="/Bookings/History" class="btn btn-secondary" style="padding: 8px 16px; font-size: 14px;">Lịch sử đặt tour</a>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <a href="/Accounts/Logout" class="btn btn-secondary" style="padding: 8px 16px; font-size: 14px; background: #ff4d4d; border-color: #ff4d4d;">Đăng xuất</a>
+                }
             </div>
             <h1 class="hero-title">@Model.Tour.Name</h1>
             <p class="hero-text">

@@ -40,10 +40,6 @@ namespace TourManagement.Pages.Admin.Tours
             [Display(Name = "Điểm đến")]
             public string DestinationId { get; set; } = string.Empty;
 
-            [Required(ErrorMessage = "Vui lòng nhập số ngày")]
-            [Range(1, 365, ErrorMessage = "Số ngày phải từ 1 đến 365")]
-            [Display(Name = "Thời lượng (ngày)")]
-            public int DurationDays { get; set; } = 1;
 
             [Display(Name = "Mô tả")]
             public string? Description { get; set; }
@@ -59,9 +55,6 @@ namespace TourManagement.Pages.Admin.Tours
             [Display(Name = "Danh mục")]
             public string? Category { get; set; }
 
-            [Display(Name = "Số người tối đa")]
-            [Range(1, 10000, ErrorMessage = "Số người tối đa phải >= 1")]
-            public int? MaxParticipants { get; set; }
 
         }
 
@@ -105,10 +98,10 @@ namespace TourManagement.Pages.Admin.Tours
                 TourId = tourId,
                 Name = Input.Name,
                 DestinationId = Input.DestinationId,
-                DurationDays = Input.DurationDays,
+                DurationDays = 1, // Default value as it's required in DB but removed from form
                 BasePrice = Input.Price,
                 Category = Input.Category,
-                MaxParticipants = Input.MaxParticipants,
+                MaxParticipants = null,
                 Description = Input.Description,
                 ImageUrl = await SaveImageAsync(Input.ImageFile),
                 CreatedBy = createdBy,

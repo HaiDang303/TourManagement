@@ -21,9 +21,9 @@ namespace TourManagement.Pages.Admin
         {
             UserCount = await _context.Users.CountAsync();
             TourCount = await _context.Tours.CountAsync();
-            var pendingIds = await _context.Statuses.Where(s => s.StatusId == "PENDING").Select(s => s.StatusId).ToListAsync();
+            var pendingIds = await _context.BookingStatuses.Where(s => s.StatusId == "PENDING").Select(s => s.StatusId).ToListAsync();
             PendingBookingCount = await _context.Bookings.CountAsync(b => pendingIds.Contains(b.StatusId));
-            var paidIds = await _context.Statuses.Where(s =>
+            var paidIds = await _context.PaymentStatuses.Where(s =>
                 new[] { "PAID", "SUCCESS", "COMPLETED", "CONFIRMED" }.Contains(s.StatusId)).Select(s => s.StatusId).ToListAsync();
             TotalRevenue = await _context.Payments.Where(p => paidIds.Contains(p.StatusId)).SumAsync(p => p.Amount);
         }

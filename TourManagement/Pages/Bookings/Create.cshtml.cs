@@ -40,7 +40,7 @@ namespace TourManagement.Pages.Bookings
                     .ThenInclude(t => t.Destination)
                 .FirstOrDefaultAsync(g => g.GroupId == groupId && g.StatusId == "OPEN");
 
-            if (Group == null)
+            if (Group == null || Group.DepartDate < DateOnly.FromDateTime(DateTime.Today))
                 return NotFound();
 
             Tour = Group.Tour;
@@ -120,6 +120,12 @@ namespace TourManagement.Pages.Bookings
                 .FirstOrDefaultAsync(g => g.GroupId == groupId && g.StatusId == "OPEN");
 
             Tour = Group?.Tour;
+
+            if (Group != null && Group.DepartDate < DateOnly.FromDateTime(DateTime.Today))
+            {
+                Group = null;
+                Tour = null;
+            }
         }
 
         private int GetCurrentUserId()

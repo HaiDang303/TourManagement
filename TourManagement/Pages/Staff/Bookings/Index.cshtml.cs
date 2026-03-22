@@ -84,7 +84,7 @@ namespace TourManagement.Pages.Staff.Bookings
                 TempData["Error"] = "Booking chưa thanh toán, giữ nguyên Pending.";
                 return RedirectToPage();
             }
-            var confirmedId = await ResolveStatusIdAsync("CONFIRMED", "APPROVED", "BOOKED");
+            var confirmedId = await ResolveBookingStatusIdAsync("CONFIRMED", "APPROVED", "BOOKED");
             if (confirmedId == null) { TempData["Error"] = "Không tìm thấy status CONFIRMED."; return RedirectToPage(); }
             
             if (booking.StatusId != confirmedId)
@@ -118,8 +118,8 @@ namespace TourManagement.Pages.Staff.Bookings
                 TempData["Error"] = "Không tìm thấy payment.";
                 return RedirectToPage();
             }
-            var paidId = await ResolveStatusIdAsync("PAID", "SUCCESS", "COMPLETED", "CONFIRMED");
-            if (paidId == null) { TempData["Error"] = "Không tìm thấy status PAID trong Statuses."; return RedirectToPage(); }
+            var paidId = await ResolvePaymentStatusIdAsync("PAID", "SUCCESS", "COMPLETED", "CONFIRMED");
+            if (paidId == null) { TempData["Error"] = "Không tìm thấy status PAID trong PaymentStatuses."; return RedirectToPage(); }
             payment.StatusId = paidId;
             await _context.SaveChangesAsync();
             var customerName = payment.Booking?.User?.Name ?? "Khách hàng";
@@ -132,7 +132,7 @@ namespace TourManagement.Pages.Staff.Bookings
         {
             var booking = await _context.Bookings.FirstOrDefaultAsync(b => b.BookingId == bookingId);
             if (booking == null) { TempData["Error"] = "Không tìm thấy booking."; return RedirectToPage(); }
-            var completedId = await ResolveStatusIdAsync("COMPLETED", "DONE", "FINISHED");
+            var completedId = await ResolveBookingStatusIdAsync("COMPLETED", "DONE", "FINISHED");
             if (completedId == null) { TempData["Error"] = "Không tìm thấy status COMPLETED."; return RedirectToPage(); }
             booking.StatusId = completedId;
             await _context.SaveChangesAsync();
@@ -156,7 +156,7 @@ namespace TourManagement.Pages.Staff.Bookings
                 return RedirectToPage();
             }
 
-            var cancelledId = await ResolveStatusIdAsync("CANCELLED", "CANCELED", "CANCEL");
+            var cancelledId = await ResolveBookingStatusIdAsync("CANCELLED", "CANCELED", "CANCEL");
             if (cancelledId == null) { TempData["Error"] = "Không tìm thấy status CANCELLED."; return RedirectToPage(); }
 
             if (booking.StatusId != cancelledId)
@@ -183,8 +183,8 @@ namespace TourManagement.Pages.Staff.Bookings
                 .Include(b => b.Group)
                 .FirstOrDefaultAsync(b => b.BookingId == bookingId);
             if (booking == null) { TempData["Error"] = "Không tìm thấy booking."; return RedirectToPage(); }
-            var rejectedId = await ResolveStatusIdAsync("REJECTED", "DENIED", "CANCELLED", "CANCELED");
-            if (rejectedId == null) rejectedId = await ResolveStatusIdAsync("CANCELLED", "CANCELED");
+            var rejectedId = await ResolveBookingStatusIdAsync("REJECTED", "DENIED", "CANCELLED", "CANCELED");
+            if (rejectedId == null) rejectedId = await ResolveBookingStatusIdAsync("CANCELLED", "CANCELED");
             if (rejectedId == null) { TempData["Error"] = "Không tìm thấy status từ chối."; return RedirectToPage(); }
             booking.StatusId = rejectedId;
             booking.Notes = (booking.Notes ?? "") + (string.IsNullOrWhiteSpace(rejectReason) ? "" : " [Từ chối: " + rejectReason.Trim() + "]");
@@ -193,9 +193,18 @@ namespace TourManagement.Pages.Staff.Bookings
             return RedirectToPage();
         }
 
-        private async Task<string?> ResolveStatusIdAsync(params string[] preferred)
+        private async Task<string?> ResolveBookingStatusIdAsync(params string[] preferred)
         {
-            var ids = await _context.Statuses.Select(s => s.StatusId).ToListAsync();
+            var ids = await _context.BookingStatuses.Select(s => s.StatusId).ToListAsync();
+            var map = ids.ToDictionary(x => x.ToUpperInvariant(), x => x);
+            foreach (var p in preferred)
+                if (map.TryGetValue(p.ToUpperInvariant(), out var found)) return found;
+            return null;
+        }
+
+        private async Task<string?> ResolvePaymentStatusIdAsync(params string[] preferred)
+        {
+            var ids = await _context.PaymentStatuses.Select(s => s.StatusId).ToListAsync();
             var map = ids.ToDictionary(x => x.ToUpperInvariant(), x => x);
             foreach (var p in preferred)
                 if (map.TryGetValue(p.ToUpperInvariant(), out var found)) return found;
