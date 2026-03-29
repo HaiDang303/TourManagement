@@ -150,9 +150,9 @@ namespace TourManagement.Pages.Staff.Bookings
             if (booking == null) { TempData["Error"] = "Không tìm thấy booking."; return RedirectToPage(); }
 
             var isPaid = booking.Payments.Any(p => PaidStatusSet.Contains((p.StatusId ?? "").ToUpperInvariant()));
-            if (isPaid)
+            if (isPaid && booking.Group?.StatusId != "OPEN")
             {
-                TempData["Error"] = "Booking đã thanh toán. Vui lòng chuyển Admin để phê duyệt hoàn tiền.";
+                TempData["Error"] = "Booking đã thanh toán và Tour không còn ở trạng thái Mở. Vui lòng chuyển Admin để phê duyệt hoàn tiền.";
                 return RedirectToPage();
             }
 
@@ -186,9 +186,23 @@ namespace TourManagement.Pages.Staff.Bookings
             var rejectedId = await ResolveBookingStatusIdAsync("REJECTED", "DENIED", "CANCELLED", "CANCELED");
             if (rejectedId == null) rejectedId = await ResolveBookingStatusIdAsync("CANCELLED", "CANCELED");
             if (rejectedId == null) { TempData["Error"] = "Không tìm thấy status từ chối."; return RedirectToPage(); }
-            booking.StatusId = rejectedId;
-            booking.Notes = (booking.Notes ?? "") + (string.IsNullOrWhiteSpace(rejectReason) ? "" : " [Từ chối: " + rejectReason.Trim() + "]");
-            await _context.SaveChangesAsync();
+
+            if (booking.StatusId != rejectedId)
+            {
+                var activeStatusIds = new HashSet<string> { "CONFIRMED", "APPROVED", "BOOKED", "COMPLETED", "DONE", "FINISHED" };
+                bool wasTakingSeats = booking.StatusId != null && activeStatusIds.Contains(booking.StatusId.ToUpperInvariant());
+
+                booking.StatusId = rejectedId;
+                booking.Notes = (booking.Notes ?? "") + (string.IsNullOrWhiteSpace(rejectReason) ? "" : " [Từ chối: " + rejectReason.Trim() + "]");
+
+                if (wasTakingSeats && booking.Group != null)
+                {
+                    int totalPax = booking.Adults + booking.Children + booking.Infants;
+                    booking.Group.CurrentBookings -= totalPax;
+                    if (booking.Group.CurrentBookings < 0) booking.Group.CurrentBookings = 0;
+                }
+                await _context.SaveChangesAsync();
+            }
             TempData["Success"] = "Đã từ chối booking. Lý do đã được lưu và sẽ gửi đến khách hàng.";
             return RedirectToPage();
         }

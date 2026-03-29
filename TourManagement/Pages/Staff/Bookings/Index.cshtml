@@ -103,6 +103,13 @@
                     var isConfirmed = (b.StatusId ?? "").Equals("CONFIRMED", StringComparison.OrdinalIgnoreCase) ||
                                       (b.StatusId ?? "").Equals("APPROVED", StringComparison.OrdinalIgnoreCase) ||
                                       (b.StatusId ?? "").Equals("BOOKED", StringComparison.OrdinalIgnoreCase);
+                    var isCompleted = (b.StatusId ?? "").Equals("COMPLETED", StringComparison.OrdinalIgnoreCase) ||
+                                      (b.StatusId ?? "").Equals("DONE", StringComparison.OrdinalIgnoreCase) ||
+                                      (b.StatusId ?? "").Equals("FINISHED", StringComparison.OrdinalIgnoreCase);
+                    var isCancelledOrRejected = (b.StatusId ?? "").Equals("CANCELLED", StringComparison.OrdinalIgnoreCase) ||
+                                               (b.StatusId ?? "").Equals("CANCELED", StringComparison.OrdinalIgnoreCase) ||
+                                               (b.StatusId ?? "").Equals("REJECTED", StringComparison.OrdinalIgnoreCase) ||
+                                               (b.StatusId ?? "").Equals("DENIED", StringComparison.OrdinalIgnoreCase);
                     <tr>
                         <td>@b.BookingId</td>
                         <td>@b.User?.Name<br /><small class="text-muted">@b.User?.Email</small></td>
@@ -132,12 +139,21 @@
                         </td>
                         <td>@b.StatusId</td>
                         <td class="text-nowrap">
-                            <a asp-page="/Staff/Bookings/Edit" asp-route-id="@b.BookingId" class="btn btn-sm btn-outline-secondary">Sửa</a>
+                            @if (!isCancelledOrRejected)
+                            {
+                                <a asp-page="/Staff/Bookings/Edit" asp-route-id="@b.BookingId" class="btn btn-sm btn-outline-secondary">Sửa</a>
+                            }
+                            @{
+                                var canReject = isPending || (isConfirmed && b.Group?.StatusId == "OPEN") || isCompleted;
+                            }
                             @if (isPending)
                             {
                                 <form method="post" asp-page-handler="Confirm" asp-route-bookingId="@b.BookingId" class="d-inline">
                                     <button type="submit" class="btn btn-sm btn-primary">Xác nhận</button>
                                 </form>
+                            }
+                            @if (canReject)
+                            {
                                 <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#rejectModal@(b.BookingId)">Từ chối</button>
                                 <div class="modal fade" id="rejectModal@(b.BookingId)" tabindex="-1">
                                     <div class="modal-dialog">
@@ -163,15 +179,9 @@
                                     <button type="submit" class="btn btn-sm btn-info">Hoàn thành</button>
                                 </form>
                             }
-                            @if ((isPending || isConfirmed) && !paid)
+                            @if (paid && (isPending || isConfirmed) && b.Group?.StatusId != "OPEN")
                             {
-                                <form method="post" asp-page-handler="Cancel" asp-route-bookingId="@b.BookingId" class="d-inline" onsubmit="return confirm('Xác nhận hủy booking?');">
-                                    <button type="submit" class="btn btn-sm btn-danger">Hủy</button>
-                                </form>
-                            }
-                            @if (paid && (isPending || isConfirmed))
-                            {
-                                <span class="badge bg-warning text-dark">Đã TT → Liên hệ Admin để hoàn tiền</span>
+                                <span class="badge bg-warning text-dark">Đã TT & Tour đóng → Liên hệ Admin</span>
                             }
                         </td>
                     </tr>
